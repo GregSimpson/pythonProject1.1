@@ -1,0 +1,468 @@
+INFO     [2021-03-29 15:01:02,1617051662] :: <module> :: 
+script START
+CRITICAL [2021-03-29 15:01:02,1617051662] :: <module> :: crit msg  66 
+WARNING  [2021-03-29 15:01:02,1617051662] :: <module> :: warning msg  87 
+DEBUG    [2021-03-29 15:01:02,1617051662] :: <module> :: maxRange == 15 
+ERROR    [2021-03-29 15:01:02,1617051662] :: <module> :: rndsize1 == 14 
+INFO     [2021-03-29 15:01:02,1617051662] :: <module> :: rndsize2 == 12 
+DEBUG    [2021-03-29 15:01:02,1617051662] :: <module> :: size 13 : 	randomlist1	 -- [11, 9, 4, 1, 14, 12, 10, 3, 2, 5, 7, 8, 13]
+DEBUG    [2021-03-29 15:01:02,1617051662] :: <module> :: size 11 : 	randomlist2	 -- [14, 10, 1, 9, 12, 6, 11, 5, 13, 4, 2]
+
+DEBUG    [2021-03-29 15:01:02,1617051662] :: intersect :: 
+	a : [11, 9, 4, 1, 14, 12, 10, 3, 2, 5, 7, 8, 13]
+	b : [14, 10, 1, 9, 12, 6, 11, 5, 13, 4, 2]
+DEBUG    [2021-03-29 15:01:02,1617051662] :: intersect :: 
+	a : [11, 9, 4, 1, 14, 12, 10, 3, 2, 5, 7, 8, 13]
+	b : [14, 10, 1, 9, 12, 6, 11, 5, 13, 4, 2]
+DEBUG    [2021-03-29 15:01:02,1617051662] :: <module> :: size 10 : 	intersection -- [1, 2, 4, 5, 9, 10, 11, 12, 13, 14]
+DEBUG    [2021-03-29 15:01:02,1617051662] :: union :: 
+	a : [11, 9, 4, 1, 14, 12, 10, 3, 2, 5, 7, 8, 13]
+	b : [14, 10, 1, 9, 12, 6, 11, 5, 13, 4, 2]
+DEBUG    [2021-03-29 15:01:02,1617051662] :: union :: 
+	a : [11, 9, 4, 1, 14, 12, 10, 3, 2, 5, 7, 8, 13]
+	b : [14, 10, 1, 9, 12, 6, 11, 5, 13, 4, 2]
+DEBUG    [2021-03-29 15:01:02,1617051662] :: <module> :: size 14 : 	union		 -- [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+DEBUG    [2021-03-29 15:01:02,1617051662] :: difference :: 
+	a : [11, 9, 4, 1, 14, 12, 10, 3, 2, 5, 7, 8, 13]
+	b : [14, 10, 1, 9, 12, 6, 11, 5, 13, 4, 2]
+DEBUG    [2021-03-29 15:01:02,1617051662] :: difference :: 
+	a : [11, 9, 4, 1, 14, 12, 10, 3, 2, 5, 7, 8, 13]
+	b : [14, 10, 1, 9, 12, 6, 11, 5, 13, 4, 2]
+DEBUG    [2021-03-29 15:01:02,1617051662] :: <module> :: size 4 : 	difference	 -- [8, 3, 7, 6]
+INFO     [2021-03-29 15:01:02,1617051662] :: <module> :: 
+script END
+
+INFO     [2021-03-29 15:08:31,1617052111] :: <module> :: 
+script START
+INFO     [2021-03-29 15:08:35,1617052115] :: <module> :: checking balloon to see if it is a palindrome. 
+DEBUG    [2021-03-29 15:08:35,1617052115] :: is_palindrome :: 	candidate balloon is 7 long
+DEBUG    [2021-03-29 15:08:35,1617052115] :: is_palindrome :: 	char 0 is b 
+DEBUG    [2021-03-29 15:08:35,1617052115] :: is_palindrome :: 	char 7 is balloo 
+INFO     [2021-03-29 15:08:35,1617052115] :: <module> :: None
+INFO     [2021-03-29 15:08:35,1617052115] :: <module> :: 
+script END
+
+INFO     [2021-03-29 15:09:10,1617052150] :: <module> :: 
+script START
+INFO     [2021-03-29 15:09:14,1617052154] :: <module> :: checking balloon to see if it is a palindrome. 
+DEBUG    [2021-03-29 15:09:14,1617052154] :: is_palindrome :: 	candidate balloon is 7 long
+DEBUG    [2021-03-29 15:09:14,1617052154] :: is_palindrome :: 	char 0 is b 
+INFO     [2021-03-29 15:09:25,1617052165] :: <module> :: 
+script START
+INFO     [2021-03-29 15:09:27,1617052167] :: <module> :: checking balloon to see if it is a palindrome. 
+DEBUG    [2021-03-29 15:09:27,1617052167] :: is_palindrome :: 	candidate balloon is 7 long
+DEBUG    [2021-03-29 15:09:27,1617052167] :: is_palindrome :: 	char 0 is b 
+DEBUG    [2021-03-29 15:09:27,1617052167] :: is_palindrome :: 	char 7 is n 
+INFO     [2021-03-29 15:09:27,1617052167] :: <module> :: None
+INFO     [2021-03-29 15:09:27,1617052167] :: <module> :: 
+script END
+
+INFO     [2021-03-29 15:10:56,1617052256] :: <module> :: 
+script START
+INFO     [2021-03-29 15:11:01,1617052261] :: <module> :: checking balloob to see if it is a palindrome. 
+DEBUG    [2021-03-29 15:11:01,1617052261] :: is_palindrome :: 	candidate balloob is 7 long
+DEBUG    [2021-03-29 15:11:01,1617052261] :: is_palindrome :: 	middle char is at 4 and is l
+DEBUG    [2021-03-29 15:11:01,1617052261] :: is_palindrome :: 	char 0 is b 
+DEBUG    [2021-03-29 15:11:01,1617052261] :: is_palindrome :: 	char 7 is b 
+INFO     [2021-03-29 15:11:01,1617052261] :: <module> :: None
+INFO     [2021-03-29 15:11:01,1617052261] :: <module> :: 
+script END
+
+INFO     [2021-03-29 15:11:10,1617052270] :: <module> :: 
+script START
+INFO     [2021-03-29 15:11:15,1617052275] :: <module> :: checking abcdefghi to see if it is a palindrome. 
+DEBUG    [2021-03-29 15:11:15,1617052275] :: is_palindrome :: 	candidate abcdefghi is 9 long
+DEBUG    [2021-03-29 15:11:15,1617052275] :: is_palindrome :: 	middle char is at 4 and is d
+DEBUG    [2021-03-29 15:11:15,1617052275] :: is_palindrome :: 	char 0 is a 
+DEBUG    [2021-03-29 15:11:15,1617052275] :: is_palindrome :: 	char 9 is i 
+INFO     [2021-03-29 15:11:15,1617052275] :: <module> :: None
+INFO     [2021-03-29 15:11:15,1617052275] :: <module> :: 
+script END
+
+INFO     [2021-03-29 15:11:41,1617052301] :: <module> :: 
+script START
+INFO     [2021-03-29 15:11:48,1617052308] :: <module> :: checking abcdefghi to see if it is a palindrome. 
+DEBUG    [2021-03-29 15:11:48,1617052308] :: is_palindrome :: 	candidate abcdefghi is 9 long
+DEBUG    [2021-03-29 15:11:48,1617052308] :: is_palindrome :: 	middle char is at 5 and is e
+DEBUG    [2021-03-29 15:11:48,1617052308] :: is_palindrome :: 	char 0 is a 
+DEBUG    [2021-03-29 15:11:48,1617052308] :: is_palindrome :: 	char 9 is i 
+INFO     [2021-03-29 15:11:48,1617052308] :: <module> :: None
+INFO     [2021-03-29 15:11:48,1617052308] :: <module> :: 
+script END
+
+INFO     [2021-03-29 15:16:45,1617052605] :: <module> :: 
+script START
+INFO     [2021-03-29 15:16:56,1617052616] :: <module> :: checking abcba to see if it is a palindrome. 
+DEBUG    [2021-03-29 15:16:56,1617052616] :: is_palindrome :: 	candidate abcba is 5 long
+DEBUG    [2021-03-29 15:16:56,1617052616] :: is_palindrome :: 	middle char is at 3 and is c
+DEBUG    [2021-03-29 15:16:56,1617052616] :: is_palindrome :: 	char 0 is a 
+DEBUG    [2021-03-29 15:16:56,1617052616] :: is_palindrome :: 	char 5 is a 
+INFO     [2021-03-29 15:20:07,1617052807] :: <module> :: 
+script START
+INFO     [2021-03-29 15:20:11,1617052811] :: <module> :: checking abccba to see if it is a palindrome. 
+DEBUG    [2021-03-29 15:20:11,1617052811] :: is_palindrome :: 	candidate abccba is 6 long
+DEBUG    [2021-03-29 15:20:11,1617052811] :: is_palindrome :: 	middle char is at 4 and is c
+DEBUG    [2021-03-29 15:20:11,1617052811] :: is_palindrome :: 	char 0 is a 
+DEBUG    [2021-03-29 15:20:11,1617052811] :: is_palindrome :: 	char 6 is a 
+DEBUG    [2021-03-29 15:20:11,1617052811] :: is_palindrome :: 	these are wrong () 
+INFO     [2021-03-29 15:20:11,1617052811] :: <module> :: None
+INFO     [2021-03-29 15:20:11,1617052811] :: <module> :: 
+script END
+
+INFO     [2021-03-29 15:20:16,1617052816] :: <module> :: 
+script START
+INFO     [2021-03-29 15:20:19,1617052819] :: <module> :: checking asbdgftr to see if it is a palindrome. 
+DEBUG    [2021-03-29 15:20:19,1617052819] :: is_palindrome :: 	candidate asbdgftr is 8 long
+DEBUG    [2021-03-29 15:20:19,1617052819] :: is_palindrome :: 	middle char is at 4 and is d
+DEBUG    [2021-03-29 15:20:19,1617052819] :: is_palindrome :: 	char 0 is a 
+DEBUG    [2021-03-29 15:20:19,1617052819] :: is_palindrome :: 	char 8 is r 
+DEBUG    [2021-03-29 15:20:19,1617052819] :: is_palindrome :: 	these are wrong () 
+INFO     [2021-03-29 15:20:19,1617052819] :: <module> :: None
+INFO     [2021-03-29 15:20:19,1617052819] :: <module> :: 
+script END
+
+INFO     [2021-03-29 15:22:01,1617052921] :: <module> :: 
+script START
+INFO     [2021-03-29 15:22:04,1617052924] :: <module> :: checking hdhdye to see if it is a palindrome. 
+DEBUG    [2021-03-29 15:22:04,1617052924] :: is_palindrome :: 	candidate hdhdye is 6 long
+DEBUG    [2021-03-29 15:22:04,1617052924] :: is_palindrome :: 	middle char is at 4 and is d
+DEBUG    [2021-03-29 15:22:04,1617052924] :: is_palindrome :: 	char 0 is h 
+DEBUG    [2021-03-29 15:22:04,1617052924] :: is_palindrome :: 	char 6 is e 
+DEBUG    [2021-03-29 15:22:04,1617052924] :: is_palindrome :: 	these are wrong () 
+INFO     [2021-03-29 15:22:04,1617052924] :: <module> :: None
+INFO     [2021-03-29 15:22:04,1617052924] :: <module> :: 
+script END
+
+INFO     [2021-03-29 15:22:46,1617052966] :: <module> :: 
+script START
+INFO     [2021-03-29 15:22:49,1617052969] :: <module> :: checking abcba to see if it is a palindrome. 
+DEBUG    [2021-03-29 15:22:49,1617052969] :: is_palindrome :: 	candidate abcba is 5 long
+DEBUG    [2021-03-29 15:22:49,1617052969] :: is_palindrome :: 	middle char is at 3 and is c
+DEBUG    [2021-03-29 15:22:49,1617052969] :: is_palindrome :: 	char 0 is a 
+DEBUG    [2021-03-29 15:22:49,1617052969] :: is_palindrome :: 	char 5 is a 
+DEBUG    [2021-03-29 15:22:49,1617052969] :: is_palindrome :: 	mismatch () 
+INFO     [2021-03-29 15:22:49,1617052969] :: <module> :: None
+INFO     [2021-03-29 15:22:49,1617052969] :: <module> :: 
+script END
+
+INFO     [2021-03-29 17:16:11,1617059771] :: <module> :: 
+script START
+INFO     [2021-03-29 17:16:21,1617059781] :: <module> :: checking bubble to see if it is a palindrome. 
+DEBUG    [2021-03-29 17:16:21,1617059781] :: is_palindrome :: 	candidate bubble is 6 long
+DEBUG    [2021-03-29 17:16:21,1617059781] :: is_palindrome :: 	middle char is at 4 and is b
+DEBUG    [2021-03-29 17:16:21,1617059781] :: is_palindrome :: 	char 0 is b 
+DEBUG    [2021-03-29 17:16:21,1617059781] :: is_palindrome :: 	char 6 is e 
+DEBUG    [2021-03-29 17:16:21,1617059781] :: is_palindrome :: 	mismatch () 
+INFO     [2021-03-29 17:16:21,1617059781] :: <module> :: None
+INFO     [2021-03-29 17:16:21,1617059781] :: <module> :: 
+script END
+
+INFO     [2021-03-29 17:22:24,1617060144] :: <module> :: 
+script START
+INFO     [2021-03-29 17:22:26,1617060146] :: <module> :: checking bdhdtyr to see if it is a palindrome. 
+DEBUG    [2021-03-29 17:22:26,1617060146] :: is_palindrome :: 	candidate bdhdtyr is 7 long
+DEBUG    [2021-03-29 17:22:26,1617060146] :: is_palindrome :: 	middle char is at 4 and is d
+DEBUG    [2021-03-29 17:22:26,1617060146] :: is_palindrome :: 	char 0 is b 
+DEBUG    [2021-03-29 17:22:26,1617060146] :: is_palindrome :: 	char 7 is r 
+DEBUG    [2021-03-29 17:22:26,1617060146] :: is_palindrome :: 	mismatch () 
+DEBUG    [2021-03-29 17:22:26,1617060146] :: is_palindrome :: 	forward b 
+DEBUG    [2021-03-29 17:22:26,1617060146] :: is_palindrome :: 	forward d 
+DEBUG    [2021-03-29 17:22:26,1617060146] :: is_palindrome :: 	forward h 
+DEBUG    [2021-03-29 17:22:26,1617060146] :: is_palindrome :: 	forward d 
+INFO     [2021-03-29 17:22:26,1617060146] :: <module> :: None
+INFO     [2021-03-29 17:22:26,1617060146] :: <module> :: 
+script END
+
+INFO     [2021-03-29 17:23:07,1617060187] :: <module> :: 
+script START
+INFO     [2021-03-29 17:23:11,1617060191] :: <module> :: checking balloon to see if it is a palindrome. 
+DEBUG    [2021-03-29 17:23:11,1617060191] :: is_palindrome :: 	candidate balloon is 7 long
+DEBUG    [2021-03-29 17:23:11,1617060191] :: is_palindrome :: 	middle char is at 4 and is l
+DEBUG    [2021-03-29 17:23:11,1617060191] :: is_palindrome :: 	char 0 is b 
+DEBUG    [2021-03-29 17:23:11,1617060191] :: is_palindrome :: 	char 7 is n 
+DEBUG    [2021-03-29 17:23:11,1617060191] :: is_palindrome :: 	mismatch () 
+DEBUG    [2021-03-29 17:23:11,1617060191] :: is_palindrome :: 	forward  b 
+INFO     [2021-03-29 17:23:26,1617060206] :: <module> :: 
+script START
+INFO     [2021-03-29 17:23:30,1617060210] :: <module> :: checking balloon to see if it is a palindrome. 
+DEBUG    [2021-03-29 17:23:30,1617060210] :: is_palindrome :: 	candidate balloon is 7 long
+DEBUG    [2021-03-29 17:23:30,1617060210] :: is_palindrome :: 	middle char is at 4 and is l
+DEBUG    [2021-03-29 17:23:30,1617060210] :: is_palindrome :: 	char 0 is b 
+DEBUG    [2021-03-29 17:23:30,1617060210] :: is_palindrome :: 	char 7 is n 
+DEBUG    [2021-03-29 17:23:30,1617060210] :: is_palindrome :: 	mismatch () 
+DEBUG    [2021-03-29 17:23:30,1617060210] :: is_palindrome :: 	forward  b 
+DEBUG    [2021-03-29 17:23:30,1617060210] :: is_palindrome :: 	backward n 
+DEBUG    [2021-03-29 17:23:30,1617060210] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:23:30,1617060210] :: is_palindrome :: 	backward o 
+DEBUG    [2021-03-29 17:23:30,1617060210] :: is_palindrome :: 	forward  l 
+DEBUG    [2021-03-29 17:23:30,1617060210] :: is_palindrome :: 	backward o 
+DEBUG    [2021-03-29 17:23:30,1617060210] :: is_palindrome :: 	forward  l 
+DEBUG    [2021-03-29 17:23:30,1617060210] :: is_palindrome :: 	backward l 
+INFO     [2021-03-29 17:23:30,1617060210] :: <module> :: None
+INFO     [2021-03-29 17:23:30,1617060210] :: <module> :: 
+script END
+
+INFO     [2021-03-29 17:23:42,1617060222] :: <module> :: 
+script START
+INFO     [2021-03-29 17:23:45,1617060225] :: <module> :: checking balloon to see if it is a palindrome. 
+DEBUG    [2021-03-29 17:23:45,1617060225] :: is_palindrome :: 	candidate balloon is 7 long
+DEBUG    [2021-03-29 17:23:45,1617060225] :: is_palindrome :: 	middle char is at 4 and is l
+DEBUG    [2021-03-29 17:23:45,1617060225] :: is_palindrome :: 	char 0 is b 
+DEBUG    [2021-03-29 17:23:45,1617060225] :: is_palindrome :: 	char 7 is n 
+DEBUG    [2021-03-29 17:23:45,1617060225] :: is_palindrome :: 	mismatch () 
+DEBUG    [2021-03-29 17:23:45,1617060225] :: is_palindrome :: 	forward  b 
+DEBUG    [2021-03-29 17:23:45,1617060225] :: is_palindrome :: 		backward n 
+DEBUG    [2021-03-29 17:23:45,1617060225] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:23:45,1617060225] :: is_palindrome :: 		backward o 
+DEBUG    [2021-03-29 17:23:45,1617060225] :: is_palindrome :: 	forward  l 
+DEBUG    [2021-03-29 17:23:45,1617060225] :: is_palindrome :: 		backward o 
+DEBUG    [2021-03-29 17:23:45,1617060225] :: is_palindrome :: 	forward  l 
+DEBUG    [2021-03-29 17:23:45,1617060225] :: is_palindrome :: 		backward l 
+INFO     [2021-03-29 17:23:45,1617060225] :: <module> :: None
+INFO     [2021-03-29 17:23:45,1617060225] :: <module> :: 
+script END
+
+INFO     [2021-03-29 17:24:00,1617060240] :: <module> :: 
+script START
+INFO     [2021-03-29 17:24:09,1617060249] :: <module> :: checking abcdcba to see if it is a palindrome. 
+DEBUG    [2021-03-29 17:24:09,1617060249] :: is_palindrome :: 	candidate abcdcba is 7 long
+DEBUG    [2021-03-29 17:24:09,1617060249] :: is_palindrome :: 	middle char is at 4 and is d
+DEBUG    [2021-03-29 17:24:09,1617060249] :: is_palindrome :: 	char 0 is a 
+DEBUG    [2021-03-29 17:24:09,1617060249] :: is_palindrome :: 	char 7 is a 
+DEBUG    [2021-03-29 17:24:09,1617060249] :: is_palindrome :: 	mismatch () 
+DEBUG    [2021-03-29 17:24:09,1617060249] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:24:09,1617060249] :: is_palindrome :: 		backward a 
+DEBUG    [2021-03-29 17:24:09,1617060249] :: is_palindrome :: 	forward  b 
+DEBUG    [2021-03-29 17:24:09,1617060249] :: is_palindrome :: 		backward b 
+DEBUG    [2021-03-29 17:24:09,1617060249] :: is_palindrome :: 	forward  c 
+DEBUG    [2021-03-29 17:24:09,1617060249] :: is_palindrome :: 		backward c 
+DEBUG    [2021-03-29 17:24:09,1617060249] :: is_palindrome :: 	forward  d 
+DEBUG    [2021-03-29 17:24:09,1617060249] :: is_palindrome :: 		backward d 
+INFO     [2021-03-29 17:24:09,1617060249] :: <module> :: None
+INFO     [2021-03-29 17:24:09,1617060249] :: <module> :: 
+script END
+
+INFO     [2021-03-29 17:32:26,1617060746] :: <module> :: 
+script START
+INFO     [2021-03-29 17:32:32,1617060752] :: <module> :: checking abcdcba to see if it is a palindrome. 
+DEBUG    [2021-03-29 17:32:32,1617060752] :: is_palindrome :: 	candidate abcdcba is 7 long
+DEBUG    [2021-03-29 17:32:32,1617060752] :: is_palindrome :: 	middle char is at 4 and is d
+DEBUG    [2021-03-29 17:32:32,1617060752] :: is_palindrome :: 	char 0 is a 
+DEBUG    [2021-03-29 17:32:32,1617060752] :: is_palindrome :: 	char 7 is a 
+DEBUG    [2021-03-29 17:32:32,1617060752] :: is_palindrome :: 	mismatch () 
+DEBUG    [2021-03-29 17:32:32,1617060752] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:32:32,1617060752] :: is_palindrome :: 		backward a 
+DEBUG    [2021-03-29 17:32:32,1617060752] :: is_palindrome :: 	forward  b 
+DEBUG    [2021-03-29 17:32:32,1617060752] :: is_palindrome :: 		backward b 
+DEBUG    [2021-03-29 17:32:32,1617060752] :: is_palindrome :: 	forward  c 
+DEBUG    [2021-03-29 17:32:32,1617060752] :: is_palindrome :: 		backward c 
+DEBUG    [2021-03-29 17:32:32,1617060752] :: is_palindrome :: 	forward  d 
+DEBUG    [2021-03-29 17:32:32,1617060752] :: is_palindrome :: 		backward d 
+INFO     [2021-03-29 17:36:37,1617060997] :: <module> :: 
+script START
+INFO     [2021-03-29 17:36:40,1617061000] :: <module> :: checking kdjdur to see if it is a palindrome. 
+DEBUG    [2021-03-29 17:36:40,1617061000] :: is_palindrome :: 	candidate kdjdur is 6 long
+DEBUG    [2021-03-29 17:36:40,1617061000] :: is_palindrome :: 	middle char is at 4 and is d
+DEBUG    [2021-03-29 17:36:40,1617061000] :: is_palindrome :: 	char 0 is k 
+DEBUG    [2021-03-29 17:36:40,1617061000] :: is_palindrome :: 	char 6 is r 
+DEBUG    [2021-03-29 17:36:40,1617061000] :: is_palindrome :: 	mismatch () 
+DEBUG    [2021-03-29 17:36:40,1617061000] :: is_palindrome :: 	forward  k 
+DEBUG    [2021-03-29 17:36:40,1617061000] :: is_palindrome :: 		backward r 
+DEBUG    [2021-03-29 17:36:40,1617061000] :: is_palindrome :: 	forward  d 
+DEBUG    [2021-03-29 17:36:40,1617061000] :: is_palindrome :: 		backward u 
+DEBUG    [2021-03-29 17:36:40,1617061000] :: is_palindrome :: 	forward  j 
+DEBUG    [2021-03-29 17:36:40,1617061000] :: is_palindrome :: 		backward d 
+DEBUG    [2021-03-29 17:36:40,1617061000] :: is_palindrome :: 	forward  d 
+DEBUG    [2021-03-29 17:36:40,1617061000] :: is_palindrome :: 		backward j 
+INFO     [2021-03-29 17:37:28,1617061048] :: <module> :: 
+script START
+INFO     [2021-03-29 17:37:30,1617061050] :: <module> :: checking adsfasdfasdf  to see if it is a palindrome. 
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 	candidate adsfasdfasdf  is 13 long
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 	middle char is at 7 and is d
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 	char 0 is a 
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 	char 13 is   
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 	mismatch () 
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 		backward   
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 	forward  d 
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 		backward f 
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 	forward  s 
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 		backward d 
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 	forward  f 
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 		backward s 
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 		backward a 
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 	forward  s 
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 		backward f 
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 	forward  d 
+DEBUG    [2021-03-29 17:37:30,1617061050] :: is_palindrome :: 		backward d 
+INFO     [2021-03-29 17:38:21,1617061101] :: <module> :: 
+script START
+INFO     [2021-03-29 17:38:23,1617061103] :: <module> :: checking asdfasdff to see if it is a palindrome. 
+DEBUG    [2021-03-29 17:38:23,1617061103] :: is_palindrome :: 	candidate asdfasdff is 9 long
+DEBUG    [2021-03-29 17:38:23,1617061103] :: is_palindrome :: 	middle char is at 5 and is a
+DEBUG    [2021-03-29 17:38:23,1617061103] :: is_palindrome :: 	char 0 is a 
+DEBUG    [2021-03-29 17:38:23,1617061103] :: is_palindrome :: 	char 9 is f 
+DEBUG    [2021-03-29 17:38:23,1617061103] :: is_palindrome :: 	mismatch () 
+DEBUG    [2021-03-29 17:38:23,1617061103] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:38:23,1617061103] :: is_palindrome :: 		backward f 
+DEBUG    [2021-03-29 17:38:23,1617061103] :: is_palindrome :: 	forward  s 
+DEBUG    [2021-03-29 17:38:23,1617061103] :: is_palindrome :: 		backward f 
+DEBUG    [2021-03-29 17:38:23,1617061103] :: is_palindrome :: 	forward  d 
+DEBUG    [2021-03-29 17:38:23,1617061103] :: is_palindrome :: 		backward d 
+DEBUG    [2021-03-29 17:38:23,1617061103] :: is_palindrome :: 	forward  f 
+DEBUG    [2021-03-29 17:38:23,1617061103] :: is_palindrome :: 		backward s 
+DEBUG    [2021-03-29 17:38:23,1617061103] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:38:23,1617061103] :: is_palindrome :: 		backward a 
+INFO     [2021-03-29 17:39:52,1617061192] :: <module> :: 
+script START
+INFO     [2021-03-29 17:39:54,1617061194] :: <module> :: checking adsfasdfasdf to see if it is a palindrome. 
+DEBUG    [2021-03-29 17:39:54,1617061194] :: is_palindrome :: 	candidate adsfasdfasdf is 12 long
+DEBUG    [2021-03-29 17:39:54,1617061194] :: is_palindrome :: 	middle char is at 6 and is s
+DEBUG    [2021-03-29 17:39:54,1617061194] :: is_palindrome :: 	char 0 is a 
+DEBUG    [2021-03-29 17:39:54,1617061194] :: is_palindrome :: 	char 12 is f 
+DEBUG    [2021-03-29 17:39:54,1617061194] :: is_palindrome :: 	mismatch () 
+DEBUG    [2021-03-29 17:39:54,1617061194] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:39:54,1617061194] :: is_palindrome :: 		backward f 
+DEBUG    [2021-03-29 17:39:54,1617061194] :: is_palindrome :: 	forward  d 
+DEBUG    [2021-03-29 17:39:54,1617061194] :: is_palindrome :: 		backward d 
+DEBUG    [2021-03-29 17:39:54,1617061194] :: is_palindrome :: 	forward  s 
+DEBUG    [2021-03-29 17:39:54,1617061194] :: is_palindrome :: 		backward s 
+DEBUG    [2021-03-29 17:39:54,1617061194] :: is_palindrome :: 	forward  f 
+DEBUG    [2021-03-29 17:39:54,1617061194] :: is_palindrome :: 		backward a 
+DEBUG    [2021-03-29 17:39:54,1617061194] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:39:54,1617061194] :: is_palindrome :: 		backward f 
+DEBUG    [2021-03-29 17:39:54,1617061194] :: is_palindrome :: 	forward  s 
+DEBUG    [2021-03-29 17:39:54,1617061194] :: is_palindrome :: 		backward d 
+INFO     [2021-03-29 17:40:04,1617061204] :: <module> :: 
+script START
+INFO     [2021-03-29 17:40:06,1617061206] :: <module> :: checking asfasdf to see if it is a palindrome. 
+DEBUG    [2021-03-29 17:40:06,1617061206] :: is_palindrome :: 	candidate asfasdf is 7 long
+DEBUG    [2021-03-29 17:40:06,1617061206] :: is_palindrome :: 	middle char is at 4 and is a
+DEBUG    [2021-03-29 17:40:06,1617061206] :: is_palindrome :: 	char 0 is a 
+DEBUG    [2021-03-29 17:40:06,1617061206] :: is_palindrome :: 	char 7 is f 
+DEBUG    [2021-03-29 17:40:06,1617061206] :: is_palindrome :: 	mismatch () 
+DEBUG    [2021-03-29 17:40:06,1617061206] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:40:06,1617061206] :: is_palindrome :: 		backward f 
+DEBUG    [2021-03-29 17:40:06,1617061206] :: is_palindrome :: 	forward  s 
+DEBUG    [2021-03-29 17:40:06,1617061206] :: is_palindrome :: 		backward d 
+DEBUG    [2021-03-29 17:40:06,1617061206] :: is_palindrome :: 	forward  f 
+DEBUG    [2021-03-29 17:40:06,1617061206] :: is_palindrome :: 		backward s 
+DEBUG    [2021-03-29 17:40:06,1617061206] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:40:06,1617061206] :: is_palindrome :: 		backward a 
+INFO     [2021-03-29 17:40:06,1617061206] :: <module> :: None
+INFO     [2021-03-29 17:40:06,1617061206] :: <module> :: 
+script END
+
+INFO     [2021-03-29 17:40:39,1617061239] :: <module> :: 
+script START
+INFO     [2021-03-29 17:40:41,1617061241] :: <module> :: checking jdhdyr to see if it is a palindrome. 
+DEBUG    [2021-03-29 17:40:41,1617061241] :: is_palindrome :: 	candidate jdhdyr is 6 long
+DEBUG    [2021-03-29 17:40:41,1617061241] :: is_palindrome :: 	middle char is at 4 and is d
+DEBUG    [2021-03-29 17:40:41,1617061241] :: is_palindrome :: 	char 0 is j 
+DEBUG    [2021-03-29 17:40:41,1617061241] :: is_palindrome :: 	char 6 is r 
+DEBUG    [2021-03-29 17:40:41,1617061241] :: is_palindrome :: 	mismatch () 
+DEBUG    [2021-03-29 17:40:41,1617061241] :: is_palindrome :: 	forward  j 
+DEBUG    [2021-03-29 17:40:41,1617061241] :: is_palindrome :: 		backward r 
+DEBUG    [2021-03-29 17:40:41,1617061241] :: is_palindrome :: 	forward  d 
+DEBUG    [2021-03-29 17:40:41,1617061241] :: is_palindrome :: 		backward y 
+DEBUG    [2021-03-29 17:40:41,1617061241] :: is_palindrome :: 	forward  h 
+DEBUG    [2021-03-29 17:40:41,1617061241] :: is_palindrome :: 		backward d 
+DEBUG    [2021-03-29 17:40:41,1617061241] :: is_palindrome :: 	forward  d 
+DEBUG    [2021-03-29 17:40:41,1617061241] :: is_palindrome :: 		backward h 
+INFO     [2021-03-29 17:40:41,1617061241] :: <module> :: None
+INFO     [2021-03-29 17:40:41,1617061241] :: <module> :: 
+script END
+
+INFO     [2021-03-29 17:41:23,1617061283] :: <module> :: 
+script START
+INFO     [2021-03-29 17:41:25,1617061285] :: <module> :: checking asdfasdfawer to see if it is a palindrome. 
+DEBUG    [2021-03-29 17:41:25,1617061285] :: is_palindrome :: 	candidate asdfasdfawer is 12 long
+DEBUG    [2021-03-29 17:41:25,1617061285] :: is_palindrome :: 	middle char is at 6 and is s
+DEBUG    [2021-03-29 17:41:25,1617061285] :: is_palindrome :: 	char 0 is a 
+DEBUG    [2021-03-29 17:41:25,1617061285] :: is_palindrome :: 	char 12 is r 
+DEBUG    [2021-03-29 17:41:25,1617061285] :: is_palindrome :: 	mismatch () 
+DEBUG    [2021-03-29 17:41:25,1617061285] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:41:25,1617061285] :: is_palindrome :: 		backward r 
+DEBUG    [2021-03-29 17:41:25,1617061285] :: is_palindrome :: 	forward  s 
+DEBUG    [2021-03-29 17:41:25,1617061285] :: is_palindrome :: 		backward e 
+DEBUG    [2021-03-29 17:41:25,1617061285] :: is_palindrome :: 	forward  d 
+DEBUG    [2021-03-29 17:41:25,1617061285] :: is_palindrome :: 		backward w 
+DEBUG    [2021-03-29 17:41:25,1617061285] :: is_palindrome :: 	forward  f 
+DEBUG    [2021-03-29 17:41:25,1617061285] :: is_palindrome :: 		backward a 
+DEBUG    [2021-03-29 17:41:25,1617061285] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:41:25,1617061285] :: is_palindrome :: 		backward f 
+DEBUG    [2021-03-29 17:41:25,1617061285] :: is_palindrome :: 	forward  s 
+DEBUG    [2021-03-29 17:41:25,1617061285] :: is_palindrome :: 		backward d 
+INFO     [2021-03-29 17:41:25,1617061285] :: <module> :: None
+INFO     [2021-03-29 17:41:25,1617061285] :: <module> :: 
+script END
+
+INFO     [2021-03-29 17:42:55,1617061375] :: <module> :: 
+script START
+INFO     [2021-03-29 17:42:57,1617061377] :: <module> :: checking asfasdfasdf to see if it is a palindrome. 
+DEBUG    [2021-03-29 17:42:57,1617061377] :: is_palindrome :: 	candidate asfasdfasdf is 11 long
+DEBUG    [2021-03-29 17:42:57,1617061377] :: is_palindrome :: 	middle char is at 6 and is d
+DEBUG    [2021-03-29 17:42:57,1617061377] :: is_palindrome :: 	char 0 is a 
+DEBUG    [2021-03-29 17:42:57,1617061377] :: is_palindrome :: 	char 11 is f 
+DEBUG    [2021-03-29 17:42:57,1617061377] :: is_palindrome :: 	mismatch () 
+DEBUG    [2021-03-29 17:42:57,1617061377] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:42:57,1617061377] :: is_palindrome :: 		backward f 
+DEBUG    [2021-03-29 17:42:57,1617061377] :: is_palindrome :: 	forward  s 
+DEBUG    [2021-03-29 17:42:57,1617061377] :: is_palindrome :: 		backward d 
+DEBUG    [2021-03-29 17:42:57,1617061377] :: is_palindrome :: 	forward  f 
+DEBUG    [2021-03-29 17:42:57,1617061377] :: is_palindrome :: 		backward s 
+DEBUG    [2021-03-29 17:42:57,1617061377] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:42:57,1617061377] :: is_palindrome :: 		backward a 
+DEBUG    [2021-03-29 17:42:57,1617061377] :: is_palindrome :: 	forward  s 
+DEBUG    [2021-03-29 17:42:57,1617061377] :: is_palindrome :: 		backward f 
+DEBUG    [2021-03-29 17:42:57,1617061377] :: is_palindrome :: 	forward  d 
+DEBUG    [2021-03-29 17:42:57,1617061377] :: is_palindrome :: 		backward d 
+INFO     [2021-03-29 17:47:14,1617061634] :: <module> :: 
+script START
+INFO     [2021-03-29 17:47:16,1617061636] :: <module> :: checking asdfasdf to see if it is a palindrome. 
+DEBUG    [2021-03-29 17:47:16,1617061636] :: is_palindrome :: 	candidate asdfasdf is 8 long
+DEBUG    [2021-03-29 17:47:16,1617061636] :: is_palindrome :: 	middle char is at 4 and is f
+DEBUG    [2021-03-29 17:47:16,1617061636] :: is_palindrome :: 	char 0 is a 
+DEBUG    [2021-03-29 17:47:16,1617061636] :: is_palindrome :: 	char 8 is f 
+DEBUG    [2021-03-29 17:47:16,1617061636] :: is_palindrome :: 	mismatch () 
+DEBUG    [2021-03-29 17:47:16,1617061636] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:47:16,1617061636] :: is_palindrome :: 		backward f 
+DEBUG    [2021-03-29 17:47:16,1617061636] :: is_palindrome :: 	forward  s 
+DEBUG    [2021-03-29 17:47:16,1617061636] :: is_palindrome :: 		backward d 
+DEBUG    [2021-03-29 17:47:16,1617061636] :: is_palindrome :: 	forward  d 
+DEBUG    [2021-03-29 17:47:16,1617061636] :: is_palindrome :: 		backward s 
+DEBUG    [2021-03-29 17:47:16,1617061636] :: is_palindrome :: 	forward  f 
+DEBUG    [2021-03-29 17:47:16,1617061636] :: is_palindrome :: 		backward a 
+INFO     [2021-03-29 17:48:22,1617061702] :: <module> :: 
+script START
+INFO     [2021-03-29 17:48:23,1617061703] :: <module> :: checking asdfasdf to see if it is a palindrome. 
+DEBUG    [2021-03-29 17:48:23,1617061703] :: is_palindrome :: 	candidate asdfasdf is 8 long
+DEBUG    [2021-03-29 17:48:23,1617061703] :: is_palindrome :: 	middle char is at 4 and is f
+DEBUG    [2021-03-29 17:48:23,1617061703] :: is_palindrome :: 	char 0 is a 
+DEBUG    [2021-03-29 17:48:23,1617061703] :: is_palindrome :: 	char 8 is f 
+DEBUG    [2021-03-29 17:48:23,1617061703] :: is_palindrome :: 	mismatch () 
+DEBUG    [2021-03-29 17:48:23,1617061703] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 17:48:23,1617061703] :: is_palindrome :: 		backward f 
+DEBUG    [2021-03-29 17:48:23,1617061703] :: is_palindrome :: 	forward  s 
+DEBUG    [2021-03-29 17:48:23,1617061703] :: is_palindrome :: 		backward d 
+DEBUG    [2021-03-29 17:48:23,1617061703] :: is_palindrome :: 	forward  d 
+DEBUG    [2021-03-29 17:48:23,1617061703] :: is_palindrome :: 		backward s 
+DEBUG    [2021-03-29 17:48:23,1617061703] :: is_palindrome :: 	forward  f 
+DEBUG    [2021-03-29 17:48:23,1617061703] :: is_palindrome :: 		backward a 
+INFO     [2021-03-29 17:48:41,1617061721] :: <module> :: 
+script START
+INFO     [2021-03-29 18:30:17,1617064217] :: <module> :: checking asdfasdf to see if it is a palindrome. 
+DEBUG    [2021-03-29 18:30:17,1617064217] :: is_palindrome :: 	candidate asdfasdf is 8 long
+DEBUG    [2021-03-29 18:30:17,1617064217] :: is_palindrome :: 	middle char is at 4 and is f
+DEBUG    [2021-03-29 18:30:17,1617064217] :: is_palindrome :: 	char 0 is a 
+DEBUG    [2021-03-29 18:30:17,1617064217] :: is_palindrome :: 	char 8 is f 
+DEBUG    [2021-03-29 18:30:17,1617064217] :: is_palindrome :: 	mismatch () 
+DEBUG    [2021-03-29 18:30:17,1617064217] :: is_palindrome :: 	forward  a 
+DEBUG    [2021-03-29 18:30:17,1617064217] :: is_palindrome :: 		backward f 
+DEBUG    [2021-03-29 18:30:17,1617064217] :: is_palindrome :: 	forward  s 
+DEBUG    [2021-03-29 18:30:17,1617064217] :: is_palindrome :: 		backward d 
+DEBUG    [2021-03-29 18:30:17,1617064217] :: is_palindrome :: 	forward  d 
+DEBUG    [2021-03-29 18:30:17,1617064217] :: is_palindrome :: 		backward s 
+DEBUG    [2021-03-29 18:30:17,1617064217] :: is_palindrome :: 	forward  f 
+DEBUG    [2021-03-29 18:30:17,1617064217] :: is_palindrome :: 		backward a 
