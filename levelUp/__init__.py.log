@@ -1,0 +1,949 @@
+INFO     [2021-07-01 15:56:38,1625176598] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 15:56:38,1625176598] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 15:56:38,1625176598] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+INFO     [2021-07-01 15:56:38,1625176598] :: <module> :: 
+script END
+
+INFO     [2021-07-01 15:58:47,1625176727] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 15:58:47,1625176727] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 15:58:47,1625176727] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 15:58:47,1625176727] :: chainComp :: True
+DEBUG    [2021-07-01 15:58:47,1625176727] :: chainComp :: False
+INFO     [2021-07-01 15:58:47,1625176727] :: <module> :: 
+script END
+
+INFO     [2021-07-01 15:59:17,1625176757] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 15:59:17,1625176757] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 15:59:17,1625176757] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 15:59:17,1625176757] :: chainComp :: True
+DEBUG    [2021-07-01 15:59:17,1625176757] :: chainComp :: False
+INFO     [2021-07-01 15:59:17,1625176757] :: <module> :: 
+script END
+
+INFO     [2021-07-01 16:03:39,1625177019] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 16:03:39,1625177019] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 16:03:39,1625177019] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 16:03:39,1625177019] :: chainComp :: True
+DEBUG    [2021-07-01 16:03:39,1625177019] :: chainComp :: False
+DEBUG    [2021-07-01 16:03:39,1625177019] :: getLastElemInList :: pineapple
+DEBUG    [2021-07-01 16:03:39,1625177019] :: getLastElemInList :: 
+	brute : pineapple
+
+DEBUG    [2021-07-01 16:03:39,1625177019] :: getLastElemInList :: 
+	negIndx : pineapple
+
+DEBUG    [2021-07-01 16:03:39,1625177019] :: getLastElemInList :: 
+	pop-ed : pineapple
+
+INFO     [2021-07-01 16:03:39,1625177019] :: <module> :: 
+script END
+
+INFO     [2021-07-01 16:04:14,1625177054] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 16:04:14,1625177054] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 16:04:14,1625177054] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 16:04:14,1625177054] :: chainComp :: True
+DEBUG    [2021-07-01 16:04:14,1625177054] :: chainComp :: False
+DEBUG    [2021-07-01 16:04:14,1625177054] :: getLastElemInList :: 
+	brute : pineapple
+
+DEBUG    [2021-07-01 16:04:14,1625177054] :: getLastElemInList :: 
+	negIndx : pineapple
+
+DEBUG    [2021-07-01 16:04:14,1625177054] :: getLastElemInList :: 
+	pop-ed : pineapple
+
+INFO     [2021-07-01 16:04:14,1625177054] :: <module> :: 
+script END
+
+INFO     [2021-07-01 16:06:32,1625177192] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 16:06:32,1625177192] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 16:06:32,1625177192] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 16:06:32,1625177192] :: chainComp :: True
+DEBUG    [2021-07-01 16:06:32,1625177192] :: chainComp :: False
+DEBUG    [2021-07-01 16:06:32,1625177192] :: getLastElemInList :: 
+	brute : pineapple
+
+DEBUG    [2021-07-01 16:06:32,1625177192] :: getLastElemInList :: 
+	negIndx : pineapple
+
+DEBUG    [2021-07-01 16:06:32,1625177192] :: getLastElemInList :: 
+	pop-ed : pineapple
+
+INFO     [2021-07-01 16:06:32,1625177192] :: <module> :: ['o', 'e', 'o', 'u', 'e', 'i', 'e', 'o', 'o', 'a', 'e', 'e', 'a', 'a', 'a']
+INFO     [2021-07-01 16:06:32,1625177192] :: <module> :: 
+script END
+
+INFO     [2021-07-01 16:07:06,1625177226] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 16:07:06,1625177226] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 16:07:06,1625177226] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 16:07:06,1625177226] :: chainComp :: True
+DEBUG    [2021-07-01 16:07:06,1625177226] :: chainComp :: False
+DEBUG    [2021-07-01 16:07:06,1625177226] :: getLastElemInList :: 
+	brute : pineapple
+
+DEBUG    [2021-07-01 16:07:06,1625177226] :: getLastElemInList :: 
+	negIndx : pineapple
+
+DEBUG    [2021-07-01 16:07:06,1625177226] :: getLastElemInList :: 
+	pop-ed : pineapple
+
+INFO     [2021-07-01 16:07:06,1625177226] :: <module> :: ['o', 'e', 'o', 'u', 'e', 'i', 'e', 'o', 'o', 'a', 'e', 'e', 'a', 'a', 'a']
+INFO     [2021-07-01 16:07:06,1625177226] :: <module> :: {'a', 'e', 'i', 'o', 'u'}
+INFO     [2021-07-01 16:07:06,1625177226] :: <module> :: 
+script END
+
+INFO     [2021-07-01 16:12:46,1625177566] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 16:12:46,1625177566] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 16:12:46,1625177566] :: chainComp :: True
+DEBUG    [2021-07-01 16:12:46,1625177566] :: chainComp :: False
+DEBUG    [2021-07-01 16:12:46,1625177566] :: getLastElemInList :: 
+	brute : pineapple
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: getLastElemInList :: 
+	negIndx : pineapple
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: getLastElemInList :: 
+	pop-ed : pineapple
+
+INFO     [2021-07-01 16:12:46,1625177566] :: <module> :: ['o', 'e', 'o', 'u', 'e', 'i', 'e', 'o', 'o', 'a', 'e', 'e', 'a', 'a', 'a']
+INFO     [2021-07-01 16:12:46,1625177566] :: <module> :: {'u', 'e', 'o', 'i', 'a'}
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 0
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 3
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 6
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 10
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 15
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 21
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 28
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 36
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 45
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 55
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 66
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 78
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 91
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 105
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 120
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 136
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 153
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 171
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 190
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 210
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 231
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 253
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 276
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 300
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 325
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 351
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 378
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 406
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 435
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 465
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 496
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 528
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 561
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 595
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 630
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 666
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 703
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 741
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 780
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 820
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 861
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 903
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 946
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 990
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1035
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1081
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1128
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1176
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1225
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1275
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1326
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1378
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1431
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1485
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1540
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1596
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1653
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1711
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1770
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1830
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1891
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 1953
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 2016
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 2080
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 2145
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 2211
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 2278
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 2346
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 2415
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 2485
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 2556
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 2628
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 2701
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 2775
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 2850
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 2926
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 3003
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 3081
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 3160
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 3240
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 3321
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 3403
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 3486
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 3570
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 3655
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 3741
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 3828
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 3916
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 4005
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 4095
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 4186
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 4278
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 4371
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 4465
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 4560
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 4656
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 4753
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 4851
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 4950
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 5050
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 5151
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 5253
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 5356
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 5460
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 5565
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 5671
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 5778
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 5886
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 5995
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 6105
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 6216
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 6328
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 6441
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 6555
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 6670
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 6786
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 6903
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 7021
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 7140
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 7260
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 7381
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 7503
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 7626
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 7750
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 7875
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 8001
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 8128
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 8256
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 8385
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 8515
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 8646
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 8778
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 8911
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 9045
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 9180
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 9316
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 9453
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 9591
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 9730
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 9870
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 10011
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 10153
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 10296
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 10440
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 10585
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 10731
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 10878
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 11026
+
+DEBUG    [2021-07-01 16:12:46,1625177566] :: run_exec_time :: 
+	count : 11175
+
+INFO     [2021-07-01 16:12:46,1625177566] :: <module> :: 
+	Time : 0.0696249008178711
+INFO     [2021-07-01 16:12:46,1625177566] :: <module> :: 
+script END
+
+INFO     [2021-07-01 16:13:11,1625177591] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 16:13:11,1625177591] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 16:13:11,1625177591] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 16:13:11,1625177591] :: chainComp :: True
+DEBUG    [2021-07-01 16:13:11,1625177591] :: chainComp :: False
+DEBUG    [2021-07-01 16:13:11,1625177591] :: getLastElemInList :: 
+	brute : pineapple
+
+DEBUG    [2021-07-01 16:13:11,1625177591] :: getLastElemInList :: 
+	negIndx : pineapple
+
+DEBUG    [2021-07-01 16:13:11,1625177591] :: getLastElemInList :: 
+	pop-ed : pineapple
+
+INFO     [2021-07-01 16:13:11,1625177591] :: <module> :: ['o', 'e', 'o', 'u', 'e', 'i', 'e', 'o', 'o', 'a', 'e', 'e', 'a', 'a', 'a']
+INFO     [2021-07-01 16:13:11,1625177591] :: <module> :: {'a', 'u', 'e', 'i', 'o'}
+DEBUG    [2021-07-01 16:13:11,1625177591] :: run_exec_time :: 
+	count : 11175
+
+INFO     [2021-07-01 16:13:11,1625177591] :: <module> :: 
+	Time : 6.651878356933594e-05
+INFO     [2021-07-01 16:13:11,1625177591] :: <module> :: 
+script END
+
+INFO     [2021-07-01 16:13:25,1625177605] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 16:13:25,1625177605] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 16:13:25,1625177605] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 16:13:25,1625177605] :: chainComp :: True
+DEBUG    [2021-07-01 16:13:25,1625177605] :: chainComp :: False
+DEBUG    [2021-07-01 16:13:25,1625177605] :: getLastElemInList :: 
+	brute : pineapple
+
+DEBUG    [2021-07-01 16:13:25,1625177605] :: getLastElemInList :: 
+	negIndx : pineapple
+
+DEBUG    [2021-07-01 16:13:25,1625177605] :: getLastElemInList :: 
+	pop-ed : pineapple
+
+INFO     [2021-07-01 16:13:25,1625177605] :: <module> :: ['o', 'e', 'o', 'u', 'e', 'i', 'e', 'o', 'o', 'a', 'e', 'e', 'a', 'a', 'a']
+INFO     [2021-07-01 16:13:25,1625177605] :: <module> :: {'o', 'a', 'e', 'i', 'u'}
+DEBUG    [2021-07-01 16:13:25,1625177605] :: run_exec_time :: 
+	count : 11175
+INFO     [2021-07-01 16:13:25,1625177605] :: <module> :: 
+	Time : 6.246566772460938e-05
+INFO     [2021-07-01 16:13:25,1625177605] :: <module> :: 
+script END
+
+INFO     [2021-07-01 16:13:35,1625177615] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 16:13:35,1625177615] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 16:13:35,1625177615] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 16:13:35,1625177615] :: chainComp :: True
+DEBUG    [2021-07-01 16:13:35,1625177615] :: chainComp :: False
+DEBUG    [2021-07-01 16:13:35,1625177615] :: getLastElemInList :: 
+	brute : pineapple
+
+DEBUG    [2021-07-01 16:13:35,1625177615] :: getLastElemInList :: 
+	negIndx : pineapple
+
+DEBUG    [2021-07-01 16:13:35,1625177615] :: getLastElemInList :: 
+	pop-ed : pineapple
+
+INFO     [2021-07-01 16:13:35,1625177615] :: <module> :: ['o', 'e', 'o', 'u', 'e', 'i', 'e', 'o', 'o', 'a', 'e', 'e', 'a', 'a', 'a']
+INFO     [2021-07-01 16:13:35,1625177615] :: <module> :: {'i', 'o', 'a', 'u', 'e'}
+DEBUG    [2021-07-01 16:13:35,1625177615] :: run_exec_time :: 
+	count : 11175
+INFO     [2021-07-01 16:13:35,1625177615] :: <module> :: 	Time : 6.127357482910156e-05
+INFO     [2021-07-01 16:13:35,1625177615] :: <module> :: 
+script END
+
+INFO     [2021-07-01 16:14:06,1625177646] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 16:14:06,1625177646] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 16:14:06,1625177646] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 16:14:06,1625177646] :: chainComp :: True
+DEBUG    [2021-07-01 16:14:06,1625177646] :: chainComp :: False
+DEBUG    [2021-07-01 16:14:06,1625177646] :: getLastElemInList :: 
+	brute : pineapple
+
+DEBUG    [2021-07-01 16:14:06,1625177646] :: getLastElemInList :: 
+	negIndx : pineapple
+
+DEBUG    [2021-07-01 16:14:06,1625177646] :: getLastElemInList :: 
+	pop-ed : pineapple
+
+INFO     [2021-07-01 16:14:06,1625177646] :: <module> :: ['o', 'e', 'o', 'u', 'e', 'i', 'e', 'o', 'o', 'a', 'e', 'e', 'a', 'a', 'a']
+INFO     [2021-07-01 16:14:06,1625177646] :: <module> :: {'i', 'u', 'e', 'a', 'o'}
+DEBUG    [2021-07-01 16:14:06,1625177646] :: run_exec_time :: 
+	count : 45
+INFO     [2021-07-01 16:14:06,1625177646] :: <module> :: 	Time : 5.984306335449219e-05
+INFO     [2021-07-01 16:14:06,1625177646] :: <module> :: 
+script END
+
+INFO     [2021-07-01 16:17:16,1625177836] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 16:17:16,1625177836] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 16:17:16,1625177836] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 16:17:16,1625177836] :: chainComp :: True
+DEBUG    [2021-07-01 16:17:16,1625177836] :: chainComp :: False
+DEBUG    [2021-07-01 16:17:16,1625177836] :: getLastElemInList :: 
+	brute : pineapple
+
+DEBUG    [2021-07-01 16:17:16,1625177836] :: getLastElemInList :: 
+	negIndx : pineapple
+
+DEBUG    [2021-07-01 16:17:16,1625177836] :: getLastElemInList :: 
+	pop-ed : pineapple
+
+INFO     [2021-07-01 16:17:16,1625177836] :: <module> :: ['o', 'e', 'o', 'u', 'e', 'i', 'e', 'o', 'o', 'a', 'e', 'e', 'a', 'a', 'a']
+INFO     [2021-07-01 16:17:16,1625177836] :: <module> :: {'o', 'e', 'i', 'a', 'u'}
+DEBUG    [2021-07-01 16:17:16,1625177836] :: run_exec_time :: 
+	count : 45
+INFO     [2021-07-01 16:17:16,1625177836] :: <module> :: 	Time : 5.8650970458984375e-05
+INFO     [2021-07-01 16:17:16,1625177836] :: <module> :: 	Time : 0:00:00.00
+INFO     [2021-07-01 16:17:16,1625177836] :: <module> :: 
+script END
+
+INFO     [2021-07-01 16:17:35,1625177855] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 16:17:35,1625177855] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 16:17:35,1625177855] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 16:17:35,1625177855] :: chainComp :: True
+DEBUG    [2021-07-01 16:17:35,1625177855] :: chainComp :: False
+DEBUG    [2021-07-01 16:17:35,1625177855] :: getLastElemInList :: 
+	brute : pineapple
+
+DEBUG    [2021-07-01 16:17:35,1625177855] :: getLastElemInList :: 
+	negIndx : pineapple
+
+DEBUG    [2021-07-01 16:17:35,1625177855] :: getLastElemInList :: 
+	pop-ed : pineapple
+
+INFO     [2021-07-01 16:17:35,1625177855] :: <module> :: ['o', 'e', 'o', 'u', 'e', 'i', 'e', 'o', 'o', 'a', 'e', 'e', 'a', 'a', 'a']
+INFO     [2021-07-01 16:17:35,1625177855] :: <module> :: {'u', 'o', 'i', 'e', 'a'}
+DEBUG    [2021-07-01 16:17:35,1625177855] :: run_exec_time :: 
+	count : 499500
+INFO     [2021-07-01 16:17:35,1625177855] :: <module> :: 	Time : 8.893013000488281e-05
+INFO     [2021-07-01 16:17:35,1625177855] :: <module> :: 	Time : 0:00:00.00
+INFO     [2021-07-01 16:17:35,1625177855] :: <module> :: 
+script END
+
+INFO     [2021-07-01 16:18:14,1625177894] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 16:18:14,1625177894] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 16:18:14,1625177894] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 16:18:14,1625177894] :: chainComp :: True
+DEBUG    [2021-07-01 16:18:14,1625177894] :: chainComp :: False
+DEBUG    [2021-07-01 16:18:14,1625177894] :: getLastElemInList :: 
+	brute : pineapple
+
+DEBUG    [2021-07-01 16:18:14,1625177894] :: getLastElemInList :: 
+	negIndx : pineapple
+
+DEBUG    [2021-07-01 16:18:14,1625177894] :: getLastElemInList :: 
+	pop-ed : pineapple
+
+INFO     [2021-07-01 16:18:14,1625177894] :: <module> :: ['o', 'e', 'o', 'u', 'e', 'i', 'e', 'o', 'o', 'a', 'e', 'e', 'a', 'a', 'a']
+INFO     [2021-07-01 16:18:14,1625177894] :: <module> :: {'i', 'u', 'a', 'e', 'o'}
+DEBUG    [2021-07-01 16:18:14,1625177894] :: run_exec_time :: 
+	count : 4999950000
+INFO     [2021-07-01 16:18:14,1625177894] :: <module> :: 	Time : 0.02370285987854004
+INFO     [2021-07-01 16:18:14,1625177894] :: <module> :: 	Time : 0:00:00.02
+INFO     [2021-07-01 16:18:14,1625177894] :: <module> :: 
+script END
+
+INFO     [2021-07-01 16:18:24,1625177904] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 16:18:24,1625177904] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 16:18:24,1625177904] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 16:18:24,1625177904] :: chainComp :: True
+DEBUG    [2021-07-01 16:18:24,1625177904] :: chainComp :: False
+DEBUG    [2021-07-01 16:18:24,1625177904] :: getLastElemInList :: 
+	brute : pineapple
+
+DEBUG    [2021-07-01 16:18:24,1625177904] :: getLastElemInList :: 
+	negIndx : pineapple
+
+DEBUG    [2021-07-01 16:18:24,1625177904] :: getLastElemInList :: 
+	pop-ed : pineapple
+
+INFO     [2021-07-01 16:18:24,1625177904] :: <module> :: ['o', 'e', 'o', 'u', 'e', 'i', 'e', 'o', 'o', 'a', 'e', 'e', 'a', 'a', 'a']
+INFO     [2021-07-01 16:18:24,1625177904] :: <module> :: {'u', 'e', 'i', 'o', 'a'}
+DEBUG    [2021-07-01 16:18:25,1625177905] :: run_exec_time :: 
+	count : 49999995000000
+INFO     [2021-07-01 16:18:25,1625177905] :: <module> :: 	Time : 1.0599191188812256
+INFO     [2021-07-01 16:18:25,1625177905] :: <module> :: 	Time : 0:00:01.06
+INFO     [2021-07-01 16:18:25,1625177905] :: <module> :: 
+script END
+
+INFO     [2021-07-01 16:21:44,1625178104] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 16:21:44,1625178104] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 16:21:44,1625178104] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 16:21:44,1625178104] :: chainComp :: True
+DEBUG    [2021-07-01 16:21:44,1625178104] :: chainComp :: False
+DEBUG    [2021-07-01 16:21:44,1625178104] :: getLastElemInList :: 
+	brute : pineapple
+
+DEBUG    [2021-07-01 16:21:44,1625178104] :: getLastElemInList :: 
+	negIndx : pineapple
+
+DEBUG    [2021-07-01 16:21:44,1625178104] :: getLastElemInList :: 
+	pop-ed : pineapple
+
+INFO     [2021-07-01 16:21:44,1625178104] :: <module> :: ['o', 'e', 'o', 'u', 'e', 'i', 'e', 'o', 'o', 'a', 'e', 'e', 'a', 'a', 'a']
+INFO     [2021-07-01 16:21:44,1625178104] :: <module> :: {'i', 'o', 'e', 'a', 'u'}
+DEBUG    [2021-07-01 16:21:45,1625178105] :: run_exec_time :: 
+	count : 49999995000000
+INFO     [2021-07-01 16:21:45,1625178105] :: <module> :: 	Time : 1.456007957458496
+INFO     [2021-07-01 16:21:45,1625178105] :: <module> :: 	Time : 0:00:01.46
+INFO     [2021-07-01 16:21:45,1625178105] :: <module> :: 	most frequent item is: 2
+INFO     [2021-07-01 16:21:45,1625178105] :: <module> :: 
+script END
+
+INFO     [2021-07-01 16:22:04,1625178124] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 16:22:04,1625178124] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 16:22:04,1625178124] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 16:22:04,1625178124] :: chainComp :: True
+DEBUG    [2021-07-01 16:22:04,1625178124] :: chainComp :: False
+DEBUG    [2021-07-01 16:22:04,1625178124] :: getLastElemInList :: 
+	brute : pineapple
+
+DEBUG    [2021-07-01 16:22:04,1625178124] :: getLastElemInList :: 
+	negIndx : pineapple
+
+DEBUG    [2021-07-01 16:22:04,1625178124] :: getLastElemInList :: 
+	pop-ed : pineapple
+
+INFO     [2021-07-01 16:22:04,1625178124] :: <module> :: ['o', 'e', 'o', 'u', 'e', 'i', 'e', 'o', 'o', 'a', 'e', 'e', 'a', 'a', 'a']
+INFO     [2021-07-01 16:22:04,1625178124] :: <module> :: {'e', 'o', 'u', 'i', 'a'}
+DEBUG    [2021-07-01 16:22:06,1625178126] :: run_exec_time :: 
+	count : 49999995000000
+INFO     [2021-07-01 16:22:06,1625178126] :: <module> :: 		Time : 1.699491024017334
+INFO     [2021-07-01 16:22:06,1625178126] :: <module> :: 		Time : 0:00:01.70
+INFO     [2021-07-01 16:22:06,1625178126] :: <module> :: 
+	most frequent item is: 2
+INFO     [2021-07-01 16:22:06,1625178126] :: <module> :: 
+script END
+
+INFO     [2021-07-01 16:22:42,1625178162] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 16:22:42,1625178162] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 16:22:42,1625178162] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 16:22:42,1625178162] :: chainComp :: True
+DEBUG    [2021-07-01 16:22:42,1625178162] :: chainComp :: False
+DEBUG    [2021-07-01 16:22:42,1625178162] :: getLastElemInList :: 
+	brute : pineapple
+
+DEBUG    [2021-07-01 16:22:42,1625178162] :: getLastElemInList :: 
+	negIndx : pineapple
+
+DEBUG    [2021-07-01 16:22:42,1625178162] :: getLastElemInList :: 
+	pop-ed : pineapple
+
+INFO     [2021-07-01 16:22:42,1625178162] :: <module> :: ['o', 'e', 'o', 'u', 'e', 'i', 'e', 'o', 'o', 'a', 'e', 'e', 'a', 'a', 'a']
+INFO     [2021-07-01 16:22:42,1625178162] :: <module> :: {'a', 'o', 'u', 'e', 'i'}
+DEBUG    [2021-07-01 16:22:43,1625178163] :: run_exec_time :: 
+	count : 49999995000000
+INFO     [2021-07-01 16:22:43,1625178163] :: <module> :: 		Time : 1.1384873390197754
+INFO     [2021-07-01 16:22:43,1625178163] :: <module> :: 		Time : 0:00:01.14
+INFO     [2021-07-01 16:22:43,1625178163] :: <module> :: 
+	most frequent item in [1, 1, 2, 3, 4, 5, 6, 6, 2, 2]
+		is: 2
+INFO     [2021-07-01 16:22:43,1625178163] :: <module> :: 
+script END
+
+INFO     [2021-07-01 16:24:15,1625178255] :: <module> :: 
+
+script START ============================
+
+DEBUG    [2021-07-01 16:24:15,1625178255] :: <module> :: 
+	a : 2
+	b : 4
+INFO     [2021-07-01 16:24:15,1625178255] :: <module> :: {'name': 'Joy', 'age': '25', 'city': 'New York'}
+DEBUG    [2021-07-01 16:24:15,1625178255] :: chainComp :: True
+DEBUG    [2021-07-01 16:24:15,1625178255] :: chainComp :: False
+DEBUG    [2021-07-01 16:24:15,1625178255] :: getLastElemInList :: 
+	brute : pineapple
+
+DEBUG    [2021-07-01 16:24:15,1625178255] :: getLastElemInList :: 
+	negIndx : pineapple
+
+DEBUG    [2021-07-01 16:24:15,1625178255] :: getLastElemInList :: 
+	pop-ed : pineapple
+
+INFO     [2021-07-01 16:24:15,1625178255] :: <module> :: ['o', 'e', 'o', 'u', 'e', 'i', 'e', 'o', 'o', 'a', 'e', 'e', 'a', 'a', 'a']
+INFO     [2021-07-01 16:24:15,1625178255] :: <module> :: {'i', 'o', 'a', 'u', 'e'}
+DEBUG    [2021-07-01 16:24:15,1625178255] :: run_exec_time :: 
+	count : 499500
+INFO     [2021-07-01 16:24:15,1625178255] :: <module> :: 		Time : 9.179115295410156e-05
+INFO     [2021-07-01 16:24:15,1625178255] :: <module> :: 		Time : 0:00:00.00
+INFO     [2021-07-01 16:24:15,1625178255] :: <module> :: 
+	2 is the most frequent item in
+		is: [1, 1, 2, 3, 4, 5, 6, 6, 2, 2]
+INFO     [2021-07-01 16:24:15,1625178255] :: <module> :: 
+script END
+
