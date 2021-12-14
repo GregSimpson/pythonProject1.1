@@ -1,0 +1,9 @@
+version: '2.2'
+services:
+  flask_docker:
+    container_name: flask_docker
+    restart: always
+    image: "flask_docker"
+    ports:
+      - "5000:5000"
+    command: ["flask_docker", "-c", "log_statement=all"]
