@@ -5,5 +5,5 @@ services:
     restart: always
     image: "flask_docker"
     ports:
-      - "5000:5000"
+      - "8080:5000"
     command: ["flask_docker", "-c", "log_statement=all"]

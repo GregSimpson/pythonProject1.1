@@ -16,4 +16,8 @@ COPY . /app
 # configure the container to run in an executed manner
 ENTRYPOINT [ "python" ]
 
-CMD ["view.py" ]
+CMD ["./app/view.py" ]
+#CMD ["./app/hello.py" ]
+#CMD ["view.py" ]
+#CMD [ "pwd" ]
+# CMD [ "ls" ]
