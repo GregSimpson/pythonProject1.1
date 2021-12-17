@@ -2,11 +2,11 @@ from flask_marshmallow import Schema
 from marshmallow.fields import Str
 
 
-class Auth0Schema(Schema):
+class Auth0SyncSchema(Schema):
     class Meta:
         # Fields to expose
         #fields = ["message"]
-        fields = ["auth0"]
+        fields = ["auth0_sync"]
 
     #message = Str()
-    auth0 = Str()
+    auth0_sync = Str()

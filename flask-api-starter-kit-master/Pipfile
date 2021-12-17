@@ -9,6 +9,7 @@ flasgger = "*"
 flask-marshmallow = "*"
 apispec = "*"
 aiofiles = "*"
+aiohttp = "*"
 python-dotenv = "*"
 
 [dev-packages]

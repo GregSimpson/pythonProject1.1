@@ -13,6 +13,7 @@ async def get_json(client, url):
         return await response.read()
 
 async def get_reddit_top(subreddit, client):
+    # https://gist.github.com/vickumar1981/c3607805e2dd234c686eb6ca6c370ca2
     data1 = await get_json(client, 'https://www.reddit.com/r/' + subreddit + '/top.json?sort=top&t=day&limit=5')
 
     j = json.loads(data1.decode('utf-8'))

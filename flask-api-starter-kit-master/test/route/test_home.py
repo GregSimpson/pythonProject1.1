@@ -16,17 +16,17 @@ class TestWelcome(TestCase):
         # If we recalculate the hash on the block we should get the same result as we have stored
         self.assertEqual({"message": 'Hello Welcome Model !'}, rv.get_json())
 
-    def test_auth0(self):
+    def test_auth0_sync(self):
         """
         Tests the route screen message
         """
-        #print (" running test_auth0 ")
-        rv = self.app.get('/api/auth0_1/')
+        #print (" running test_auth0_sync ")
+        rv = self.app.get('/api/auth0_sync/')
+        #print("\n\t\tgjs >>> " )
         #print ( rv.get_json() )
 
         # If we recalculate the hash on the block we should get the same result as we have stored
-        ### self.auth0 = "Auth0 Model!"
-        self.assertEqual({"auth0": 'Auth0 Model!'}, rv.get_json())
+        self.assertEqual({"auth0_sync": 'auth0_sync Model!'}, rv.get_json())
 
 
 

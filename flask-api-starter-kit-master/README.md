@@ -1,5 +1,21 @@
 # Flask API Starter Kit
 
+
+cd pythonProject1.1/flask-api-starter-kit-master  
+clear; pipenv run python -m unittest
+
+
+
+cd /home/gsimpson/gjs/git_stuff/pythonProject1.1/flask-api-starter-kit-master  
+pipenv run python -m flask run
+
+ - threaded example
+ - https://gist.github.com/vickumar1981/c3607805e2dd234c686eb6ca6c370ca2
+
+ - flask-api-starter example
+ - https://github.com/bajcmartinez/flask-api-starter-kit
+
+
 Sample API layout structure to be used as a baseline for other apps
 
 ## Dependencies
