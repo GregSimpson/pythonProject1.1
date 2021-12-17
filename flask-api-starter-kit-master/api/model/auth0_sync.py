@@ -28,7 +28,7 @@ class Auth0SyncModel:
 
         # management API access token
         conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
-        payload = "{\"client_id\":\"JmO3H4Y6WI3qhfe7Nu2j1ALecJ6U1nwo\",\"client_secret\":\"6C23kvixcwHffFHRVktSvxS2NYJemMgxBBfj6sRIUGgqRhgVClsiBd_HCFhUf4jo\",\"audience\":\"https://ttec-ped-developers.auth0.com/api/v2/\",\"scope\":\"read:roles\",\"grant_type\":\"client_credentials\"}"
+        payload = "{\"client_id\":\"<Client idcode>>\",\"client_secret\":\"<client secret code>\",\"audience\":\"https://ttec-ped-developers.auth0.com/api/v2/\",\"scope\":\"read:roles\",\"grant_type\":\"client_credentials\"}"
         headers = {'content-type': "application/json"}
 
         '''
@@ -48,7 +48,7 @@ class Auth0SyncModel:
     def get_auth0_mgmt_access_token_works(self):
         # management API access token
         conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
-        payload = "{\"client_id\":\"JmO3H4Y6WI3qhfe7Nu2j1ALecJ6U1nwo\",\"client_secret\":\"6C23kvixcwHffFHRVktSvxS2NYJemMgxBBfj6sRIUGgqRhgVClsiBd_HCFhUf4jo\",\"audience\":\"https://ttec-ped-developers.auth0.com/api/v2/\",\"scope\":\"read:roles\",\"grant_type\":\"client_credentials\"}"
+        payload = "{\"client_id\":\"<client idcode>\",\"client_secret\":\"<client secret code>\",\"audience\":\"https://ttec-ped-developers.auth0.com/api/v2/\",\"scope\":\"read:roles\",\"grant_type\":\"client_credentials\"}"
         headers = {'content-type': "application/json"}
         conn.request("POST", "/oauth/token", payload, headers)
 
@@ -59,36 +59,4 @@ class Auth0SyncModel:
 
         print (data)
 
-
-
-
-    def gjs2(self, protocol="https"):
-        import http.client
-
-        conn = http.client.HTTPSConnection("")
-
-        payload = "grant_type=client_credentials&'client_id=JmO3H4Y6WI3qhfe7Nu2j1ALecJ6U1nwo'&client_secret=6C23kvixcwHffFHRVktSvxS2NYJemMgxBBfj6sRIUGgqRhgVClsiBd_HCFhUf4jo" # \
-        #&'audience=https://ttec-ped-developers.auth0.com/api/v2/' \
-        #&scope=read:roles" \
-
-        ##payload = "grant_type=client_credentials&client_id=%24%7Baccount.clientId%7D&client_secret=YOUR_CLIENT_SECRET&audience=https%3A%2F%2F%24%7Baccount.namespace%7D%2Fapi%2Fv2%2F"
-
-        headers = {'content-type': "application/x-www-form-urlencoded"}
-        domain="ttec-ped-developers.auth0.com"
-
-        url = '{}://{}/oauth/token'.format(protocol, domain)
-        #url = "https://ttec-ped-developers.auth0.com/oauth/token"
-
-        print("\n")
-        print("gjs >> url     : {} ".format(url))
-        print("\ngjs >> payload : {} ".format(payload))
-        print("\ngjs >> headers : {} ".format(headers))
-        print("\n")
-
-        conn.request("POST", url, payload, headers)
-
-        res = conn.getresponse()
-        data = res.read()
-
-        print(data.decode("utf-8"))
 

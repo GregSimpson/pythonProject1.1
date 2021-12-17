@@ -5,9 +5,6 @@ from marshmallow.fields import Str
 class AsyncExampleSchema(Schema):
     class Meta:
         # Fields to expose
-        #fields = ["message"]
-        fields = ["async1"]
+        fields = ["async_example"]
 
-    #message = Str()
-    #auth0 = Str()
-    async1 = Str()
+    async_example = Str()

@@ -43,5 +43,18 @@ class TestWelcome(TestCase):
         self.assertEqual({"auth0_async": 'auth0_async'}, rv.get_json())
 
 
+    def test_async_example(self):
+        """
+        Tests the route screen message
+        """
+        #print (" running test_async_example ")
+        rv = self.app.get('/api/async_example/')
+        #print("\n\t\tgjs >>> " )
+        #print ( rv.get_json() )
+
+        # If we recalculate the hash on the block we should get the same result as we have stored
+        self.assertEqual({"async_example": 'async_example'}, rv.get_json())
+
+
 
 

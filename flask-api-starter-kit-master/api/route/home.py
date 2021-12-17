@@ -1,10 +1,12 @@
 from http import HTTPStatus
 from ..model.auth0_sync import Auth0SyncModel
 from ..model.auth0_async import Auth0AsyncModel
+from ..model.async_example import AsyncExampleModel
 from ..model.welcome import WelcomeModel
 #from ..model.async_example import AsyncExampleModel
 
 from ..schema.auth0_async import Auth0AsyncSchema
+from ..schema.async_example import AsyncExampleSchema
 from ..schema.auth0_sync import Auth0SyncSchema
 from ..schema.async_example import AsyncExampleSchema
 from ..schema.welcome import WelcomeSchema
@@ -79,6 +81,28 @@ def auth0_sync():
     return Auth0SyncSchema().dump(result), 200
 
 
+@home_api.route('/async_example/')
+@swag_from({
+    'responses': {
+        HTTPStatus.OK.value: {
+            'description': '\t\tRealPlay ASync Example - async_example',
+            'schema': Auth0AsyncSchema
+        }
+    }
+})
+def async_example():
+    """
+    1 liner about the route
+    A more detailed description of the endpoint
+    ---
+    """
+    result = AsyncExampleModel()
+
+    print(result.get_async_example_mgmt_access_token())
+    print("home.py - result async_example" + str(result))
+    return AsyncExampleSchema().dump(result), 200
+
+
 @home_api.route('/auth0_async/')
 @swag_from({
     'responses': {
@@ -95,6 +119,8 @@ def auth0_async():
     ---
     """
     result = Auth0AsyncModel()
+
+    print(result.get_auth0_async_mgmt_access_token())
 
 
     #thread_count = 4
