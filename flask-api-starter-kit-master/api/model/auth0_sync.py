@@ -49,6 +49,7 @@ class Auth0SyncModel:
         # management API access token
         conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
         payload = "{\"client_id\":\"<client idcode>\",\"client_secret\":\"<client secret code>\",\"audience\":\"https://ttec-ped-developers.auth0.com/api/v2/\",\"scope\":\"read:roles\",\"grant_type\":\"client_credentials\"}"
+
         headers = {'content-type': "application/json"}
         conn.request("POST", "/oauth/token", payload, headers)
 
@@ -58,5 +59,4 @@ class Auth0SyncModel:
         data = json.loads(data)
 
         print (data)
-
 
