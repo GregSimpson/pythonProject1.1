@@ -16,6 +16,7 @@ class TestWelcome(TestCase):
         # If we recalculate the hash on the block we should get the same result as we have stored
         self.assertEqual({"message": 'Hello Welcome Model !'}, rv.get_json())
 
+
     def test_auth0_sync(self):
         """
         Tests the route screen message
@@ -26,7 +27,20 @@ class TestWelcome(TestCase):
         #print ( rv.get_json() )
 
         # If we recalculate the hash on the block we should get the same result as we have stored
-        self.assertEqual({"auth0_sync": 'auth0_sync Model!'}, rv.get_json())
+        ####self.assertEqual({"auth0_sync": 'auth0_sync Model!'}, rv.get_json())
+
+
+    def test_auth0_async(self):
+        """
+        Tests the route screen message
+        """
+        #print (" running test_auth0_async ")
+        rv = self.app.get('/api/auth0_async/')
+        #print("\n\t\tgjs >>> " )
+        #print ( rv.get_json() )
+
+        # If we recalculate the hash on the block we should get the same result as we have stored
+        self.assertEqual({"auth0_async": 'auth0_async'}, rv.get_json())
 
 
 
