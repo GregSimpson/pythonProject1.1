@@ -28,7 +28,7 @@ class Auth0AsyncModel:
 
         # management API access token
         conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
-        payload = "{\"client_id\":\"JmO3H4Y6WI3qhfe7Nu2j1ALecJ6U1nwo\",\"client_secret\":\"6C23kvixcwHffFHRVktSvxS2NYJemMgxBBfj6sRIUGgqRhgVClsiBd_HCFhUf4jo\",\"audience\":\"https://ttec-ped-developers.auth0.com/api/v2/\",\"scope\":\"read:roles\",\"grant_type\":\"client_credentials\"}"
+        payload = "{\"client_id\":\"<client idcode >\",\"client_secret\":\"<client secret code >\",\"audience\":\"https://ttec-ped-developers.auth0.com/api/v2/\",\"scope\":\"read:roles\",\"grant_type\":\"client_credentials\"}"
         headers = {'content-type': "application/json"}
 
         domain = "ttec-ped-developers.auth0.com"
@@ -64,11 +64,9 @@ class Auth0AsyncModel:
 
         conn = http.client.HTTPSConnection("")
 
-        payload = "grant_type=client_credentials&'client_id=JmO3H4Y6WI3qhfe7Nu2j1ALecJ6U1nwo'&client_secret=6C23kvixcwHffFHRVktSvxS2NYJemMgxBBfj6sRIUGgqRhgVClsiBd_HCFhUf4jo" # \
+        payload = "grant_type=client_credentials&'client_id=<client idcode >'&client_secret=<client  secret code >" # \
         #&'audience=https://ttec-ped-developers.auth0.com/api/v2/' \
         #&scope=read:roles" \
-
-        ##payload = "grant_type=client_credentials&client_id=%24%7Baccount.clientId%7D&client_secret=YOUR_CLIENT_SECRET&audience=https%3A%2F%2F%24%7Baccount.namespace%7D%2Fapi%2Fv2%2F"
 
         headers = {'content-type': "application/x-www-form-urlencoded"}
         domain="ttec-ped-developers.auth0.com"
