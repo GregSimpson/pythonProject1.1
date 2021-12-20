@@ -4,8 +4,6 @@ from threading import Thread
 
 
 import logging
-#logging.basicConfig(level=logging.INFO)
-##logger = logging.getLogger(__name__)
 logger = logging.getLogger("RealplaySync")
 
 '''
@@ -50,14 +48,17 @@ class AsyncExampleModel:
         logger.debug("\n\t\t!!!!! gjs >>> {}".format(self.async_example))
         logger.error("\n\t\t!!!!! gjs >>> {}".format(self.async_example))
 
+
     async def do_some_work(x):
         #print("AsyncExampleModel : Waiting " + str(x))
         logger.debug("AsyncExampleModel : do_some_work " + str(x))
         await asyncio.sleep(x)
 
+
     def start_loop(self,loop):
         asyncio.set_event_loop(loop)
         loop.run_forever()
+
 
     def more_work(self,x):
         #print("AsyncExampleModel : More work %s" % x)
@@ -65,6 +66,7 @@ class AsyncExampleModel:
         time.sleep(x)
         #print("AsyncExampleModel : Finished more work %s" % x)
         logger.debug("AsyncExampleModel : Finished more work %s" % x)
+
 
     def start_loop(self,loop):
         asyncio.set_event_loop(loop)
@@ -92,10 +94,10 @@ class AsyncExampleModel:
 
 
     def showloglevels(self, protocol="https"):
-        logger.critical("Your program has done something awful")
-        logger.error("Something has gone very wrong")
-        logger.warning("You've been warned")
-        logger.info("Here's some info")
-        logger.debug("Debugging information")
+        logger.critical("LogTest - Your program has done something awful")
+        logger.error("LogTest - Something has gone very wrong")
+        logger.warning("LogTest - You've been warned")
+        logger.info("LogTest - Here's some info")
+        logger.debug("LogTest - Debugging information")
 
 

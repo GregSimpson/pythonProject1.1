@@ -161,6 +161,7 @@ def auth0_async():
     setup_logging()
     logger.debug("home.py - /auth0_async ")
     print(result.get_auth0_async_mgmt_access_token())
+    return Auth0AsyncSchema().dump(result), 200
 
 
 @home_api.route('/logtest/')

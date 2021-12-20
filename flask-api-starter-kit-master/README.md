@@ -1,13 +1,23 @@
 # Flask API Starter Kit
 
+cd ~/gjs/git_stuff/pythonProject1.1/flask-api-starter-kit-master
 
-cd pythonProject1.1/flask-api-starter-kit-master  
-clear; pipenv run python -m unittest
+# start the server
+clear ;pipenv run python -m flask run
+
+# run any or all of these
+curl -X GET "http://127.0.0.1:5000/api/async_example/" -H "accept: application/json"
+curl -X GET "http://127.0.0.1:5000/api/auth0_async/" -H "accept: application/json"
+curl -X GET "http://127.0.0.1:5000/api/auth0_sync/" -H "accept: application/json"
+curl -X GET "http://127.0.0.1:5000/api/logtest/" -H "accept: application/json"
+curl -X GET "http://127.0.0.1:5000/apidocs/" -H "accept: application/json"
 
 
+# dont need the server running for this
+#  BUT because of the threads, you need to hit ctrl-c
+clear ;pipenv run python -m unittest
 
-cd /home/gsimpson/gjs/git_stuff/pythonProject1.1/flask-api-starter-kit-master  
-pipenv run python -m flask run
+
 
  - threaded example
  - https://gist.github.com/vickumar1981/c3607805e2dd234c686eb6ca6c370ca2
