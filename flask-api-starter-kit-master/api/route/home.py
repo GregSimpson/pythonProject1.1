@@ -36,8 +36,35 @@ import configparser
 loop = asyncio.get_event_loop()
 client = aiohttp.ClientSession(loop=loop)
 
-
 home_api = Blueprint('api', __name__)
+
+#-----
+import os
+import logging.config
+import yaml
+logger = logging.getLogger("RealplaySync")
+
+def setup_logging(
+    default_path='logging.yaml',
+    default_level=logging.DEBUG,
+    env_key='LOG_CFG'
+):
+    """Setup logging configuration
+
+    """
+    path = default_path
+    value = os.getenv(env_key, None)
+    if value:
+        path = value
+    if os.path.exists(path):
+        with open(path, 'rt') as f:
+            config = yaml.safe_load(f.read())
+        logging.config.dictConfig(config)
+    else:
+        logging.basicConfig(level=default_level)
+
+#-----
+
 
 
 
@@ -58,6 +85,8 @@ def welcome():
     ---
     """
     result = WelcomeModel()
+    setup_logging()
+    logger.debug("home.py - / ")
     print("home.py - result welcome" + str(result))
     return WelcomeSchema().dump(result), 200
 
@@ -79,6 +108,8 @@ def auth0_sync():
     ---
     """
     result = Auth0SyncModel()
+    setup_logging()
+    logger.debug("home.py - /auth0_sync ")
     print("home.py - result auth0_sync" + str(result))
 
     print ( result.get_auth0_sync_mgmt_access_token() )
@@ -103,6 +134,8 @@ def async_example():
     ---
     """
     result = AsyncExampleModel()
+    setup_logging()
+    logger.debug("home.py - /async_example ")
 
     print(result.get_async_example_mgmt_access_token())
     print("home.py - result async_example" + str(result))
@@ -125,9 +158,34 @@ def auth0_async():
     ---
     """
     result = Auth0AsyncModel()
-
+    setup_logging()
+    logger.debug("home.py - /auth0_async ")
     print(result.get_auth0_async_mgmt_access_token())
 
+
+@home_api.route('/logtest/')
+@swag_from({
+    'responses': {
+        HTTPStatus.OK.value: {
+            'description': '\t\tRealPlay logtest',
+            'schema': Auth0AsyncSchema
+        }
+    }
+})
+def showloglevels():
+    """
+     Showloglevels 1 message from each log level
+     ---
+     """
+    result = AsyncExampleModel()
+    setup_logging()
+    logger.debug("home.py - logtest ")
+    print(result.showloglevels())
+
+
+
+
+    #return "Hello World"
 
     #thread_count = 4
 
