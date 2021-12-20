@@ -1,9 +1,12 @@
 import asyncio
 
 # https://stackoverflow.com/questions/6198372/most-pythonic-way-to-provide-global-configuration-variables-in-config-py
-#import api/src/globals() as gl
+# import api/src/globals() as gl
 from ..schema.auth0_async import Auth0AsyncSchema
 from ..route import globals as gl
+
+import logging
+logger = logging.getLogger("RealplaySync")
 
 import http
 import time
@@ -13,12 +16,12 @@ from threading import Thread
 class Auth0AsyncModel:
     def __init__(self):
         self.auth0_async = 'auth0_async'
-        print("\n\t\tAuth0AsyncModel >>> {}".format(self.auth0_async))
-        print("\tini client_id variable     : {}".format(gl.client.id))
-        print("\tini client_secret variable : {}".format(gl.client.secret))
+        logger.debug("{}".format(self.auth0_async))
+        logger.debug("ini client_id variable     : {}".format(gl.client.id))
+        logger.debug("ini client_secret variable : {}".format(gl.client.secret))
 
     async def do_some_work(x):
-        print("Auth0AsyncModel : Waiting " + str(x))
+        logger.debug("Waiting {}".format(str(x)))
         await asyncio.sleep(x)
 
     def start_loop(self,loop):
@@ -26,16 +29,16 @@ class Auth0AsyncModel:
         loop.run_forever()
 
     def more_work(self,x):
-        print("Auth0AsyncModel : More work %s" % x)
+        logger.debug("starting {}".format(str(x)))
         time.sleep(x)
-        print("Auth0AsyncModel : Finished more work %s" % x)
+        logger.debug("finished {}".format(str(x)))
 
     def start_loop(self,loop):
         asyncio.set_event_loop(loop)
         loop.run_forever()
 
     def get_auth0_async_mgmt_access_token(self, protocol="https"):
-        print(" Auth0AsyncModel running method get_auth0_async_mgmt_access_token")
+        logger.debug(" {} ".format("."))
 
         # management API access token
         conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
@@ -44,11 +47,10 @@ class Auth0AsyncModel:
 
         domain = "ttec-ped-developers.auth0.com"
         url = '{}://{}/oauth/token'.format(protocol, domain)
-        print("\n")
-        print("gjs-async >> url     : {} ".format(url))
-        print("gjs-async >> payload : {} ".format(payload))
-        print("gjs-async >> headers : {} ".format(headers))
-        print("\n")
+        logger.debug("url     : {} ".format(url))
+        logger.debug("payload : {} ".format(payload))
+        logger.debug("headers : {} ".format(headers))
+
         '''
         conn.request("POST", "/oauth/token", payload, headers)
 

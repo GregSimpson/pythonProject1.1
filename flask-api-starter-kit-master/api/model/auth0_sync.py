@@ -6,27 +6,28 @@ from datetime import time
 from time import sleep
 from ..route import globals as gl
 
+import logging
+logger = logging.getLogger("RealplaySync")
+
 class Auth0SyncModel:
     def __init__(self):
         self.auth0_sync = "auth0_sync Model!"
         #print("\n\t\tgjs >>> " +  self.auth0_sync)
-        print("\n\t\tAuth0SyncModel >>> {}".format(self.auth0_sync))
-        print("\tini client_id variable     : {}".format(gl.client.id))
-        print("\tini client_secret variable : {}".format(gl.client.secret))
+        logger.debug("{}".format(self.auth0_sync))
+        logger.debug("client_id variable     : {}".format(gl.client.id))
+        logger.debug("client_secret variable : {}".format(gl.client.secret))
 
 
     def gjs1(self):
-        print(" running method gjs1")
-
-        print(" firing : get_auth0_sync_mgmt_access_token")
+        logger.debug(" begin ")
         self.get_auth0_sync_mgmt_access_token()  #  works it just takes a while
         #asyncio.ensure_future( self.get_auth0_mgmt_access_token() )  #  testing a different example
-        print(" gjs1 AFTER get_auth0_sync_mgmt_access_token - carrying on")
+        logger.debug(" end")
 
 
 
     def get_auth0_sync_mgmt_access_token(self, protocol="https"):
-        print(" running method get_auth0_sync_mgmt_access_token")
+        logger.debug("begin")
 
         # management API access token
         conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
@@ -35,11 +36,10 @@ class Auth0SyncModel:
 
         domain = "ttec-ped-developers.auth0.com"
         url = '{}://{}/oauth/token'.format(protocol, domain)
-        print("\n")
-        print("gjs-sync >> url     : {} ".format(url))
-        print("gjs-sync >> payload : {} ".format(payload))
-        print("gjs-sync >> headers : {} ".format(headers))
-        print("\n")
+
+        logger.debug("url     : {} ".format(url))
+        logger.debug("payload : {} ".format(payload))
+        logger.debug("headers : {} ".format(headers))
 
 
         '''
@@ -88,11 +88,9 @@ class Auth0SyncModel:
         url = '{}://{}/oauth/token'.format(protocol, domain)
         #url = "https://ttec-ped-developers.auth0.com/oauth/token"
 
-        print("\n")
-        print("gjs >> url     : {} ".format(url))
-        print("\ngjs >> payload : {} ".format(payload))
-        print("\ngjs >> headers : {} ".format(headers))
-        print("\n")
+        logger.debug("url     : {} ".format(url))
+        logger.debug("payload : {} ".format(payload))
+        logger.debug("headers : {} ".format(headers))
 
         conn.request("POST", url, payload, headers)
 

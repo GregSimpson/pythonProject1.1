@@ -45,13 +45,13 @@ class AsyncExampleModel:
         #### #logger = logging.getLogger("RealplaySync")
 
         #print("\n\t\tgjs >>> {}".format(self.async_example))
-        logger.debug("\n\t\t!!!!! gjs >>> {}".format(self.async_example))
-        logger.error("\n\t\t!!!!! gjs >>> {}".format(self.async_example))
+        logger.debug("{}".format(self.async_example))
+        logger.error("{}".format(self.async_example))
 
 
     async def do_some_work(x):
         #print("AsyncExampleModel : Waiting " + str(x))
-        logger.debug("AsyncExampleModel : do_some_work " + str(x))
+        logger.debug(" waiting {}".format(str(x)))
         await asyncio.sleep(x)
 
 
@@ -61,11 +61,9 @@ class AsyncExampleModel:
 
 
     def more_work(self,x):
-        #print("AsyncExampleModel : More work %s" % x)
-        logger.info("AsyncExampleModel : More work %s" % x)
+        logger.info("starting".format(x))
         time.sleep(x)
-        #print("AsyncExampleModel : Finished more work %s" % x)
-        logger.debug("AsyncExampleModel : Finished more work %s" % x)
+        logger.info("finished".format(x))
 
 
     def start_loop(self,loop):
@@ -81,7 +79,7 @@ class AsyncExampleModel:
             '''
     def get_async_example_mgmt_access_token(self, protocol="https"):
         #print(" AsyncExampleModel running method get_async_example_mgmt_access_token")
-        logger.debug(" AsyncExampleModel running method get_async_example_mgmt_access_token")
+        logger.debug(" {}" .format("."))
 
         new_loop = asyncio.new_event_loop()
         t = Thread(target=self.start_loop, args=(new_loop,))
@@ -94,10 +92,10 @@ class AsyncExampleModel:
 
 
     def showloglevels(self, protocol="https"):
-        logger.critical("LogTest - Your program has done something awful")
-        logger.error("LogTest - Something has gone very wrong")
-        logger.warning("LogTest - You've been warned")
-        logger.info("LogTest - Here's some info")
-        logger.debug("LogTest - Debugging information")
+        logger.critical("Your program has done something awful")
+        logger.error("Something has gone very wrong")
+        logger.warning("You've been warned")
+        logger.info("Here's some info")
+        logger.debug("Debugging information")
 
 

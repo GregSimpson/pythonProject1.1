@@ -31,12 +31,14 @@ import asyncio
 import aiohttp
 import json
 import configparser
-
+import logging
 
 loop = asyncio.get_event_loop()
 client = aiohttp.ClientSession(loop=loop)
 
 home_api = Blueprint('api', __name__)
+#logger = logging.getLogger("RealplaySync")
+
 
 #-----
 import os
@@ -44,7 +46,7 @@ import logging.config
 import yaml
 logger = logging.getLogger("RealplaySync")
 
-def setup_logging(
+def x_setup_logging(
     default_path='logging.yaml',
     default_level=logging.DEBUG,
     env_key='LOG_CFG'
@@ -85,9 +87,9 @@ def welcome():
     ---
     """
     result = WelcomeModel()
-    setup_logging()
-    logger.debug("home.py - / ")
-    print("home.py - result welcome" + str(result))
+    #setup_logging()
+    logger.debug(".")
+    logger.debug("result welcome" + str(result))
     return WelcomeSchema().dump(result), 200
 
 
@@ -108,11 +110,11 @@ def auth0_sync():
     ---
     """
     result = Auth0SyncModel()
-    setup_logging()
-    logger.debug("home.py - /auth0_sync ")
-    print("home.py - result auth0_sync" + str(result))
+    #setup_logging()
+    logger.debug("/auth0_sync/ ")
+    #print("home.py - result auth0_sync" + str(result))
 
-    print ( result.get_auth0_sync_mgmt_access_token() )
+    logger.debug ( result.get_auth0_sync_mgmt_access_token() )
 
     #print ( result.gjs1() )
     return Auth0SyncSchema().dump(result), 200
@@ -134,8 +136,8 @@ def async_example():
     ---
     """
     result = AsyncExampleModel()
-    setup_logging()
-    logger.debug("home.py - /async_example ")
+    #setup_logging()
+    logger.debug("/async_example/ ")
 
     print(result.get_async_example_mgmt_access_token())
     print("home.py - result async_example" + str(result))
@@ -158,8 +160,8 @@ def auth0_async():
     ---
     """
     result = Auth0AsyncModel()
-    setup_logging()
-    logger.debug("home.py - /auth0_async ")
+    #setup_logging()
+    logger.debug("/auth0_async/ ")
     print(result.get_auth0_async_mgmt_access_token())
     return Auth0AsyncSchema().dump(result), 200
 
@@ -179,8 +181,8 @@ def showloglevels():
      ---
      """
     result = AsyncExampleModel()
-    setup_logging()
-    logger.debug("home.py - logtest ")
+    #setup_logging()
+    logger.debug("/logtest/ ")
     print(result.showloglevels())
 
 
