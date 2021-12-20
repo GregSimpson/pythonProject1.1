@@ -2,40 +2,10 @@ import asyncio
 import time
 from threading import Thread
 
+from ..src import auth0_controller as a0
 
 import logging
 logger = logging.getLogger("RealplaySync")
-
-'''
-#-----
-import os
-import logging.config
-
-import yaml
-
-
-def setup_logging(
-    default_path='logging.yaml',
-    default_level=logging.DEBUG,
-    env_key='LOG_CFG'
-):
-    """Setup logging configuration
-
-    """
-    path = default_path
-    value = os.getenv(env_key, None)
-    if value:
-        path = value
-    if os.path.exists(path):
-        with open(path, 'rt') as f:
-            config = yaml.safe_load(f.read())
-        logging.config.dictConfig(config)
-    else:
-        logging.basicConfig(level=default_level)
-
-
-#-----
-'''
 
 class AsyncExampleModel:
     def __init__(self):
@@ -63,12 +33,18 @@ class AsyncExampleModel:
     def more_work(self,x):
         logger.info("starting".format(x))
         time.sleep(x)
+
+        my_auth0_controller = a0.Auth0Controller(logger)
+        my_auth0_controller.ok_now_we_can_build_things()
+
         logger.info("finished".format(x))
 
 
-    def start_loop(self,loop):
-        asyncio.set_event_loop(loop)
-        loop.run_forever()
+    def log_work(self):
+        logger.info("starting".format(4))
+        time.sleep(4)
+        logger.info("finished".format(4))
+
 
     '''
          https://hackernoon.com/threaded-asynchronous-magic-and-how-to-wield-it-bba9ed602c32
@@ -92,6 +68,16 @@ class AsyncExampleModel:
 
 
     def showloglevels(self, protocol="https"):
+        logger.critical("Your program has done something awful")
+        logger.error("Something has gone very wrong")
+        logger.warning("You've been warned")
+        logger.info("Here's some info")
+        logger.debug("Debugging information")
+
+        return "done with showloglevels"
+
+
+    def call_worker_method(self, protocol="https"):
         logger.critical("Your program has done something awful")
         logger.error("Something has gone very wrong")
         logger.warning("You've been warned")

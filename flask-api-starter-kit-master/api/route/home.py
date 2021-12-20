@@ -14,6 +14,8 @@ from ..schema.welcome import WelcomeSchema
 from flasgger import swag_from
 from flask import Blueprint
 
+from ..src import auth0_controller as a0
+
 import configparser
 
 from pathlib import Path
@@ -186,23 +188,6 @@ def showloglevels():
     print(result.showloglevels())
 
 
-
-
-    #return "Hello World"
-
-    #thread_count = 4
-
-    #for x in range(thread_count):
-    #    #Path('thread-{}'.format(x)).touch()
-    #    #asyncio.ensure_future(get_json_async(client, 'https://www.reddit.com/r/', ' thread-{} '.format(x)))
-    #    asyncio.ensure_future(get_json_async(client, 'http://localhost/api/auth0_sync/', ' thread-{} '.format(x)))
-
-    #asyncio.ensure_future(Auth0AsyncSchema(" thread-1"))
-    #asyncio.ensure_future(Auth0AsyncSchema(" thread-2"))
-    #asyncio.ensure_future(Auth0AsyncSchema(" thread-3"))
-
-    #result="Launched {} threads".format(thread_count)
-
     print("home.py - result auth0_async" + str(result))
     return Auth0AsyncSchema().dump(result), 200
 
@@ -213,4 +198,31 @@ def showloglevels():
 #        print("\t\tGJS home.py - auth0_async - get_json - {} ".format(my_thread) )
 #        assert response.status == 200
 #        return await response.read()
+
+@home_api.route('/workers/')
+@swag_from({
+    'responses': {
+        HTTPStatus.OK.value: {
+            'description': '\t\tRealPlay workers',
+            'schema': a0.Auth0Controller
+        }
+    }
+})
+def workers():
+    """
+    1 liner about the route
+    A more detailed description of the endpoint
+    ---
+    """
+    result = a0.Auth0Controller(logger)
+    #setup_logging()
+    logger.debug("/workers/ ")
+
+    print(result.show_log_levels_auth0() )
+    print("result.show_log_levels_auth0 " + str(result))
+    print(result.yes_you_can_log_from_here())
+    print("result.yes_you_can_log_from_here " + str(result))
+    print(result.ok_now_we_can_build_things() )
+    print("result.ok_now_we_can_build_things " + str(result))
+    return AsyncExampleSchema().dump(result), 200
 
