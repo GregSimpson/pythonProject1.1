@@ -24,4 +24,9 @@ class runtime :
 class client :
     id = parser.get('ClientInfo','client_id')
     secret = parser.get('ClientInfo','client_secret')
+    domain = parser.get('ClientInfo', 'client_domain')
+
+class auth0 :
+    url_get_token = parser.get('Auth0Info','url_get_token')
+
 

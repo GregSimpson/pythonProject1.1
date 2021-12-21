@@ -3,6 +3,7 @@ from ..model.auth0_sync import Auth0SyncModel
 from ..model.auth0_async import Auth0AsyncModel
 from ..model.async_example import AsyncExampleModel
 from ..model.welcome import WelcomeModel
+from ..model.reports import ReportsModel
 #from ..model.async_example import AsyncExampleModel
 
 from ..schema.auth0_async import Auth0AsyncSchema
@@ -10,6 +11,7 @@ from ..schema.async_example import AsyncExampleSchema
 from ..schema.auth0_sync import Auth0SyncSchema
 from ..schema.async_example import AsyncExampleSchema
 from ..schema.welcome import WelcomeSchema
+from ..schema.reports import ReportsSchema
 
 from flasgger import swag_from
 from flask import Blueprint
@@ -48,6 +50,7 @@ import logging.config
 import yaml
 logger = logging.getLogger("RealplaySync")
 
+'''
 def x_setup_logging(
     default_path='logging.yaml',
     default_level=logging.DEBUG,
@@ -68,7 +71,7 @@ def x_setup_logging(
         logging.basicConfig(level=default_level)
 
 #-----
-
+'''
 
 
 
@@ -167,6 +170,53 @@ def auth0_async():
     print(result.get_auth0_async_mgmt_access_token())
     return Auth0AsyncSchema().dump(result), 200
 
+####
+@home_api.route('/report_errors/')
+@swag_from({
+    'responses': {
+        HTTPStatus.OK.value: {
+            'description': '\t\tRealPlay report_errors',
+            'schema': ReportsSchema
+        }
+    }
+})
+def report_errors():
+    """
+     Showloglevels 1 message from each log level
+     ---
+     """
+    result = ReportsModel()
+    logger.debug("/report_errors/ ")
+    print(result.report_errors())
+    #print(result.showloglevels())
+
+
+    print("home.py - result.report_errors" + str(result))
+    return ReportsSchema().dump(result), 200
+
+@home_api.route('/report_info/')
+@swag_from({
+    'responses': {
+        HTTPStatus.OK.value: {
+            'description': '\t\tRealPlay report_info',
+            'schema': ReportsSchema
+        }
+    }
+})
+def report_info():
+    """
+     Showloglevels 1 message from each log level
+     ---
+     """
+    result = ReportsModel()
+    logger.debug("/report_info/ ")
+    print(result.report_info())
+    #print(result.showloglevels())
+
+
+    print("home.py - result.report_info" + str(result))
+    return ReportsSchema().dump(result), 200
+#####
 
 @home_api.route('/logtest/')
 @swag_from({
@@ -192,13 +242,6 @@ def showloglevels():
     return Auth0AsyncSchema().dump(result), 200
 
 
-#async def get_json_async(client, url, my_thread):
-#    async with client.get(url) as response:
-#        Path(my_thread).touch()
-#        print("\t\tGJS home.py - auth0_async - get_json - {} ".format(my_thread) )
-#        assert response.status == 200
-#        return await response.read()
-
 @home_api.route('/workers/')
 @swag_from({
     'responses': {
@@ -218,11 +261,13 @@ def workers():
     #setup_logging()
     logger.debug("/workers/ ")
 
-    print(result.show_log_levels_auth0() )
-    print("result.show_log_levels_auth0 " + str(result))
-    print(result.yes_you_can_log_from_here())
-    print("result.yes_you_can_log_from_here " + str(result))
+    #print(result.show_log_levels_auth0() )
+    #print("result.show_log_levels_auth0 " + str(result))
+    #print(result.yes_you_can_log_from_here())
+    #print("result.yes_you_can_log_from_here " + str(result))
     print(result.ok_now_we_can_build_things() )
     print("result.ok_now_we_can_build_things " + str(result))
+
+
     return AsyncExampleSchema().dump(result), 200
 

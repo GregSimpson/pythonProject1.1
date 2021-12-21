@@ -1,4 +1,6 @@
 import asyncio
+import http
+import json
 
 # https://stackoverflow.com/questions/6198372/most-pythonic-way-to-provide-global-configuration-variables-in-config-py
 # import api/src/globals() as gl
@@ -33,9 +35,9 @@ class Auth0AsyncModel:
         time.sleep(x)
         logger.debug("finished {}".format(str(x)))
 
-    def start_loop(self,loop):
-        asyncio.set_event_loop(loop)
-        loop.run_forever()
+#    def start_loop(self,loop):
+#        asyncio.set_event_loop(loop)
+#        loop.run_forever()
 
     def get_auth0_async_mgmt_access_token(self, protocol="https"):
         logger.debug(" {} ".format("."))
