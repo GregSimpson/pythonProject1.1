@@ -29,40 +29,54 @@ class Auth0Controller:
 
 	def ok_now_we_can_build_things(self):
 		logger.debug("step1 - get Auth0 Certificate")
-		#auth0_certificate = "step1 - get Auth0 Certificate".encode("utf-8");
 		auth0_certificate = self.auth0_action.step1_get_auth0_certificate()
-		#logger.debug(" auth0 certificate : \n--\n{}\n--\n".format(auth0_certificate))
-		logger.debug(" auth0 certificate : \n--\n{}\n--\n".format(auth0_certificate['access_token']))
+		#logger.debug(" auth0 certificate : \n--\n{}\n--\n".format(auth0_certificate['access_token']))
 
-		##fake_token_dict = { 'roles': 'x, y, z', 'access_token':' token stuff here', 'footer':'jajahd '}
-		##tenant_list = self.auth0_action.step2_get_auth0_tenants(auth0_certificate)
-		tenant_list = self.auth0_action.retrieve_organizations(auth0_certificate)
-		#logger.debug(" auth0 tenant list : %s".format(tenant_list))
+
+		##tenant_list = self.auth0_action.retrieve_organizations(auth0_certificate)
+		##logger.debug(" auth0 tenant list : {}".format(tenant_list))
+
+
+		# https://github.com/auth0/auth0-python#management-sdk
+		#logger.debug("github_example : {}".format("BEGIN"))
+		#github_results = self.auth0_action.github_example(auth0_certificate)
+		#logger.debug("github_example : {}".format("END"))
+		#logger.debug("github_example results : {}\n\n".format(github_results))
+
+		# hardcoded userid works!!!
+		logger.debug("Retrieve Orgs : {}".format("BEGIN"))
+		export_job = self.auth0_action.retrieve_userdata(auth0_certificate)
+		logger.debug("Retrieve Orgs : {}".format("END"))
+		logger.debug(" Retrieve Orgs results : {}".format(export_job))
+
+
+		logger.debug("Exporting Job : {}".format("BEGIN"))
+		#export_job = self.auth0_action.export_userlist(auth0_certificate)
+		export_job = self.auth0_action.gjs_example(auth0_certificate)
+		logger.debug("Exporting Job : {}".format("END"))
+		logger.debug(" export job results : {}\n\n".format(export_job))
+
+		#time.sleep(15)
+		#logger.debug("Retrieve Orgs : {}".format("BEGIN"))
+		#export_job = self.auth0_action.retrieve_organizations(auth0_certificate)
+		#logger.debug("Retrieve Orgs : {}".format("END"))
+		#logger.debug(" Retrieve Orgs results : {}".format(export_job))
+
 
 		#logger.debug("step2 - get Auth0 tenants")
 		#logger.debug("step3 - for each tenant, get userlist")
 		#logger.debug("step4 - for each tenant-user, get role data")
+
+		logger.debug(" FINISHED")
 
 		#new_loop = asyncio.new_event_loop()
 		#t = Thread(target=self.start_loop, args=(new_loop,))
 		#t.start()
 
 		# it’s best to use their _threadsafe alternatives. Let’s see how that looks:
-
-		#new_loop.call_soon_threadsafe(self.more_work, 6)
-
-		'''
-		        # What if instead of doing everything in the current thread, we spawn a separate Thread to do the work for us.
-		        Notice that this time we created a new event loop through asyncio.new_event_loop(). The idea is to spawn a new thread, pass it that new loop and then call thread-safe functions (discussed later) to schedule work.
-
-		        The advantage of this method is that work executed by the other event loop will not block execution in the current thread. Thereby allowing the main thread to manage the work, and enabling a new category of execution mechanisms.
-		        '''
 		new_loop = asyncio.new_event_loop()
 		t = Thread(target=self.start_loop, args=(new_loop,))
 		t.start()
-
-		# it’s best to use their _threadsafe alternatives. Let’s see how that looks:
-
 		new_loop.call_soon_threadsafe(self.more_work, 6)
 		new_loop.call_soon_threadsafe(self.more_work, 3)
 

@@ -4,6 +4,10 @@ import time
 from threading import Thread
 import os
 
+#import auth0
+#from auth0.v3.management import Auth0
+#rom auth0.v3.authentication import GetToken
+
 import http
 from ..route import globals as gl
 
@@ -57,6 +61,74 @@ class Auth0Actions:
 		''' '''
 
 
+
+	# https://auth0.com/docs/api/management/v2#!/Jobs/post_users_exports
+	def export_users(self,auth0_certificate):
+		logger.debug("auth0_certificate\n{}\n".format(auth0_certificate))
+		logger.debug("auth0_certificate - access-token\n{}\n".format(auth0_certificate['access_token']))
+
+		headers = {'authorization': '{}'.format(auth0_certificate)}
+		logger.debug("headers --\n{}\n--".format(headers))
+		#conn = http.client.HTTPSConnection("realplayserver.dce1.humanify.com")
+		#conn = http.client.HTTPSConnection("realplayserver.dce1.humanify.com")
+		conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
+
+		#  these sort of work , but stop at a 'redirect' message
+		#conn.request("GET", "/tenants", headers=headers)
+		#conn.request("GET", "/users", headers=headers)
+		bodyparam = "{123}"
+		#conn.request("POST", "/api/v2/jobs/users-exports", headers=headers, json=bodyparam)
+		conn.request("POST", "/jobs/users-exports", headers=headers)
+
+
+		res = conn.getresponse()
+		data = res.read()
+		logger.debug(data)
+
+	'''
+	import http.client
+	conn = http.client.HTTPConnection("path_to_your_api")
+	headers = { 'authorization': "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Il9ESTBuak94MnBBckUtMW8tVUNnaiJ9.eyJpc3MiOiJodHRwczovL3R0ZWMtcGVkLWRldmVsb3BlcnMuYXV0aDAuY29tLyIsInN1YiI6IkptTzNINFk2V0kzcWhmZTdOdTJqMUFMZWNKNlUxbndvQGNsaWVudHMiLCJhdWQiOiJodHRwczovL3R0ZWMtcGVkLWRldmVsb3BlcnMuYXV0aDAuY29tL2FwaS92Mi8iLCJpYXQiOjE2NDAxOTIwNTUsImV4cCI6MTY0MDI3ODQ1NSwiYXpwIjoiSm1PM0g0WTZXSTNxaGZlN051MmoxQUxlY0o2VTFud28iLCJzY29wZSI6InJlYWQ6Y2xpZW50X2dyYW50cyBjcmVhdGU6Y2xpZW50X2dyYW50cyBkZWxldGU6Y2xpZW50X2dyYW50cyB1cGRhdGU6Y2xpZW50X2dyYW50cyByZWFkOnVzZXJzIHVwZGF0ZTp1c2VycyBkZWxldGU6dXNlcnMgY3JlYXRlOnVzZXJzIHJlYWQ6dXNlcnNfYXBwX21ldGFkYXRhIHVwZGF0ZTp1c2Vyc19hcHBfbWV0YWRhdGEgZGVsZXRlOnVzZXJzX2FwcF9tZXRhZGF0YSBjcmVhdGU6dXNlcnNfYXBwX21ldGFkYXRhIHJlYWQ6dXNlcl9jdXN0b21fYmxvY2tzIGNyZWF0ZTp1c2VyX2N1c3RvbV9ibG9ja3MgZGVsZXRlOnVzZXJfY3VzdG9tX2Jsb2NrcyBjcmVhdGU6dXNlcl90aWNrZXRzIHJlYWQ6Y2xpZW50cyB1cGRhdGU6Y2xpZW50cyBkZWxldGU6Y2xpZW50cyBjcmVhdGU6Y2xpZW50cyByZWFkOmNsaWVudF9rZXlzIHVwZGF0ZTpjbGllbnRfa2V5cyBkZWxldGU6Y2xpZW50X2tleXMgY3JlYXRlOmNsaWVudF9rZXlzIHJlYWQ6Y29ubmVjdGlvbnMgdXBkYXRlOmNvbm5lY3Rpb25zIGRlbGV0ZTpjb25uZWN0aW9ucyBjcmVhdGU6Y29ubmVjdGlvbnMgcmVhZDpyZXNvdXJjZV9zZXJ2ZXJzIHVwZGF0ZTpyZXNvdXJjZV9zZXJ2ZXJzIGRlbGV0ZTpyZXNvdXJjZV9zZXJ2ZXJzIGNyZWF0ZTpyZXNvdXJjZV9zZXJ2ZXJzIHJlYWQ6ZGV2aWNlX2NyZWRlbnRpYWxzIHVwZGF0ZTpkZXZpY2VfY3JlZGVudGlhbHMgZGVsZXRlOmRldmljZV9jcmVkZW50aWFscyBjcmVhdGU6ZGV2aWNlX2NyZWRlbnRpYWxzIHJlYWQ6cnVsZXMgdXBkYXRlOnJ1bGVzIGRlbGV0ZTpydWxlcyBjcmVhdGU6cnVsZXMgcmVhZDpydWxlc19jb25maWdzIHVwZGF0ZTpydWxlc19jb25maWdzIGRlbGV0ZTpydWxlc19jb25maWdzIHJlYWQ6aG9va3MgdXBkYXRlOmhvb2tzIGRlbGV0ZTpob29rcyBjcmVhdGU6aG9va3MgcmVhZDphY3Rpb25zIHVwZGF0ZTphY3Rpb25zIGRlbGV0ZTphY3Rpb25zIGNyZWF0ZTphY3Rpb25zIHJlYWQ6ZW1haWxfcHJvdmlkZXIgdXBkYXRlOmVtYWlsX3Byb3ZpZGVyIGRlbGV0ZTplbWFpbF9wcm92aWRlciBjcmVhdGU6ZW1haWxfcHJvdmlkZXIgYmxhY2tsaXN0OnRva2VucyByZWFkOnN0YXRzIHJlYWQ6aW5zaWdodHMgcmVhZDp0ZW5hbnRfc2V0dGluZ3MgdXBkYXRlOnRlbmFudF9zZXR0aW5ncyByZWFkOmxvZ3MgcmVhZDpsb2dzX3VzZXJzIHJlYWQ6c2hpZWxkcyBjcmVhdGU6c2hpZWxkcyB1cGRhdGU6c2hpZWxkcyBkZWxldGU6c2hpZWxkcyByZWFkOmFub21hbHlfYmxvY2tzIGRlbGV0ZTphbm9tYWx5X2Jsb2NrcyB1cGRhdGU6dHJpZ2dlcnMgcmVhZDp0cmlnZ2VycyByZWFkOmdyYW50cyBkZWxldGU6Z3JhbnRzIHJlYWQ6Z3VhcmRpYW5fZmFjdG9ycyB1cGRhdGU6Z3VhcmRpYW5fZmFjdG9ycyByZWFkOmd1YXJkaWFuX2Vucm9sbG1lbnRzIGRlbGV0ZTpndWFyZGlhbl9lbnJvbGxtZW50cyBjcmVhdGU6Z3VhcmRpYW5fZW5yb2xsbWVudF90aWNrZXRzIHJlYWQ6dXNlcl9pZHBfdG9rZW5zIGNyZWF0ZTpwYXNzd29yZHNfY2hlY2tpbmdfam9iIGRlbGV0ZTpwYXNzd29yZHNfY2hlY2tpbmdfam9iIHJlYWQ6Y3VzdG9tX2RvbWFpbnMgZGVsZXRlOmN1c3RvbV9kb21haW5zIGNyZWF0ZTpjdXN0b21fZG9tYWlucyB1cGRhdGU6Y3VzdG9tX2RvbWFpbnMgcmVhZDplbWFpbF90ZW1wbGF0ZXMgY3JlYXRlOmVtYWlsX3RlbXBsYXRlcyB1cGRhdGU6ZW1haWxfdGVtcGxhdGVzIHJlYWQ6bWZhX3BvbGljaWVzIHVwZGF0ZTptZmFfcG9saWNpZXMgcmVhZDpyb2xlcyBjcmVhdGU6cm9sZXMgZGVsZXRlOnJvbGVzIHVwZGF0ZTpyb2xlcyByZWFkOnByb21wdHMgdXBkYXRlOnByb21wdHMgcmVhZDpicmFuZGluZyB1cGRhdGU6YnJhbmRpbmcgZGVsZXRlOmJyYW5kaW5nIHJlYWQ6bG9nX3N0cmVhbXMgY3JlYXRlOmxvZ19zdHJlYW1zIGRlbGV0ZTpsb2dfc3RyZWFtcyB1cGRhdGU6bG9nX3N0cmVhbXMgY3JlYXRlOnNpZ25pbmdfa2V5cyByZWFkOnNpZ25pbmdfa2V5cyB1cGRhdGU6c2lnbmluZ19rZXlzIHJlYWQ6bGltaXRzIHVwZGF0ZTpsaW1pdHMgY3JlYXRlOnJvbGVfbWVtYmVycyByZWFkOnJvbGVfbWVtYmVycyBkZWxldGU6cm9sZV9tZW1iZXJzIHJlYWQ6ZW50aXRsZW1lbnRzIHJlYWQ6YXR0YWNrX3Byb3RlY3Rpb24gdXBkYXRlOmF0dGFja19wcm90ZWN0aW9uIHJlYWQ6b3JnYW5pemF0aW9ucyB1cGRhdGU6b3JnYW5pemF0aW9ucyBjcmVhdGU6b3JnYW5pemF0aW9ucyBkZWxldGU6b3JnYW5pemF0aW9ucyBjcmVhdGU6b3JnYW5pemF0aW9uX21lbWJlcnMgcmVhZDpvcmdhbml6YXRpb25fbWVtYmVycyBkZWxldGU6b3JnYW5pemF0aW9uX21lbWJlcnMgY3JlYXRlOm9yZ2FuaXphdGlvbl9jb25uZWN0aW9ucyByZWFkOm9yZ2FuaXphdGlvbl9jb25uZWN0aW9ucyB1cGRhdGU6b3JnYW5pemF0aW9uX2Nvbm5lY3Rpb25zIGRlbGV0ZTpvcmdhbml6YXRpb25fY29ubmVjdGlvbnMgY3JlYXRlOm9yZ2FuaXphdGlvbl9tZW1iZXJfcm9sZXMgcmVhZDpvcmdhbml6YXRpb25fbWVtYmVyX3JvbGVzIGRlbGV0ZTpvcmdhbml6YXRpb25fbWVtYmVyX3JvbGVzIGNyZWF0ZTpvcmdhbml6YXRpb25faW52aXRhdGlvbnMgcmVhZDpvcmdhbml6YXRpb25faW52aXRhdGlvbnMgZGVsZXRlOm9yZ2FuaXphdGlvbl9pbnZpdGF0aW9ucyIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.SrRcnlhI1feZ-oODfirCPd6r7uXxqzK45HKJpD4WYIT5V4Quj-lhqCF0t1Fz7XvbIlJ6qvx4iRBoHbamTl1IGgqpWnXVGz2AUpHs2ON8PW9l2MLIcxkdJtHbgGh2JOe7qLOWBr5PC-MJeL-EcP1STN9JDst89LaZ05g0790nT2__P4n1y15TxZLQzQQYBIZA4QbW0SDrGQPeyNHyS58A-LO8KCuvRkyFjKvpdWukPLHECD6JwKSXQp9qllIpwOL9WFmJbb9fkQjkRVwm2c0OFlQ202R2grWKr3sFH5I7fa8a3LYMXktYyO8AnoeANbXEgNtCuOVjbaIYe0hZXL3HGA" }
+	conn.request("GET", "/", headers=headers)
+	res = conn.getresponse()
+	data = res.read()
+	print(data.decode("utf-8"))
+	'''
+
+	# https://github.com/auth0/auth0-python#management-sdk
+	# pip3 install auth0-python
+
+	def github_example(self, auth0_certificate):
+		#from auth0.v3.authentication import GetToken
+
+		#domain = 'myaccount.auth0.com'
+		domain = 'ttec-ped-developers.auth0.com'
+		non_interactive_client_id = gl.client.id
+		non_interactive_client_secret = gl.client.secret
+
+		#get_token = GetToken(domain)
+		token = get_token.client_credentials(non_interactive_client_id,
+		                                     non_interactive_client_secret, 'https://{}/api/v2/'.format(domain))
+		mgmt_api_token = token['access_token']
+
+		# then use the new token
+		# from auth0.v3.management import Auth0
+
+		##domain = 'myaccount.auth0.com'
+		##mgmt_api_token = 'MGMT_API_TOKEN'
+
+		#auth0 = Auth0(domain, mgmt_api_token)
+
+		# The Auth0 object is now ready to take orders! Let's see how we can use this to get all available connections
+		# (this action requires the token to have the following scope: read:connections)
+		logger.debug("\n{}\n".format(auth0.connections.all()))
+		return auth0.connections.all()
+
+
+
+
+
+
 	# https://auth0.com/docs/organizations/configure/retrieve-organizations
 	def retrieve_organizations(self,auth0_certificate):
 		logger.debug("auth0_certificate\n{}\n".format(auth0_certificate))
@@ -98,11 +170,16 @@ class Auth0Actions:
 
 		headers = {'authorization': '{}'.format(auth0_certificate)}
 		logger.debug("headers --\n{}\n--".format(headers))
-		#conn = http.client.HTTPConnection("realplayserver.dce1.humanify.com")
-		conn = http.client.HTTPSConnection("realplayserver.dce1.humanify.com")
+		conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
+		#conn = http.client.HTTPSConnection("realplayserver.dce1.humanify.com")
 
 		#conn.request("GET", "/tenants", headers=headers)
-		conn.request("GET", "/users", headers=headers)
+		#conn.request("GET", "/users", headers=headers)
+
+		#conn.request("GET", "/ttec-ped-developers.auth0.com/api/v2/users/USER_ID/roles", headers=headers)
+
+		conn.request("GET", "/api/v2/users/auth0|6018408ed01fc80071cd4564/roles", headers=headers)
+		                            #auth0|6018408ed01fc80071cd4564
 		res = conn.getresponse()
 		data = res.read()
 		logger.debug(data)
@@ -111,6 +188,68 @@ class Auth0Actions:
 		#logger.debug("\ndata = {}\n".format(data))
 		#logger.debug("\ndata = {}\n".format(data.decode("utf-8")))
 
+
+	#retrieve_userdata
+	def retrieve_userdata(self,auth0_certificate):
+		#logger.debug("auth0_certificate\n{}\n".format(auth0_certificate))
+		#logger.debug("auth0_certificate - access-token\n{}\n".format(auth0_certificate['access_token']))
+
+
+		#headers = {'authorization: Bearer {}'.format(auth0_certificate)}
+		headers = {'authorization': 'Bearer {}'.format(auth0_certificate['access_token'])}
+		#headers = {'authorization: Bearer {}'.format(auth0_certificate)}
+		logger.debug("headers --\n{}\n--".format(headers))
+		conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
+		conn.request("GET", "/api/v2/users/auth0|6018408ed01fc80071cd4564/roles", headers=headers)
+		###logger.debug("USER RESULTS\n++++\n{}\n++++\n".format(conn.getresponse()))
+
+		res = conn.getresponse()
+		data = res.read()
+		logger.debug(data)
+
+		my_json = json.loads(data)
+		logger.debug( json.dumps(my_json, indent=2))
+
+	### https://ttec-ped-developers.us12.webtask.io/auth0-user-import-export/api/jobs/export
+	def export_userlist(self, auth0_certificate):
+		#logger.debug("auth0_certificate\n{}\n".format(auth0_certificate))
+		#logger.debug("auth0_certificate - access-token\n{}\n".format(auth0_certificate['access_token']))
+
+		# Authorization: Bearer [token]
+		headers = {'Authorization': 'Bearer {}'.format(auth0_certificate['access_token'])}
+		#headers = {'{}'.format(auth0_certificate['access_token'])}
+
+		# headers = {'Authorization: Bearer {}'.format(auth0_certificate)}
+		# headers = {'Authorization: Bearer {}'.format(auth0_certificate['access_token'])}
+		logger.debug("headers --\n{}\n--".format(headers))
+		### conn = http.client.HTTPConnection("realplayserver.dce1.humanify.com")
+		conn = http.client.HTTPSConnection("ttec-ped-developers.us12.webtask.io")
+		#conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
+
+		body_payload={'some':'123'}
+
+		#conn.request("POST", "/auth0-user-import-export/api/jobs/export", headers=headers)
+		conn.request("POST", "/auth0-user-import-export/api/jobs/export", headers=headers, body=json.dumps(body_payload))
+		res = conn.getresponse()
+		data = res.read()
+		logger.debug(data)
+
+	# https://auth0.com/docs/users/import-and-export-users/bulk-user-exports
+	# https://community.auth0.com/t/users-exports-returning-404/58599/2
+	def gjs_example(self, auth0_certificate):
+		import http.client
+		conn = http.client.HTTPSConnection("")
+		payload = "{\"connection_id\": \"con_oOFR9nEz36wvZIXI\", \"format\": \"json\", \"limit\": 5, \"fields\": [{\"name\": \"email\"}, { \"name\": \"identities[0].connection\", \"export_as\": \"provider\" }]}"
+		headers = {
+			#'authorization': "Bearer YOUR_MGMT_API_ACCESS_TOKEN",
+			'authorization': "Bearerx {}".format(auth0_certificate['access_token']),
+			'content-type': "application/json"
+		}
+		#conn.request("POST", "/ttec-ped-developers.auth0.com/api/v2/jobs/users-exports", payload, headers)
+		conn.request("GET", "/ttec-ped-developers.auth0.com/api/v2/", payload, headers)
+		res = conn.getresponse()
+		data = res.read()
+		print(data.decode("utf-8"))
 
 
 	def step2_get_auth0_tenants(self, auth0_certificate,protocol="https"):
