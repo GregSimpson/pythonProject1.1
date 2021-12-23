@@ -2,11 +2,15 @@ from pathlib import Path
 from datetime import datetime
 import logging.config
 import os
+from re import match
 
 import yaml
 from flask import Flask
 import configparser
 import pandas as pd
+
+# pip install psycopg2-binary
+import psycopg2
 
 def test_log_messages():
     logger.debug('test msg')
@@ -109,6 +113,20 @@ def process_input_files(json_or_csv):
                 process_this_df(this_df, upload_filename)
 
 
+def connect_to_db(postgres_hostname,postgres_ip,postgres_port,postgres_host,postgres_db_name,postgres_user,postgres_pswd):
+    logger.debug("establishing the db connection to: {}".format(postgres_hostname))
+    # establishing the connection
+    conn = psycopg2.connect(
+        database=postgres_db_name
+        , user=postgres_user
+        , password=postgres_pswd
+        , host=postgres_hostname
+        , port=postgres_port
+    )
+    logger.debug("connected to a db (I think) ")
+    return conn
+
+
 def process_upload_files():
     logger.debug('Begin')
 
@@ -116,23 +134,83 @@ def process_upload_files():
     upload_source_dir = parser.get('user-export-file', 'output')
     logger.debug(upload_source_dir)
 
-    # r=root, d=directories, f = files
-    for r, d, f in walklevel(upload_source_dir, 0):
-        for file in f:
-            if file.endswith('.csv'):
-                logger.debug('upload file : {}'.format(file))
+    postgres_envs = parser.get('Postgres_DBs', 'db_list').split(',')
+    logger.debug('postgres_d : {}'.format(postgres_envs))
+
+    postgres_hostname = " "
+    postgres_ip = " "
+    postgres_port = " "
+    postgres_host = " "
+    postgres_db_name = " "
+    postgres_user = " "
+    postgres_pswd = " "
+
+    for environment in parser.get('Postgres_DBs', 'db_list').split(','):
+        logger.debug('processing env : {}'.format(environment))
+        if (environment.lower() == 'dev'):
+            logger.debug('found DEV env : {}'.format(environment))
+            postgres_hostname = parser.get('DEV_DB', 'hostname', fallback=" ")
+            postgres_ip = parser.get('DEV_DB', 'private ip', fallback=" ")
+            postgres_port = parser.get('DEV_DB', 'port', fallback=" ")
+            postgres_host = parser.get('DEV_DB', 'host', fallback=" ")
+            postgres_db_name = parser.get('DEV_DB', 'db_name', fallback=" ")
+            postgres_user = parser.get('DEV_DB', 'user', fallback=" ")
+            postgres_pswd = parser.get('DEV_DB', 'pswd', fallback=" ")
+
+        elif (environment.lower() == 'qa'):
+            logger.debug('found QA env : {}'.format(environment))
+            postgres_hostname = parser.get('QA_DB', 'hostname', fallback=" ")
+            postgres_ip = parser.get('QA_DB', 'private ip', fallback=" ")
+            postgres_port = parser.get('QA_DB', 'port', fallback=" ")
+            postgres_host = parser.get('QA_DB', 'host', fallback=" ")
+            postgres_db_name = parser.get('QA_DB', 'db_name', fallback=" ")
+            postgres_user = parser.get('QA_DB', 'user', fallback=" ")
+            postgres_pswd = parser.get('QA_DB', 'pswd', fallback=" ")
+
+        elif (environment.lower() == 'prod'):
+            logger.debug('found PROD env : {}'.format(environment))
+            postgres_hostname = parser.get('PROD_DB', 'hostname', fallback=" ")
+            postgres_ip = parser.get('PROD_DB', 'private ip', fallback=" ")
+            postgres_port = parser.get('PROD_DB', 'port', fallback=" ")
+            postgres_host = parser.get('PROD_DB', 'host', fallback=" ")
+            postgres_db_name = parser.get('PROD_DB', 'db_name', fallback=" ")
+            postgres_user = parser.get('PROD_DB', 'user', fallback=" ")
+            postgres_pswd = parser.get('PROD_DB', 'pswd', fallback=" ")
+
+        if (postgres_user == " "):
+            logger.error('postgres database info not found - exiting')
+            exit(5)  # just made up a number
+
+
+        # r=root, d=directories, f = files
+        for r, d, f in walklevel(upload_source_dir, 0):
+            for file in f:
+                db_conn = connect_to_db(
+                    postgres_hostname,
+                    postgres_ip,
+                    postgres_port,
+                    postgres_host,
+                    postgres_db_name,
+                    postgres_user,
+                    postgres_pswd
+                )
+
+                if file.endswith('.csv'):
+                    logger.debug('upload file:\n\t{}\n\tto {}'.format(file, postgres_db_name))
+
 
 
 if __name__ == '__main__':
     parser = configparser.ConfigParser()
     logger = logging.getLogger("RealplayExportProcess")
     create_app()
+    logger.debug(' start ')
 
-    test_log_messages()
+    #test_log_messages()
 
-    # either 'json' or 'csv'
-    #process_input_files('json')
-    process_input_files('csv')
+    ### either 'json' or 'csv'
+    ##process_input_files('json')
+    #process_input_files('csv')
 
     process_upload_files()
 
