@@ -46,7 +46,7 @@ def create_app():
 def call_auth0_for_role_data(user_name):
     # for now just make dummy data from milli-seconds
     logger.debug("\t\tI would call auth0 and pass : {}".format(user_name))
-    milli_date = datetime.utcnow().strftime('%f')
+    milli_date = datetime.utcnow().strftime('%A%d-%H:%M.%f')
     logger.debug("\treturning milli date : {} ".format(milli_date))
 
     return str(milli_date)
@@ -71,70 +71,35 @@ def walklevel(some_dir, level=1):
             del dirs[:]
 
 
-def process_csv_files(output_dir):
+def process_input_files(json_or_csv):
     # Getting the work directory (cwd)
-    this_dir = parser.get('user-export-file', 'dir')
+    source_dir = parser.get('user-export-file', 'source')
 
-    new_directory = Path('{}/{}'.format(this_dir,output_dir))
-    new_directory.mkdir(parents=True, exist_ok=True)
+    output_dir = Path('{}'.format(parser.get('user-export-file', 'output')))
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    src_extension = ".{}".format(json_or_csv)
 
     # r=root, d=directories, f = files
-    for r, d, f in walklevel(this_dir,0):
+    for r, d, f in walklevel(source_dir,0):
        for file in f:
-            if file.endswith(".csv"):
+            #if file.endswith(".json"):
+            if file.endswith(src_extension):
                 full_path = os.path.join(r, file)
-                dir_name = os.path.dirname(r)
-                file_name_with_ext = file
                 file_root = os.path.splitext(file)[0]
-                file_ext = os.path.splitext(file)[1]
-                upload_filename = ("{}/{}{}{}".format(new_directory, "upload_", file_root, '.csv'))
+                upload_filename = ("{}/{}{}".format(output_dir, file_root, '.csv'))
 
                 logger.info('\tfull_path          : {}'.format(full_path))
-                logger.info('\tdir_name           : {}'.format(dir_name))
-                logger.info('\tthis_dir           : {}'.format(this_dir))
-                logger.info('\tfile_name_with_ext : {}'.format(file_name_with_ext))
+                logger.info('\tsource_dir         : {}'.format(source_dir))
                 logger.info('\tfile_root          : {}'.format(file_root))
-                logger.info('\tfile_ext           : {}'.format(file_ext))
                 logger.info('\tupload_filename    : {}'.format(upload_filename))
-                logger.info('\tnew_directory      : {}'.format(new_directory))
+                logger.info('\toutput_dir         : {}'.format(output_dir))
 
-                this_df = pd.read_csv(full_path)
-                logger.debug(this_df.info)
-                logger.debug(this_df.style)
+                if (src_extension == '.json'):
+                    this_df = pd.read_json(full_path, lines=True)
+                if (src_extension == '.csv'):
+                    this_df = pd.read_csv(full_path)
 
-                # we now have a dataframe for this file
-                #  loop over the rows - make a call to auth0/users to get the roles
-                #  write the user_id,email, roles to a new file : $file_root + 'processed' + .json
-                process_this_df(this_df, upload_filename)
-
-
-def process_json_files(output_dir):
-    # Getting the work directory (cwd)
-    this_dir = parser.get('user-export-file', 'dir')
-
-    new_directory = Path('{}/{}'.format(this_dir,output_dir))
-    new_directory.mkdir(parents=True, exist_ok=True)
-
-    # r=root, d=directories, f = files
-    for r, d, f in walklevel(this_dir,0):
-       for file in f:
-            if file.endswith(".json"):
-                full_path = os.path.join(r, file)
-                dir_name = os.path.dirname(r)
-                file_name_with_ext = file
-                file_root = os.path.splitext(file)[0]
-                file_ext = os.path.splitext(file)[1]
-                upload_filename = ("{}/{}{}{}".format(new_directory, "upload_", file_root, '.csv'))
-
-                logger.info('\tfull_path          : {}'.format(full_path))
-                logger.info('\tdir_name           : {}'.format(dir_name))
-                logger.info('\tthis_dir           : {}'.format(this_dir))
-                logger.info('\tfile_name_with_ext : {}'.format(file_name_with_ext))
-                logger.info('\tfile_root          : {}'.format(file_root))
-                logger.info('\tfile_ext           : {}'.format(file_ext))
-                logger.info('\tupload_filename    : {}'.format(upload_filename))
-
-                this_df = pd.read_json(full_path, lines=True)
                 logger.debug(this_df.info)
                 logger.debug(this_df.style)
 
@@ -151,11 +116,8 @@ if __name__ == '__main__':
 
     test_log_messages()
 
-
-    ## process csv files
-    process_csv_files('upload_files_csv')
-
-    # process json files
-    process_json_files('upload_files_json')
+    # either 'json' or 'csv'
+    #process_input_files('json')
+    process_input_files('csv')
 
 
