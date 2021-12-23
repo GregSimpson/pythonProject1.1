@@ -83,11 +83,11 @@ def process_input_files(json_or_csv):
     # r=root, d=directories, f = files
     for r, d, f in walklevel(source_dir,0):
        for file in f:
-            #if file.endswith(".json"):
             if file.endswith(src_extension):
                 full_path = os.path.join(r, file)
                 file_root = os.path.splitext(file)[0]
-                upload_filename = ("{}/{}{}".format(output_dir, file_root, '.csv'))
+                #upload_filename = ("{}/{}{}{}".format(output_dir, 'output_', file_root, '.csv'))
+                upload_filename = ("{}/{}{}{}".format(output_dir, parser.get('user-export-file', 'output_prefix'), file_root, '.csv'))
 
                 logger.info('\tfull_path          : {}'.format(full_path))
                 logger.info('\tsource_dir         : {}'.format(source_dir))
@@ -109,6 +109,20 @@ def process_input_files(json_or_csv):
                 process_this_df(this_df, upload_filename)
 
 
+def process_upload_files():
+    logger.debug('Begin')
+
+    #upload_source_dir = Path('{}'.format(parser.get('user-export-file', 'output')))
+    upload_source_dir = parser.get('user-export-file', 'output')
+    logger.debug(upload_source_dir)
+
+    # r=root, d=directories, f = files
+    for r, d, f in walklevel(upload_source_dir, 0):
+        for file in f:
+            if file.endswith('.csv'):
+                logger.debug('upload file : {}'.format(file))
+
+
 if __name__ == '__main__':
     parser = configparser.ConfigParser()
     logger = logging.getLogger("RealplayExportProcess")
@@ -120,4 +134,5 @@ if __name__ == '__main__':
     #process_input_files('json')
     process_input_files('csv')
 
+    process_upload_files()
 
