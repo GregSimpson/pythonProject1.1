@@ -65,7 +65,7 @@ def step1_get_auth0_certificate(client_domain_param, protocol="https"):
 
 	url = '{}://{}/oauth/token'.format(protocol, parser.get(client_domain_param, 'client_domain'))
 	logger.debug("url     : {} ".format(url))
-	logger.debug("gl.client.domain : \n{} ".format(parser.get(client_domain_param, 'client_domain')))
+	logger.debug("gl.client.domain : {} ".format(parser.get(client_domain_param, 'client_domain')))
 	logger.debug("payload : \n{} ".format(payload))
 	logger.debug("headers : {} ".format(headers))
 
@@ -80,26 +80,54 @@ def step1_get_auth0_certificate(client_domain_param, protocol="https"):
 
 
 # https://auth0.com/docs/api/management/v2#!/Jobs/post_users_exports
-def export_user(self, auth0_certificate, this_user):
-	logger.debug("auth0_certificate\n{}\n".format(auth0_certificate))
-	logger.debug("auth0_certificate - access-token\n{}\n".format(auth0_certificate['access_token']))
+def export_user(auth0_certificate, client_domain_param, user_name):
 
-	headers = {'authorization': '{}'.format(auth0_certificate)}
-	logger.debug("headers --\n{}\n--".format(headers))
-	# conn = http.client.HTTPSConnection("realplayserver.dce1.humanify.com")
-	# conn = http.client.HTTPSConnection("realplayserver.dce1.humanify.com")
-	conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
+	if (user_name == 'auth0|6018408ed01fc80071cd4564'):
+		logger.debug(" seeking {} :: {}".format(client_domain_param, user_name))
+		logger.debug("auth0_certificate - access-token\n{}\n".format(auth0_certificate['access_token']))
 
-	#  these sort of work , but stop at a 'redirect' message
-	# conn.request("GET", "/tenants", headers=headers)
-	conn.request("GET", "/users/"+ this_user, headers=headers)
-	#bodyparam = "{123}"
-	## conn.request("POST", "/api/v2/jobs/users-exports", headers=headers, json=bodyparam)
-	#conn.request("POST", "/jobs/users-exports", headers=headers)
+		#headers = {'authorization': '{}'.format(auth0_certificate)}
+		#logger.debug("headers --\n{}\n--".format(headers))
 
-	res = conn.getresponse()
-	data = res.read()
-	logger.debug(data)
+		#  original - working line
+		#conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
+
+		#conn = http.client.HTTPSConnection("{}.auth0.com".format(client_domain_param))
+		#conn = http.client.HTTPSConnection(conn_str)
+
+		#  these sort of work , but stop at a 'redirect' message
+		# conn.request("GET", "/tenants", headers=headers)
+		#req_str = "/users/{}/roles".format(user_name)
+		#logger.debug(" GET : {} : {}".format(req_str, headers))
+		##conn.request("GET", "/users/"+ user_name, headers=headers)
+		#conn.request("GET", req_str, headers=headers)
+
+
+		#  --header 'authorization: Bearer eyJhb...'
+		#headers = {'authorization: Bearer {}'.format(auth0_certificate['access_token'])}
+		headers = {'authorization': '{}'.format(auth0_certificate)}
+		headers = {'authorization': 'Bearer {}'.format(auth0_certificate['access_token'])}
+		logger.debug("headers --\n{}\n--".format(headers))
+		#conn_str = "{}.auth0.com".format(client_domain_param)
+		#logging.debug("  conn_str : {}".format(conn_str))
+		conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
+		conn.request("GET", "/api/v2/users/auth0|6018408ed01fc80071cd4564/roles", headers=headers)
+
+
+
+		#bodyparam = "{123}"
+		## conn.request("POST", "/api/v2/jobs/users-exports", headers=headers, json=bodyparam)
+		#conn.request("POST", "/jobs/users-exports", headers=headers)
+
+		res = conn.getresponse()
+		data = res.read()
+		#f (data['statusCode'] != 200):
+		logger.error(data)
+		#exit(66)
+		return data
+
+		#logger.debug(data)
+		#return data
 
 
 def get_auth0_certificate(client_domain_param, protocol="https"):
@@ -112,12 +140,17 @@ def get_auth0_certificate(client_domain_param, protocol="https"):
 	#return str(milli_date)
 
 
-def get_auth0_role_data(client_domain_param, user_name):
+def get_auth0_role_data(auth0_certificate, client_domain_param, user_name):
 	# for now just make dummy data from milli-seconds
-	logger.debug("\t\tI would call auth0 and pass :{} :: {}".format(client_domain_param, user_name))
+	if (user_name == 'auth0|6018408ed01fc80071cd4564'):
+		logger.debug("calling export_user with auth0_cert  :{} :: {}".format(client_domain_param, user_name))
+		role_found = export_user(auth0_certificate, client_domain_param, user_name)
+		logger.debug(" ROLE FOUND : {}".format(role_found))
+		return role_found
+
+
 	milli_date = datetime.utcnow().strftime('%A%d-%H:%M.%f')
 	logger.debug("\treturning milli date : {} ".format(milli_date))
-
 	return str(milli_date)
 
 
@@ -131,13 +164,16 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 	logger.info('client : {} - auth0_cert :: {}'.format(client_domain_param, auth0_certificate))
 	
 	with open(upload_filename, 'w') as file_out:
+		counter=0
 		for index, row in this_df.iterrows():
-			new_role = get_auth0_role_data(client_domain_param,row['user_id'])
+			new_role = get_auth0_role_data(auth0_certificate,client_domain_param,row['user_id'])
 			logging.info("domain {} - writing {} :{},{},{}".format(client_domain_param, upload_filename, row['user_id'], row['email'], new_role))
 			file_out.write('\n{},{},{}'.format(row['user_id'], row['email'], new_role))
 
-			# for debugging I just want 1 row
-			break
+			# for debugging I just want a few rows
+			#counter+=1
+			#if counter>10:
+			#	break
 
 
 def walklevel(some_dir, level=1):
