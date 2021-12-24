@@ -12,6 +12,7 @@ import pandas as pd
 # pip install psycopg2-binary
 import psycopg2
 
+
 def test_log_messages():
     logger.debug('test msg')
     logger.info('test msg')
