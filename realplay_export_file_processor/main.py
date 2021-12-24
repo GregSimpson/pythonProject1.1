@@ -1,18 +1,17 @@
+import configparser
 import csv
+from flask import Flask
 import http
 import json
-from pathlib import Path
 import logging.config
 import os
-
-import yaml
-from flask import Flask
-import configparser
 import pandas as pd
+from pathlib import Path
 
 # open a terminal 'at the bottom of intellij'
 # pip install psycopg2-binary
 import psycopg2
+import yaml
 
 
 def test_log_messages():
@@ -50,22 +49,23 @@ def create_app():
 	return app
 
 
-def step1_get_auth0_certificate(client_domain_param, protocol="https"):
+def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 	logger.debug("client_domain_param: {} :: protocol: {}".format(client_domain_param, protocol))
 
 	# management API access token
-	conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
-	payload = "{\"client_id\":\"" + parser.get(client_domain_param, 'client_id') + "\",\"client_secret\":\"" + parser.get(client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(client_domain_param, 'client_domain') + parser.get('Auth0Info', 'url_get_token')
 	headers = {'content-type': "application/json"}
+	conn_str = "{}.auth0.com".format(client_domain_param)
+	conn_api = "/oauth/token"
+	payload = "{\"client_id\":\"" + parser.get(client_domain_param, 'client_id') + "\",\"client_secret\":\"" + parser.get(client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(client_domain_param, 'client_domain') + parser.get('Auth0Info', 'url_get_token')
+	conn = http.client.HTTPSConnection(conn_str)
 
-	url = '{}://{}/oauth/token'.format(protocol, parser.get(client_domain_param, 'client_domain'))
-	logger.debug("url     : {} ".format(url))
-	logger.debug("gl.client.domain : {} ".format(parser.get(client_domain_param, 'client_domain')))
-	logger.debug("payload : \n{} ".format(payload))
-	logger.debug("headers : {} ".format(headers))
+	logger.debug("headers --\n{}\n--".format(headers))
+	logger.debug("conn_str : {}".format(conn_str))
+	logger.debug("conn_api : {}".format(conn_api))
 
-	conn.request("POST", "/oauth/token", payload, headers)
+	conn.request("POST", conn_api, payload, headers)
 	res = conn.getresponse()
+
 	data = res.read()
 	data = data.decode("utf-8")
 	data = json.loads(data)
@@ -80,14 +80,13 @@ def call_auth0_to_get_role_data(auth0_certificate, client_domain_param, user_nam
 	headers = {'authorization': 'Bearer {}'.format(auth0_certificate['access_token'])}
 	conn_str = "{}.auth0.com".format(client_domain_param)
 	conn_api = "/api/v2/users/{}/roles".format(user_name)
-
 	conn = http.client.HTTPSConnection(conn_str)
-	conn.request("GET", conn_api, headers=headers)
 
 	logger.debug("headers --\n{}\n--".format(headers))
 	logger.debug("conn_str : {}".format(conn_str))
 	logger.debug("conn_api : {}".format(conn_api))
 
+	conn.request("GET", conn_api, headers=headers)
 	res = conn.getresponse()
 	data = res.read()
 	
@@ -104,20 +103,13 @@ def call_auth0_to_get_role_data(auth0_certificate, client_domain_param, user_nam
 	return data_pretty_printed
 
 
-# TODO 
-#  this method can go away
-def get_auth0_certificate(client_domain_param, protocol="https"):
-	logger.debug("calling step1_get_auth0_certificate with domain  :{} :: protocol {}".format(client_domain_param, protocol))
-	return step1_get_auth0_certificate(client_domain_param, protocol)
-
-
 def get_auth0_role_data(auth0_certificate, client_domain_param, user_name):
 	logger.debug("calling call_auth0_to_get_role_data with auth0_cert  :{} :: {}".format(client_domain_param, user_name))
 	return call_auth0_to_get_role_data(auth0_certificate, client_domain_param, user_name)
 
 
 def process_this_df(this_df, upload_filename, client_domain_param):
-	auth0_certificate = get_auth0_certificate(client_domain_param)
+	auth0_certificate = call_auth0_to_get_certificate(client_domain_param)
 
 	if 'access_token' not in auth0_certificate:
 		logger.error('client : {} - auth0_cert :: {}\n'.format(client_domain_param,auth0_certificate))
@@ -157,6 +149,8 @@ def generate_upload_files_from_auth0_exports(json_or_csv="csv"):
 	output_dir = Path('{}'.format(parser.get('user-export-file', 'output')))
 	output_dir.mkdir(parents=True, exist_ok=True)
 
+	# TODO
+	#  maybe clean this up to accept '.' or no '.'
 	src_extension = ".{}".format(json_or_csv)
 
 	# r=root, d=directories, f = files
@@ -225,14 +219,14 @@ def load_env_db_info(db_settings, environment='DEV_DB'):
 def process_upload_files_incomplete_for_now():
 	# TODO
 	#  see notes below
-	logger.debug('Begin')
-
 	upload_source_dir = parser.get('user-export-file', 'output')
 	logger.debug(upload_source_dir)
 
 	postgres_envs = parser.get('Postgres_DBs', 'db_list').split(',')
 	logger.debug('postgres_d : {}'.format(postgres_envs))
 
+	# TODO
+	#  this might be removable TEST FIRST
 	db_settings = {
 		'postgres_hostname': " "
 		, 'postgres_port': " "
@@ -247,9 +241,6 @@ def process_upload_files_incomplete_for_now():
 		logger.debug('processing env : {}'.format(environment))
 		if environment.lower() == 'dev':
 			logger.debug('found DEV env : {}'.format(environment))
-			# TODO
-			#  maybe remove the assignment TEST FIRST
-			#db_settings = load_env_db_info(db_settings, 'DEV_DB')
 			load_env_db_info(db_settings, 'DEV_DB')
 
 		elif (environment.lower() == 'qa'):
