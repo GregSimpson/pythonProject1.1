@@ -10,6 +10,7 @@ from flask import Flask
 import configparser
 import pandas as pd
 
+# open a terminal 'at the bottom of intellij'
 # pip install psycopg2-binary
 import psycopg2
 
@@ -45,6 +46,8 @@ def load_settings():
 def create_app():
 	app = Flask(__name__)
 
+	#output_dir = Path('{}'.format(parser.get('user-export-file', 'output')))
+	#output_dir.mkdir(parents=True, exist_ok=True)
 	setup_logging()
 	load_settings()
 
@@ -120,13 +123,21 @@ def get_auth0_role_data(client_domain_param, user_name):
 
 def process_this_df(this_df, upload_filename, client_domain_param):
 	auth0_certificate = get_auth0_certificate(client_domain_param)
-	logger.debug('auth0_cert :: {}'.format(auth0_certificate))
+
+	if 'access_token' not in auth0_certificate:
+		logger.error('client : {} - auth0_cert :: {}\n'.format(client_domain_param,auth0_certificate))
+		return
+	logger.debug('client : {} - auth0_cert :: {}'.format(client_domain_param, auth0_certificate))
+	logger.info('client : {} - auth0_cert :: {}'.format(client_domain_param, auth0_certificate))
 	
-	#with open(upload_filename, 'w') as file_out:
-#		for index, row in this_df.iterrows():
-#			new_role = get_auth0_role_data(client_domain_param,row['user_id'])
-#			logging.info("writing {} :{},{},{}".format(upload_filename, row['user_id'], row['email'], new_role))
-#			file_out.write('\n{},{},{}'.format(row['user_id'], row['email'], new_role))
+	with open(upload_filename, 'w') as file_out:
+		for index, row in this_df.iterrows():
+			new_role = get_auth0_role_data(client_domain_param,row['user_id'])
+			logging.info("domain {} - writing {} :{},{},{}".format(client_domain_param, upload_filename, row['user_id'], row['email'], new_role))
+			file_out.write('\n{},{},{}'.format(row['user_id'], row['email'], new_role))
+
+			# for debugging I just want 1 row
+			break
 
 
 def walklevel(some_dir, level=1):
@@ -140,7 +151,7 @@ def walklevel(some_dir, level=1):
 			del dirs[:]
 
 
-def process_input_files(json_or_csv):
+def process_input_files(json_or_csv="csv"):
 	# Getting the work directory (cwd)
 	source_dir = parser.get('user-export-file', 'source')
 
@@ -159,11 +170,11 @@ def process_input_files(json_or_csv):
 				upload_filename = (
 					"{}/{}{}{}".format(output_dir, parser.get('user-export-file', 'output_prefix'), file_root, '.csv'))
 
-				logger.info('\tfull_path          : {}'.format(full_path))
-				logger.info('\tsource_dir         : {}'.format(source_dir))
-				logger.info('\tfile_root          : {}'.format(file_root))
-				logger.info('\tupload_filename    : {}'.format(upload_filename))
-				logger.info('\toutput_dir         : {}'.format(output_dir))
+				logger.debug('\tfull_path          : {}'.format(full_path))
+				logger.debug('\tsource_dir         : {}'.format(source_dir))
+				logger.debug('\tfile_root          : {}'.format(file_root))
+				logger.debug('\tupload_filename    : {}'.format(upload_filename))
+				logger.debug('\toutput_dir         : {}'.format(output_dir))
 
 				if (src_extension == '.json'):
 					this_df = pd.read_json(full_path, lines=True)
@@ -177,7 +188,6 @@ def process_input_files(json_or_csv):
 				#  loop over the rows - make a call to auth0/users to get the roles
 				#  write the user_id,email, roles to a new file : $file_root + 'processed' + .json
 				process_this_df(this_df, upload_filename, file_root)
-				#process_this_df(this_df, upload_filename, file_root)
 
 
 # def connect_to_db(postgres_hostname,postgres_ip,postgres_port,postgres_host,postgres_db_name,postgres_user,postgres_pswd):
@@ -192,7 +202,7 @@ def connect_to_db(postgres_hostname, postgres_port, postgres_host, postgres_db_n
 		, host=postgres_host
 		, port=postgres_port
 	)
-	logger.debug("connected to a db (I think) ")
+	logger.debug("connected to a db")
 	return conn
 
 
@@ -202,6 +212,16 @@ def run_a_db_query(db_conn, my_stmt):
 	items = cur.fetchall()
 	return items
 	# logger.debug(items)
+
+
+def load_env_db_info(db_settings, environment='DEV_DB'):
+	db_settings['postgres_hostname'] = parser.get(environment, 'hostname', fallback=" ")
+	# db_settings['postgres_ip'] = parser.get(environment, 'private ip', fallback=" ")
+	db_settings['postgres_port'] = parser.get(environment, 'port', fallback=" ")
+	db_settings['postgres_host'] = parser.get(environment, 'host', fallback=" ")
+	db_settings['postgres_db_name'] = parser.get(environment, 'db_name', fallback=" ")
+	db_settings['postgres_user'] = parser.get(environment, 'user', fallback=" ")
+	db_settings['postgres_pswd'] = parser.get(environment, 'pswd', fallback=" ")
 
 
 def process_upload_files():
@@ -214,59 +234,63 @@ def process_upload_files():
 	postgres_envs = parser.get('Postgres_DBs', 'db_list').split(',')
 	logger.debug('postgres_d : {}'.format(postgres_envs))
 
-	postgres_hostname = " "
-	# postgres_ip = " "
-	postgres_port = " "
-	postgres_host = " "
-	postgres_db_name = " "
-	postgres_user = " "
-	postgres_pswd = " "
+	db_settings = {}
+	db_settings['postgres_hostname'] = " "
+	# db_settings['postgres_ip'] = " "
+	db_settings['postgres_port'] = " "
+	db_settings['postgres_host'] = " "
+	db_settings['postgres_db_name'] = " "
+	db_settings['postgres_user'] = " "
+	db_settings['postgres_pswd'] = " "
 
 	for environment in parser.get('Postgres_DBs', 'db_list').split(','):
 		logger.debug('processing env : {}'.format(environment))
 		if (environment.lower() == 'dev'):
 			logger.debug('found DEV env : {}'.format(environment))
-			postgres_hostname = parser.get('DEV_DB', 'hostname', fallback=" ")
-			# postgres_ip = parser.get('DEV_DB', 'private ip', fallback=" ")
-			postgres_port = parser.get('DEV_DB', 'port', fallback=" ")
-			postgres_host = parser.get('DEV_DB', 'host', fallback=" ")
-			postgres_db_name = parser.get('DEV_DB', 'db_name', fallback=" ")
-			postgres_user = parser.get('DEV_DB', 'user', fallback=" ")
-			postgres_pswd = parser.get('DEV_DB', 'pswd', fallback=" ")
+			db_settings = load_env_db_info(db_settings, 'DEV_DB')
+			#postgres_hostname = parser.get('DEV_DB', 'hostname', fallback=" ")
+			## postgres_ip = parser.get('DEV_DB', 'private ip', fallback=" ")
+			#postgres_port = parser.get('DEV_DB', 'port', fallback=" ")
+			#postgres_host = parser.get('DEV_DB', 'host', fallback=" ")
+			#postgres_db_name = parser.get('DEV_DB', 'db_name', fallback=" ")
+			#postgres_user = parser.get('DEV_DB', 'user', fallback=" ")
+			#postgres_pswd = parser.get('DEV_DB', 'pswd', fallback=" ")
 
 		elif (environment.lower() == 'qa'):
 			logger.debug('found QA env : {}'.format(environment))
-			postgres_hostname = parser.get('QA_DB', 'hostname', fallback=" ")
-			# postgres_ip = parser.get('QA_DB', 'private ip', fallback=" ")
-			postgres_port = parser.get('QA_DB', 'port', fallback=" ")
-			postgres_host = parser.get('QA_DB', 'host', fallback=" ")
-			postgres_db_name = parser.get('QA_DB', 'db_name', fallback=" ")
-			postgres_user = parser.get('QA_DB', 'user', fallback=" ")
-			postgres_pswd = parser.get('QA_DB', 'pswd', fallback=" ")
+			load_env_db_info('QA_DB')
+			#postgres_hostname = parser.get('QA_DB', 'hostname', fallback=" ")
+			## postgres_ip = parser.get('QA_DB', 'private ip', fallback=" ")
+			#postgres_port = parser.get('QA_DB', 'port', fallback=" ")
+			#postgres_host = parser.get('QA_DB', 'host', fallback=" ")
+			#postgres_db_name = parser.get('QA_DB', 'db_name', fallback=" ")
+			#postgres_user = parser.get('QA_DB', 'user', fallback=" ")
+			#postgres_pswd = parser.get('QA_DB', 'pswd', fallback=" ")
 
 		elif (environment.lower() == 'prod'):
 			logger.debug('found PROD env : {}'.format(environment))
-			postgres_hostname = parser.get('PROD_DB', 'hostname', fallback=" ")
-			# postgres_ip = parser.get('PROD_DB', 'private ip', fallback=" ")
-			postgres_port = parser.get('PROD_DB', 'port', fallback=" ")
-			postgres_host = parser.get('PROD_DB', 'host', fallback=" ")
-			postgres_db_name = parser.get('PROD_DB', 'db_name', fallback=" ")
-			postgres_user = parser.get('PROD_DB', 'user', fallback=" ")
-			postgres_pswd = parser.get('PROD_DB', 'pswd', fallback=" ")
+			load_env_db_info('PROD_DB')
+			#postgres_hostname = parser.get('PROD_DB', 'hostname', fallback=" ")
+			## postgres_ip = parser.get('PROD_DB', 'private ip', fallback=" ")
+			#postgres_port = parser.get('PROD_DB', 'port', fallback=" ")
+			#postgres_host = parser.get('PROD_DB', 'host', fallback=" ")
+			#postgres_db_name = parser.get('PROD_DB', 'db_name', fallback=" ")
+			#postgres_user = parser.get('PROD_DB', 'user', fallback=" ")
+			#postgres_pswd = parser.get('PROD_DB', 'pswd', fallback=" ")
 
-		if (postgres_user == " "):
+		if (db_settings['postgres_user'] == " "):
 			logger.error('postgres database info not found - exiting')
 			# exit(5)  # just made up a number
 			break
 
 	db_conn = connect_to_db(
-		postgres_hostname,
-		# postgres_ip,
-		postgres_port,
-		postgres_host,
-		postgres_db_name,
-		postgres_user,
-		postgres_pswd
+		db_settings['postgres_hostname'],
+		# db_settings['postgres_ip'],
+		db_settings['postgres_port'],
+		db_settings['postgres_host'],
+		db_settings['postgres_db_name'],
+		db_settings['postgres_user'],
+		db_settings['postgres_pswd']
 	)
 
 	cur = db_conn.cursor()
@@ -362,6 +386,11 @@ def gjs_junk_holeder():
 if __name__ == '__main__':
 	parser = configparser.ConfigParser()
 	logger = logging.getLogger("RealplayExportProcess")
+
+	#log_dir = Path('{}'.format(parser.get('user-export-file', 'output')))
+	log_dir = Path("logs")
+	log_dir.mkdir(parents=True, exist_ok=True)
+
 	create_app()
 	logger.debug(' start ')
 
