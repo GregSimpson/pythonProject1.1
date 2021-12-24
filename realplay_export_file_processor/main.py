@@ -1,7 +1,7 @@
+import csv
 import http
 import json
 from pathlib import Path
-from datetime import datetime
 import logging.config
 import os
 
@@ -31,7 +31,6 @@ def setup_logging():
 	logging.config.dictConfig(config)
 
 
-
 def load_settings():
 	# https://www.tutorialspoint.com/configuration-file-parser-in-python-configparser
 	# parser = configparser.ConfigParser()
@@ -45,9 +44,6 @@ def load_settings():
 
 def create_app():
 	app = Flask(__name__)
-
-	#output_dir = Path('{}'.format(parser.get('user-export-file', 'output')))
-	#output_dir.mkdir(parents=True, exist_ok=True)
 	setup_logging()
 	load_settings()
 
@@ -59,7 +55,6 @@ def step1_get_auth0_certificate(client_domain_param, protocol="https"):
 
 	# management API access token
 	conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
-	#payload = "{\"client_id\":\"" + gl.client.id + "\",\"client_secret\":\"" + gl.client.secret + "\",\"audience\":\"" + protocol + "://" + gl.client.domain + gl.auth0.url_get_token
 	payload = "{\"client_id\":\"" + parser.get(client_domain_param, 'client_id') + "\",\"client_secret\":\"" + parser.get(client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(client_domain_param, 'client_domain') + parser.get('Auth0Info', 'url_get_token')
 	headers = {'content-type': "application/json"}
 
@@ -75,83 +70,50 @@ def step1_get_auth0_certificate(client_domain_param, protocol="https"):
 	data = data.decode("utf-8")
 	data = json.loads(data)
 
-	# print (data)
 	return data
 
 
 # https://auth0.com/docs/api/management/v2#!/Jobs/post_users_exports
-def export_user(auth0_certificate, client_domain_param, user_name):
+def call_auth0_to_get_role_data(auth0_certificate, client_domain_param, user_name):
+	logger.debug(" seeking {} :: {}".format(client_domain_param, user_name))
 
-	if (user_name == 'auth0|6018408ed01fc80071cd4564'):
-		logger.debug(" seeking {} :: {}".format(client_domain_param, user_name))
-		logger.debug("auth0_certificate - access-token\n{}\n".format(auth0_certificate['access_token']))
+	headers = {'authorization': 'Bearer {}'.format(auth0_certificate['access_token'])}
+	conn_str = "{}.auth0.com".format(client_domain_param)
+	conn_api = "/api/v2/users/{}/roles".format(user_name)
 
-		#headers = {'authorization': '{}'.format(auth0_certificate)}
-		#logger.debug("headers --\n{}\n--".format(headers))
+	conn = http.client.HTTPSConnection(conn_str)
+	conn.request("GET", conn_api, headers=headers)
 
-		#  original - working line
-		#conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
+	logger.debug("headers --\n{}\n--".format(headers))
+	logger.debug("conn_str : {}".format(conn_str))
+	logger.debug("conn_api : {}".format(conn_api))
 
-		#conn = http.client.HTTPSConnection("{}.auth0.com".format(client_domain_param))
-		#conn = http.client.HTTPSConnection(conn_str)
+	res = conn.getresponse()
+	data = res.read()
+	
+	# TODO 
+	#  check result list for 'error' and handle that
+	#f (data['statusCode'] != 200):
+	logger.error(type(data))
+	logger.error(data)
 
-		#  these sort of work , but stop at a 'redirect' message
-		# conn.request("GET", "/tenants", headers=headers)
-		#req_str = "/users/{}/roles".format(user_name)
-		#logger.debug(" GET : {} : {}".format(req_str, headers))
-		##conn.request("GET", "/users/"+ user_name, headers=headers)
-		#conn.request("GET", req_str, headers=headers)
+	data_as_json = json.loads(data.decode('utf-8'))
+	data_pretty_printed = json.dumps(data_as_json, indent=2, sort_keys=True)
+	logger.debug(data_pretty_printed)
 
-
-		#  --header 'authorization: Bearer eyJhb...'
-		#headers = {'authorization: Bearer {}'.format(auth0_certificate['access_token'])}
-		headers = {'authorization': '{}'.format(auth0_certificate)}
-		headers = {'authorization': 'Bearer {}'.format(auth0_certificate['access_token'])}
-		logger.debug("headers --\n{}\n--".format(headers))
-		#conn_str = "{}.auth0.com".format(client_domain_param)
-		#logging.debug("  conn_str : {}".format(conn_str))
-		conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
-		conn.request("GET", "/api/v2/users/auth0|6018408ed01fc80071cd4564/roles", headers=headers)
+	return data_pretty_printed
 
 
-
-		#bodyparam = "{123}"
-		## conn.request("POST", "/api/v2/jobs/users-exports", headers=headers, json=bodyparam)
-		#conn.request("POST", "/jobs/users-exports", headers=headers)
-
-		res = conn.getresponse()
-		data = res.read()
-		#f (data['statusCode'] != 200):
-		logger.error(data)
-		#exit(66)
-		return data
-
-		#logger.debug(data)
-		#return data
-
-
+# TODO 
+#  this method can go away
 def get_auth0_certificate(client_domain_param, protocol="https"):
-	# for now just make dummy data from milli-seconds
-	logger.debug("\t\tI would call auth0 and pass :{} :: {}".format(client_domain_param, protocol))
+	logger.debug("calling step1_get_auth0_certificate with domain  :{} :: protocol {}".format(client_domain_param, protocol))
 	return step1_get_auth0_certificate(client_domain_param, protocol)
-	#milli_date = datetime.utcnow().strftime('%A%d-%H:%M.%f')
-	#logger.debug("\treturning milli date : {} ".format(milli_date))
-
-	#return str(milli_date)
 
 
 def get_auth0_role_data(auth0_certificate, client_domain_param, user_name):
-	# for now just make dummy data from milli-seconds
-	if (user_name == 'auth0|6018408ed01fc80071cd4564'):
-		logger.debug("calling export_user with auth0_cert  :{} :: {}".format(client_domain_param, user_name))
-		role_found = export_user(auth0_certificate, client_domain_param, user_name)
-		logger.debug(" ROLE FOUND : {}".format(role_found))
-		return role_found
-
-
-	milli_date = datetime.utcnow().strftime('%A%d-%H:%M.%f')
-	logger.debug("\treturning milli date : {} ".format(milli_date))
-	return str(milli_date)
+	logger.debug("calling call_auth0_to_get_role_data with auth0_cert  :{} :: {}".format(client_domain_param, user_name))
+	return call_auth0_to_get_role_data(auth0_certificate, client_domain_param, user_name)
 
 
 def process_this_df(this_df, upload_filename, client_domain_param):
@@ -162,21 +124,22 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 		return
 	logger.debug('client : {} - auth0_cert :: {}'.format(client_domain_param, auth0_certificate))
 	logger.info('client : {} - auth0_cert :: {}'.format(client_domain_param, auth0_certificate))
-	
+
+	#with open(upload_filename, 'w') as file_out:
+	#	for index, row in this_df.iterrows():
+	#		new_role = get_auth0_role_data(auth0_certificate,client_domain_param,row['user_id'])
+	#		logging.info("domain {} - writing {} :{},{},{}".format(client_domain_param, upload_filename, row['user_id'], row['email'], new_role))
+	#		file_out.write('\n{},{},{}'.format(row['user_id'], row['email'], new_role))
+
 	with open(upload_filename, 'w') as file_out:
-		counter=0
+		writer = csv.writer(file_out, delimiter="!")
 		for index, row in this_df.iterrows():
 			new_role = get_auth0_role_data(auth0_certificate,client_domain_param,row['user_id'])
 			logging.info("domain {} - writing {} :{},{},{}".format(client_domain_param, upload_filename, row['user_id'], row['email'], new_role))
-			file_out.write('\n{},{},{}'.format(row['user_id'], row['email'], new_role))
-
-			# for debugging I just want a few rows
-			#counter+=1
-			#if counter>10:
-			#	break
+			writer.writerow([row['user_id'], row['email'], new_role])
 
 
-def walklevel(some_dir, level=1):
+def walk_level(some_dir, level=1):
 	some_dir = some_dir.rstrip(os.path.sep)
 	assert os.path.isdir(some_dir)
 	num_sep = some_dir.count(os.path.sep)
@@ -187,7 +150,7 @@ def walklevel(some_dir, level=1):
 			del dirs[:]
 
 
-def process_input_files(json_or_csv="csv"):
+def generate_upload_files_from_auth0_exports(json_or_csv="csv"):
 	# Getting the work directory (cwd)
 	source_dir = parser.get('user-export-file', 'source')
 
@@ -197,7 +160,7 @@ def process_input_files(json_or_csv="csv"):
 	src_extension = ".{}".format(json_or_csv)
 
 	# r=root, d=directories, f = files
-	for r, d, f in walklevel(source_dir, 0):
+	for r, d, f in walk_level(source_dir, 0):
 		for file in f:
 			if file.endswith(src_extension):
 				full_path = os.path.join(r, file)
@@ -226,9 +189,7 @@ def process_input_files(json_or_csv="csv"):
 				process_this_df(this_df, upload_filename, file_root)
 
 
-# def connect_to_db(postgres_hostname,postgres_ip,postgres_port,postgres_host,postgres_db_name,postgres_user,postgres_pswd):
-def connect_to_db(postgres_hostname, postgres_port, postgres_host, postgres_db_name, postgres_user,
-                  postgres_pswd):
+def connect_to_db(postgres_hostname, postgres_port, postgres_host, postgres_db_name, postgres_user, postgres_pswd):
 	logger.debug("establishing the db connection to: {}".format(postgres_hostname))
 	# establishing the connection
 	conn = psycopg2.connect(
@@ -239,6 +200,8 @@ def connect_to_db(postgres_hostname, postgres_port, postgres_host, postgres_db_n
 		, port=postgres_port
 	)
 	logger.debug("connected to a db")
+	# TODO
+	#  check for success ro failure
 	return conn
 
 
@@ -247,7 +210,6 @@ def run_a_db_query(db_conn, my_stmt):
 	cur.execute(my_stmt)
 	items = cur.fetchall()
 	return items
-	# logger.debug(items)
 
 
 def load_env_db_info(db_settings, environment='DEV_DB'):
@@ -260,59 +222,43 @@ def load_env_db_info(db_settings, environment='DEV_DB'):
 	db_settings['postgres_pswd'] = parser.get(environment, 'pswd', fallback=" ")
 
 
-def process_upload_files():
+def process_upload_files_incomplete_for_now():
+	# TODO
+	#  see notes below
 	logger.debug('Begin')
 
-	# upload_source_dir = Path('{}'.format(parser.get('user-export-file', 'output')))
 	upload_source_dir = parser.get('user-export-file', 'output')
 	logger.debug(upload_source_dir)
 
 	postgres_envs = parser.get('Postgres_DBs', 'db_list').split(',')
 	logger.debug('postgres_d : {}'.format(postgres_envs))
 
-	db_settings = {}
-	db_settings['postgres_hostname'] = " "
+	db_settings = {
+		'postgres_hostname': " "
+		, 'postgres_port': " "
+		, 'postgres_host': " "
+		, 'postgres_db_name': " "
+		, 'postgres_user': " "
+		, 'postgres_pswd': " "
+	}
 	# db_settings['postgres_ip'] = " "
-	db_settings['postgres_port'] = " "
-	db_settings['postgres_host'] = " "
-	db_settings['postgres_db_name'] = " "
-	db_settings['postgres_user'] = " "
-	db_settings['postgres_pswd'] = " "
 
 	for environment in parser.get('Postgres_DBs', 'db_list').split(','):
 		logger.debug('processing env : {}'.format(environment))
-		if (environment.lower() == 'dev'):
+		if environment.lower() == 'dev':
 			logger.debug('found DEV env : {}'.format(environment))
-			db_settings = load_env_db_info(db_settings, 'DEV_DB')
-			#postgres_hostname = parser.get('DEV_DB', 'hostname', fallback=" ")
-			## postgres_ip = parser.get('DEV_DB', 'private ip', fallback=" ")
-			#postgres_port = parser.get('DEV_DB', 'port', fallback=" ")
-			#postgres_host = parser.get('DEV_DB', 'host', fallback=" ")
-			#postgres_db_name = parser.get('DEV_DB', 'db_name', fallback=" ")
-			#postgres_user = parser.get('DEV_DB', 'user', fallback=" ")
-			#postgres_pswd = parser.get('DEV_DB', 'pswd', fallback=" ")
+			# TODO
+			#  maybe remove the assignment TEST FIRST
+			#db_settings = load_env_db_info(db_settings, 'DEV_DB')
+			load_env_db_info(db_settings, 'DEV_DB')
 
 		elif (environment.lower() == 'qa'):
 			logger.debug('found QA env : {}'.format(environment))
 			load_env_db_info('QA_DB')
-			#postgres_hostname = parser.get('QA_DB', 'hostname', fallback=" ")
-			## postgres_ip = parser.get('QA_DB', 'private ip', fallback=" ")
-			#postgres_port = parser.get('QA_DB', 'port', fallback=" ")
-			#postgres_host = parser.get('QA_DB', 'host', fallback=" ")
-			#postgres_db_name = parser.get('QA_DB', 'db_name', fallback=" ")
-			#postgres_user = parser.get('QA_DB', 'user', fallback=" ")
-			#postgres_pswd = parser.get('QA_DB', 'pswd', fallback=" ")
 
 		elif (environment.lower() == 'prod'):
 			logger.debug('found PROD env : {}'.format(environment))
 			load_env_db_info('PROD_DB')
-			#postgres_hostname = parser.get('PROD_DB', 'hostname', fallback=" ")
-			## postgres_ip = parser.get('PROD_DB', 'private ip', fallback=" ")
-			#postgres_port = parser.get('PROD_DB', 'port', fallback=" ")
-			#postgres_host = parser.get('PROD_DB', 'host', fallback=" ")
-			#postgres_db_name = parser.get('PROD_DB', 'db_name', fallback=" ")
-			#postgres_user = parser.get('PROD_DB', 'user', fallback=" ")
-			#postgres_pswd = parser.get('PROD_DB', 'pswd', fallback=" ")
 
 		if (db_settings['postgres_user'] == " "):
 			logger.error('postgres database info not found - exiting')
@@ -344,8 +290,13 @@ def process_upload_files():
 
 	#  https://www.oodlestechnologies.com/blogs/Postgres-Sql-Update-Record-in-Bulk-from-CSV-file/
 
+	# TODO
+	#  need privs to create temp table
+	#  upload files to the temp table
+	#  update realplay_user ROLES column from temp table
+	#  where temp_table.userid = realplay_user.userid
 	# r=root, d=directories, f = files
-	for r, d, f in walklevel(upload_source_dir, 0):
+	for r, d, f in walk_level(upload_source_dir, 0):
 		for file in f:
 
 			if file.endswith('.csv'):
@@ -372,53 +323,6 @@ def process_upload_files():
 				# cur.execute(my_stmt)
 
 
-def gjs_junk_holeder():
-	logger.debug('just stuff')
-	'''
-	my_stmt = "create temporary table gjs_test (user_id character varying(255) , email character varying(255) , roles character varying(255) );"
-	cur.execute(my_stmt)
-
-	my_stmt = "copy public.gjs_test <filename> delimiter ',' csv noheader>;"
-	cur.execute(my_stmt)
-
-	my_stmt = "select * from gjs_test;"
-	cur.execute(my_stmt)
-	items = cur.fetchall()
-	logger.debug(items)
-	'''
-
-	# my_stmt = "create temporary table gjs_test as select * from realplay_user;"
-	# my_stmt = "create table public.gjs_test (user_id character varying(255) , email character varying(255) , roles character varying(255) );"
-	###my_stmt = "create  table public.gjs_realplay_user as select * from realplay_user;"
-	###cur.execute(my_stmt)
-
-	# my_stmt = "select * from  gjs_realplay_user;"
-	# cur.execute(my_stmt)
-	# items = cur.fetchall()
-	# logger.debug(items)
-
-	# my_stmt = "create  table public.gjs_test as select realplay_user.userid , realplay_user.email , realplay_user.tenant from realplay_user;"
-	# cur.execute(my_stmt)
-
-	# my_stmt = "select * from  gjs_test;"
-	# cur.execute(my_stmt)
-	# items = cur.fetchall()
-	# logger.debug(items)
-
-	##my_stmt = "select nspname from pg_namespace where oid  =  pg_my_temp_schema();"
-	##cur.execute(my_stmt)
-	##items = cur.fetchall()
-	##logger.debug(items)
-
-	# my_stmt = "drop table gjs_test;"
-	# cur.execute(my_stmt)
-
-	# my_stmt = "select * from  gjs_test;"
-	# cur.execute(my_stmt)
-	# items = cur.fetchall()
-	# logger.debug(items)
-
-
 if __name__ == '__main__':
 	parser = configparser.ConfigParser()
 	logger = logging.getLogger("RealplayExportProcess")
@@ -428,12 +332,14 @@ if __name__ == '__main__':
 	log_dir.mkdir(parents=True, exist_ok=True)
 
 	create_app()
-	logger.debug(' start ')
+	logger.debug('BEGIN process')
 
 	# test_log_messages()
 
 	### either 'json' or 'csv'
-	##process_input_files('json')
-	process_input_files('csv')
+	##generate_upload_files_from_auth0_exports('json')
+	generate_upload_files_from_auth0_exports('csv')
 
-	#process_upload_files()
+	#process_upload_files_incomplete_for_now()
+
+	logger.debug('END process')

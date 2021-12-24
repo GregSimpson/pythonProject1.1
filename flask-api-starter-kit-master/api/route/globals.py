@@ -22,9 +22,9 @@ class runtime :
     output = 'stdio'
 
 class client :
-    id = parser.get('ClientInfo','client_id')
-    secret = parser.get('ClientInfo','client_secret')
-    domain = parser.get('ClientInfo', 'client_domain')
+    id = parser.get('ttec-ped-developers','client_id')
+    secret = parser.get('ttec-ped-developers','client_secret')
+    domain = parser.get('ttec-ped-developers', 'client_domain')
 
 class auth0 :
     url_get_token = parser.get('Auth0Info','url_get_token')
