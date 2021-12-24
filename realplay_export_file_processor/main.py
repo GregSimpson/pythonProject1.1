@@ -1,3 +1,5 @@
+import http
+import json
 from pathlib import Path
 from datetime import datetime
 import logging.config
@@ -28,6 +30,7 @@ def setup_logging():
 	logging.config.dictConfig(config)
 
 
+
 def load_settings():
 	# https://www.tutorialspoint.com/configuration-file-parser-in-python-configparser
 	# parser = configparser.ConfigParser()
@@ -41,27 +44,89 @@ def load_settings():
 
 def create_app():
 	app = Flask(__name__)
+
 	setup_logging()
 	load_settings()
 
 	return app
 
 
-def call_auth0_for_role_data(user_name):
+def step1_get_auth0_certificate(client_domain_param, protocol="https"):
+	logger.debug("client_domain_param: {} :: protocol: {}".format(client_domain_param, protocol))
+
+	# management API access token
+	conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
+	#payload = "{\"client_id\":\"" + gl.client.id + "\",\"client_secret\":\"" + gl.client.secret + "\",\"audience\":\"" + protocol + "://" + gl.client.domain + gl.auth0.url_get_token
+	payload = "{\"client_id\":\"" + parser.get(client_domain_param, 'client_id') + "\",\"client_secret\":\"" + parser.get(client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(client_domain_param, 'client_domain') + parser.get('Auth0Info', 'url_get_token')
+	headers = {'content-type': "application/json"}
+
+	url = '{}://{}/oauth/token'.format(protocol, parser.get(client_domain_param, 'client_domain'))
+	logger.debug("url     : {} ".format(url))
+	logger.debug("gl.client.domain : \n{} ".format(parser.get(client_domain_param, 'client_domain')))
+	logger.debug("payload : \n{} ".format(payload))
+	logger.debug("headers : {} ".format(headers))
+
+	conn.request("POST", "/oauth/token", payload, headers)
+	res = conn.getresponse()
+	data = res.read()
+	data = data.decode("utf-8")
+	data = json.loads(data)
+
+	# print (data)
+	return data
+
+
+# https://auth0.com/docs/api/management/v2#!/Jobs/post_users_exports
+def export_user(self, auth0_certificate, this_user):
+	logger.debug("auth0_certificate\n{}\n".format(auth0_certificate))
+	logger.debug("auth0_certificate - access-token\n{}\n".format(auth0_certificate['access_token']))
+
+	headers = {'authorization': '{}'.format(auth0_certificate)}
+	logger.debug("headers --\n{}\n--".format(headers))
+	# conn = http.client.HTTPSConnection("realplayserver.dce1.humanify.com")
+	# conn = http.client.HTTPSConnection("realplayserver.dce1.humanify.com")
+	conn = http.client.HTTPSConnection("ttec-ped-developers.auth0.com")
+
+	#  these sort of work , but stop at a 'redirect' message
+	# conn.request("GET", "/tenants", headers=headers)
+	conn.request("GET", "/users/"+ this_user, headers=headers)
+	#bodyparam = "{123}"
+	## conn.request("POST", "/api/v2/jobs/users-exports", headers=headers, json=bodyparam)
+	#conn.request("POST", "/jobs/users-exports", headers=headers)
+
+	res = conn.getresponse()
+	data = res.read()
+	logger.debug(data)
+
+
+def get_auth0_certificate(client_domain_param, protocol="https"):
 	# for now just make dummy data from milli-seconds
-	logger.debug("\t\tI would call auth0 and pass : {}".format(user_name))
+	logger.debug("\t\tI would call auth0 and pass :{} :: {}".format(client_domain_param, protocol))
+	return step1_get_auth0_certificate(client_domain_param, protocol)
+	#milli_date = datetime.utcnow().strftime('%A%d-%H:%M.%f')
+	#logger.debug("\treturning milli date : {} ".format(milli_date))
+
+	#return str(milli_date)
+
+
+def get_auth0_role_data(client_domain_param, user_name):
+	# for now just make dummy data from milli-seconds
+	logger.debug("\t\tI would call auth0 and pass :{} :: {}".format(client_domain_param, user_name))
 	milli_date = datetime.utcnow().strftime('%A%d-%H:%M.%f')
 	logger.debug("\treturning milli date : {} ".format(milli_date))
 
 	return str(milli_date)
 
 
-def process_this_df(this_df, upload_filename):
-	with open(upload_filename, 'w') as file_out:
-		for index, row in this_df.iterrows():
-			new_role = call_auth0_for_role_data(row['user_id'])
-			logging.debug("writing {} :{},{},{}".format(upload_filename, row['user_id'], row['email'], new_role))
-			file_out.write('\n{},{},{}'.format(row['user_id'], row['email'], new_role))
+def process_this_df(this_df, upload_filename, client_domain_param):
+	auth0_certificate = get_auth0_certificate(client_domain_param)
+	logger.debug('auth0_cert :: {}'.format(auth0_certificate))
+	
+	#with open(upload_filename, 'w') as file_out:
+#		for index, row in this_df.iterrows():
+#			new_role = get_auth0_role_data(client_domain_param,row['user_id'])
+#			logging.info("writing {} :{},{},{}".format(upload_filename, row['user_id'], row['email'], new_role))
+#			file_out.write('\n{},{},{}'.format(row['user_id'], row['email'], new_role))
 
 
 def walklevel(some_dir, level=1):
@@ -105,13 +170,14 @@ def process_input_files(json_or_csv):
 				if (src_extension == '.csv'):
 					this_df = pd.read_csv(full_path)
 
-				logger.debug(this_df.info)
+				#logger.debug(this_df.info)
 				logger.debug(this_df.style)
 
 				# we now have a dataframe for this file
 				#  loop over the rows - make a call to auth0/users to get the roles
 				#  write the user_id,email, roles to a new file : $file_root + 'processed' + .json
-				process_this_df(this_df, upload_filename)
+				process_this_df(this_df, upload_filename, file_root)
+				#process_this_df(this_df, upload_filename, file_root)
 
 
 # def connect_to_db(postgres_hostname,postgres_ip,postgres_port,postgres_host,postgres_db_name,postgres_user,postgres_pswd):
@@ -303,6 +369,6 @@ if __name__ == '__main__':
 
 	### either 'json' or 'csv'
 	##process_input_files('json')
-	# process_input_files('csv')
+	process_input_files('csv')
 
-	process_upload_files()
+	#process_upload_files()
