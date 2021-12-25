@@ -161,16 +161,22 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 				sleep(throttle_sleep)
 				user_counter = 0
 
-			new_role = call_auth0_to_get_role_data(auth0_certificate, client_domain_param, row['user_id'])
-
-			parsed_roles = json.loads(new_role)
+			parsed_roles = json.loads(call_auth0_to_get_role_data(auth0_certificate, client_domain_param, row['user_id']))
+			role_str = ""
 			for i in range(len(parsed_roles)):
-				logger.debug("--{}--\n".format(parsed_roles[i]))
+				role_str = "{}{}".format(role_str,parsed_roles[i]['name'])
+				if i < len(parsed_roles)-1:
+					role_str = "{},".format(role_str)
+				##logger.debug("--{}--\n".format(parsed_roles[i]))
+				#logger.debug("--{}--\n".format(parsed_roles[i]['name']))
 
+			#logging.info("domain {} - writing {} :{},{},{}".format(
+			#	client_domain_param, upload_filename, row['user_id'], row['email'], new_role))
+			# writer.writerow([row['user_id'], row['email'], new_role])
 
 			logging.info("domain {} - writing {} :{},{},{}".format(
-				client_domain_param, upload_filename, row['user_id'], row['email'], new_role))
-			writer.writerow([row['user_id'], row['email'], new_role])
+				client_domain_param, upload_filename, row['user_id'], row['email'], role_str))
+			writer.writerow([row['user_id'], row['email'], role_str])
 
 		logger.debug('\tSlept every {} users\t\tfor {} seconds\t\t{} times\n'.format(
 			throttle_counter, throttle_sleep, number_of_sleeps))
@@ -370,10 +376,11 @@ def process_upload_files_incomplete_for_now():
 				full_path = os.path.join(r, file)
 
 				try:
-					temp_table_name = 'gjs_test'
+					temp_table_name = 'role_upload_table'
+					logger.debug('upload file:\n\t{} to db::{}  table::{}'.format(full_path, db_settings['postgres_db_name'], temp_table_name))
+
 					# --- new query
-					#logger.debug('upload file:\n\t{}\n\tto {}'.format(full_path, postgres_db_name))
-					my_stmt = "create temporary table {} (user_id character varying(255) , email character varying(255) , roles character varying(255) );".format(temp_table_name)
+					my_stmt = "create temporary table {} (userid character varying(255) , email character varying(255) , auth0_roles character varying(255) );".format(temp_table_name)
 					logger.debug(my_stmt)
 					cur.execute(my_stmt)
 
@@ -390,23 +397,15 @@ def process_upload_files_incomplete_for_now():
 
 					# --- new query
 					#  upload csv file to temp table
-					###my_stmt = "COPY gjs_test FROM '{}' WITH (FORMAT csv);".format(full_path)
-					#my_stmt = "COPY gjs_test FROM '{}' DELIMITER '!' ;".format(full_path)
-					#logger.debug(my_stmt)
-					#cur.execute(my_stmt)
-					#row = cur.fetchone()
-
 					with open(full_path,'r') as f:
 						next(f)
 						cur.copy_from(f, temp_table_name, sep='!')
 					db_conn.commit()
 
-					#while row is not None:
-				#		logger.debug(row)
-			#			row = cur.fetchone()
-
 					# --- new query
+					# show temp table contents
 					my_stmt = "select * from {};".format(temp_table_name)
+					my_stmt = "select count(*) from {};".format(temp_table_name)
 					logger.debug(my_stmt)
 					cur.execute(my_stmt)
 					row = cur.fetchone()
@@ -415,6 +414,130 @@ def process_upload_files_incomplete_for_now():
 						logger.debug(row)
 						row = cur.fetchone()
 
+
+					realplay_user_table = "realplay_user"
+					test_realplay_user_table = "test_realplay_user"
+
+	                ###########################
+					#   TEMPORARY STUFF - BEGIN
+
+					# --- new query
+					# show realplay_user table contents
+					my_stmt = "select * from {};".format(realplay_user_table)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+					row = cur.fetchone()
+
+					while row is not None:
+						logger.debug(row)
+						row = cur.fetchone()
+
+					# --- new query
+					# create copy of realplay_user table
+					my_stmt = "create table {} as select * from {};".format(test_realplay_user_table, realplay_user_table)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+
+					# --- new query
+					#  desc table (basically)
+					my_stmt = "SELECT table_name, column_name, data_type FROM information_schema.columns WHERE table_name = '{}';".format(test_realplay_user_table)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+					row = cur.fetchone()
+
+					while row is not None:
+						logger.debug(row)
+						row = cur.fetchone()
+
+					# --- new query
+					#  desc table (basically)
+					my_stmt = "SELECT table_name, column_name, data_type FROM information_schema.columns WHERE table_name = '{}';".format(
+						realplay_user_table)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+					row = cur.fetchone()
+
+					while row is not None:
+						logger.debug(row)
+						row = cur.fetchone()
+
+					# --- new query
+					#  show the test_realplay_user_table
+					my_stmt = "SELECT * FROM {};".format(test_realplay_user_table)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+					row = cur.fetchone()
+
+					while row is not None:
+						logger.debug(row)
+						row = cur.fetchone()
+
+					# --- new query
+					#  show the test_realplay_user_table
+					my_stmt = "SELECT auth0_roles FROM {};".format(test_realplay_user_table)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+					row = cur.fetchone()
+
+					while row is not None:
+						logger.debug(row)
+						row = cur.fetchone()
+
+					#   TEMPORARY STUFF - END
+					###########################
+
+
+
+					# --- new query
+					# update realplay_user table from temp_table_name
+					#  set realplay_user.auth0_roles = temp_table_name.auth0_roles
+					#   where realplay_user.userid =  temp_table_name.userid
+					#my_stmt = "update table {} set auth0_roles = {}.auth0_roles where userid = {}.userid".format(realplay_user_table,temp_table_name,temp_table_name)
+					my_stmt = "update {} set auth0_roles = a.auth0_roles from {} a where a.userid = {}.userid".format(
+						test_realplay_user_table, temp_table_name, test_realplay_user_table)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+
+					# --- new query
+					#  show final table values
+					my_stmt = "SELECT * FROM {};".format(test_realplay_user_table)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+					row = cur.fetchone()
+
+					while row is not None:
+						logger.debug(row)
+						row = cur.fetchone()
+
+					# --- new query
+					#  show the test_realplay_user_table
+					#my_stmt = "SELECT userid, email, auth0_roles FROM {} where auth0_roles <> \"\" ;".format(test_realplay_user_table)
+					my_stmt = "SELECT count(*) FROM {} where auth0_roles is not null;".format(test_realplay_user_table)
+					my_stmt = "SELECT userid, email, auth0_roles FROM {} order by  auth0_roles asc ;".format(test_realplay_user_table)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+					row = cur.fetchone()
+
+					while row is not None:
+						logger.debug(row)
+						row = cur.fetchone()
+
+					# --- new query
+					#  show final table values
+					my_stmt = "SELECT count(*) from {} a , {} b where a.userid = b.userid".format(
+						test_realplay_user_table, temp_table_name)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+					row = cur.fetchone()
+
+					while row is not None:
+						logger.debug(row)
+						row = cur.fetchone()
+
+					# cleanup
+					# my_stmt = "drop table {}};"
+					# cur.execute(my_stmt)
+
 					cur.close()
 				except (Exception, psycopg2.DatabaseError) as error:
 					logger.error(error)
@@ -422,24 +545,7 @@ def process_upload_files_incomplete_for_now():
 					if db_conn is not None:
 						db_conn.close()
 
-				#stopped here
 
-				## this should work IF you get a superuser if
-				#my_stmt = "COPY gjs_test FROM '{}' WITH (FORMAT csv);".format(full_path)
-				#logger.debug("\t\t running this stmt\n{}".format(my_stmt))
-				## cur.execute(my_stmt)
-
-				# once that loads, run something like this to update from the new temp table:
-				# UPDATE original_table SET original_table.dob = temp_table.dob FROM temp_table
-				#  Where original_table.id = temp_table.id;
-
-				my_stmt = "select * from gjs_test;"
-				# cur.execute(my_stmt)
-				# items = cur.fetchall()
-				# logger.debug(items)
-
-				my_stmt = "drop table gjs_test;"
-				# cur.execute(my_stmt)
 
 	process_upload_files_incomplete_for_now_timer_stop = perf_counter()
 	timer_results("", "process_upload_files_incomplete_for_now_timer", process_upload_files_incomplete_for_now_timer_start,
