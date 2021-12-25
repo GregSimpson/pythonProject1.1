@@ -55,6 +55,7 @@ def create_app():
 
 def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 	call_auth0_to_get_certificate_timer_start = perf_counter()
+	###client_domain_param + call_auth0_to_get_certificate_timer_start = perf_counter()
 	logger.debug("client_domain_param: {} :: protocol: {}".format(client_domain_param, protocol))
 
 	# management API access token
@@ -74,6 +75,9 @@ def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 
 	conn.request("POST", conn_api, payload, headers)
 	res = conn.getresponse()
+	# TODO 
+	#  check result list for 'error' and handle that
+	# maybe - if (data['statusCode'] != 200):
 
 	data = res.read()
 	data = data.decode("utf-8")
@@ -102,11 +106,11 @@ def call_auth0_to_get_role_data(auth0_certificate, client_domain_param, user_nam
 
 	conn.request("GET", conn_api, headers=headers)
 	res = conn.getresponse()
-	data = res.read()
-
 	# TODO 
 	#  check result list for 'error' and handle that
-	# f (data['statusCode'] != 200):
+	# maybe - if (data['statusCode'] != 200):
+
+	data = res.read()
 	logger.debug(type(data))
 	logger.debug(data)
 
@@ -136,6 +140,10 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 	#		new_role = get_auth0_role_data(auth0_certificate,client_domain_param,row['user_id'])
 	#		logging.info("domain {} - writing {} :{},{},{}".format(client_domain_param, upload_filename, row['user_id'], row['email'], new_role))
 	#		file_out.write('\n{},{},{}'.format(row['user_id'], row['email'], new_role))
+
+	# TODO 
+	#  check result of 'open'
+        # maybe - raise exception
 
 	with open(upload_filename, 'w') as file_out:
 		writer = csv.writer(file_out, delimiter="!")
@@ -186,7 +194,7 @@ def generate_upload_files_from_auth0_exports(json_or_csv="csv"):
 	output_dir.mkdir(parents=True, exist_ok=True)
 
 	# TODO
-	#  maybe clean this up to accept '.' or no '.'
+	#  clean this up to accept leading '.' or no '.'
 	src_extension = ".{}".format(json_or_csv)
 
 	# r=root, d=directories, f = files
@@ -238,7 +246,7 @@ def connect_to_db(postgres_hostname, postgres_port, postgres_host, postgres_db_n
 	)
 	logger.debug("connected to a db")
 	# TODO
-	#  check for success ro failure
+	#  check for success or failure
 
 	connect_to_db_timer_stop = perf_counter()
 	timer_results("connect_to_db_timer", connect_to_db_timer_start, connect_to_db_timer_stop)
@@ -293,6 +301,8 @@ def process_upload_files_incomplete_for_now():
 
 	for environment in parser.get('Postgres_DBs', 'db_list').split(','):
 		logger.debug('processing env : {}'.format(environment))
+                # TODO
+                #  add LOCAL env def
 		if environment.lower() == 'dev':
 			logger.debug('found DEV env : {}'.format(environment))
 			load_env_db_info(db_settings, 'DEV_DB')
@@ -310,6 +320,9 @@ def process_upload_files_incomplete_for_now():
 			# exit(5)  # just made up a number
 			break
 
+
+        # TODO
+        #  check that the connect worked
 	db_conn = connect_to_db(
 		db_settings['postgres_hostname'],
 		# db_settings['postgres_ip'],
@@ -334,6 +347,9 @@ def process_upload_files_incomplete_for_now():
 	logger.debug(items)
 
 	#  https://www.oodlestechnologies.com/blogs/Postgres-Sql-Update-Record-in-Bulk-from-CSV-file/
+
+        # TODO
+        #  work on this using a LOCAL db - then all you need are the right privs on the other envs
 
 	# TODO
 	#  need privs to create temp table
@@ -376,11 +392,9 @@ def process_upload_files_incomplete_for_now():
 def timer_results(timer_name, timer_start, timer_stop):
 	#timer_dict[timer_name] = timer_start - timer_stop
 	timer_dict[timer_name] = "{} seconds".format((timer_start - timer_stop)/1000)
-	#logger.debug("{} = {} seconds".format(timer_name,(timer_start - timer_stop)/1000))
 
-	# does not seem to include sleep - it shoulc
+	# does not seem to include sleep - it should
 	# https://www.reddit.com/r/learnpython/comments/bjjafq/for_performance_timing_what_time_do_i_use/
-
 
 
 def display_timer_results():
