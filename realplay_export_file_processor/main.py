@@ -55,7 +55,7 @@ def create_app():
 
 def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 	call_auth0_to_get_certificate_timer_start = perf_counter()
-	###client_domain_param + call_auth0_to_get_certificate_timer_start = perf_counter()
+
 	logger.debug("client_domain_param: {} :: protocol: {}".format(client_domain_param, protocol))
 
 	# management API access token
@@ -84,7 +84,7 @@ def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 	data = json.loads(data)
 
 	call_auth0_to_get_certificate_timer_stop = perf_counter()
-	timer_results("call_auth0_to_get_certificate_timer", call_auth0_to_get_certificate_timer_start,
+	timer_results(client_domain_param, "call_auth0_to_get_certificate_timer", call_auth0_to_get_certificate_timer_start,
 	              call_auth0_to_get_certificate_timer_stop)
 
 	return data
@@ -119,7 +119,7 @@ def call_auth0_to_get_role_data(auth0_certificate, client_domain_param, user_nam
 	logger.debug(data_pretty_printed)
 
 	call_auth0_to_get_role_data_timer_stop = perf_counter()
-	timer_results("call_auth0_to_get_role_data_timer", call_auth0_to_get_role_data_timer_start,
+	timer_results(client_domain_param, "call_auth0_to_get_role_data_timer", call_auth0_to_get_role_data_timer_start,
 	              call_auth0_to_get_role_data_timer_stop)
 
 	return data_pretty_printed
@@ -170,7 +170,7 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 			throttle_counter, throttle_sleep, number_of_sleeps))
 
 		process_this_df_timer_stop = perf_counter()
-		timer_results("process_this_df_timer", process_this_df_timer_start, process_this_df_timer_stop)
+		timer_results(client_domain_param, "process_this_df_timer", process_this_df_timer_start, process_this_df_timer_stop)
 
 
 def walk_level(some_dir, level=1):
@@ -227,7 +227,7 @@ def generate_upload_files_from_auth0_exports(json_or_csv="csv"):
 				process_this_df(this_df, upload_filename, file_root)
 
 	generate_upload_files_from_auth0_exports_timer_stop = perf_counter()
-	timer_results("generate_upload_files_from_auth0_exports_timer"
+	timer_results("file-finding", "generate_upload_files_from_auth0_exports_timer"
 	              , generate_upload_files_from_auth0_exports_timer_start
 	              , generate_upload_files_from_auth0_exports_timer_stop)
 
@@ -249,7 +249,7 @@ def connect_to_db(postgres_hostname, postgres_port, postgres_host, postgres_db_n
 	#  check for success or failure
 
 	connect_to_db_timer_stop = perf_counter()
-	timer_results("connect_to_db_timer", connect_to_db_timer_start, connect_to_db_timer_stop)
+	timer_results("", "connect_to_db_timer", connect_to_db_timer_start, connect_to_db_timer_stop)
 	return conn
 
 
@@ -261,7 +261,7 @@ def run_a_db_query(db_conn, my_stmt):
 	items = cur.fetchall()
 
 	run_a_db_query_timer_stop = perf_counter()
-	timer_results("run_a_db_query_timer", run_a_db_query_timer_start, run_a_db_query_timer_stop)
+	timer_results("", "run_a_db_query_timer", run_a_db_query_timer_start, run_a_db_query_timer_stop)
 
 	return items
 
@@ -385,13 +385,14 @@ def process_upload_files_incomplete_for_now():
 				# cur.execute(my_stmt)
 
 	process_upload_files_incomplete_for_now_timer_stop = perf_counter()
-	timer_results("process_upload_files_incomplete_for_now_timer", process_upload_files_incomplete_for_now_timer_start,
+	timer_results("", "process_upload_files_incomplete_for_now_timer", process_upload_files_incomplete_for_now_timer_start,
 	              process_upload_files_incomplete_for_now_timer_stop)
 
 
-def timer_results(timer_name, timer_start, timer_stop):
-	#timer_dict[timer_name] = timer_start - timer_stop
-	timer_dict[timer_name] = "{} seconds".format((timer_start - timer_stop)/1000)
+def timer_results(client_domain_param, timer_name, timer_start, timer_stop):
+	key_name = ("{}_{}".format(client_domain_param, timer_name))
+	#timer_dict[key_name] = timer_start - timer_stop
+	timer_dict[key_name] = "{} seconds".format((timer_start - timer_stop)/1000)
 
 	# does not seem to include sleep - it should
 	# https://www.reddit.com/r/learnpython/comments/bjjafq/for_performance_timing_what_time_do_i_use/
@@ -432,9 +433,9 @@ if __name__ == '__main__':
 
 	whole_process_timer_stop = perf_counter()
 
-	timer_results("generate_upload_files_timer", generate_upload_files_timer_start, generate_upload_files_timer_stop)
-	# timer_results("process_upload_files_incomplete_for_now_timer", process_upload_files_incomplete_for_now_timer_start, process_upload_files_incomplete_for_now_timer_stop)
-	timer_results("whole_process_timer", whole_process_timer_start, whole_process_timer_stop)
+	timer_results("main", "generate_upload_files_timer", generate_upload_files_timer_start, generate_upload_files_timer_stop)
+	# timer_results("main", "process_upload_files_incomplete_for_now_timer", process_upload_files_incomplete_for_now_timer_start, process_upload_files_incomplete_for_now_timer_stop)
+	timer_results("main", "whole_process_timer", whole_process_timer_start, whole_process_timer_stop)
 
 	display_timer_results()
 
