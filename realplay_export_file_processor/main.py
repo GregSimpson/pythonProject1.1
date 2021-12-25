@@ -1,5 +1,9 @@
 import configparser
 import csv
+import pprint
+from datetime import datetime
+from time import sleep, perf_counter
+
 from flask import Flask
 import http
 import json
@@ -50,13 +54,18 @@ def create_app():
 
 
 def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
+	call_auth0_to_get_certificate_timer_start = perf_counter()
 	logger.debug("client_domain_param: {} :: protocol: {}".format(client_domain_param, protocol))
 
 	# management API access token
 	headers = {'content-type': "application/json"}
 	conn_str = "{}.auth0.com".format(client_domain_param)
 	conn_api = "/oauth/token"
-	payload = "{\"client_id\":\"" + parser.get(client_domain_param, 'client_id') + "\",\"client_secret\":\"" + parser.get(client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(client_domain_param, 'client_domain') + parser.get('Auth0Info', 'url_get_token')
+	payload = "{\"client_id\":\"" + parser.get(
+		client_domain_param,'client_id') + "\",\"client_secret\":\"" + parser.get(
+		client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(
+		client_domain_param, 'client_domain') + parser.get('Auth0Info', 'url_get_token')
+
 	conn = http.client.HTTPSConnection(conn_str)
 
 	logger.debug("headers --\n{}\n--".format(headers))
@@ -70,11 +79,16 @@ def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 	data = data.decode("utf-8")
 	data = json.loads(data)
 
+	call_auth0_to_get_certificate_timer_stop = perf_counter()
+	timer_results("call_auth0_to_get_certificate_timer", call_auth0_to_get_certificate_timer_start,
+	              call_auth0_to_get_certificate_timer_stop)
+
 	return data
 
 
 # https://auth0.com/docs/api/management/v2#!/Jobs/post_users_exports
 def call_auth0_to_get_role_data(auth0_certificate, client_domain_param, user_name):
+	call_auth0_to_get_role_data_timer_start = perf_counter()
 	logger.debug(" seeking {} :: {}".format(client_domain_param, user_name))
 
 	headers = {'authorization': 'Bearer {}'.format(auth0_certificate['access_token'])}
@@ -89,35 +103,35 @@ def call_auth0_to_get_role_data(auth0_certificate, client_domain_param, user_nam
 	conn.request("GET", conn_api, headers=headers)
 	res = conn.getresponse()
 	data = res.read()
-	
+
 	# TODO 
 	#  check result list for 'error' and handle that
-	#f (data['statusCode'] != 200):
-	logger.error(type(data))
-	logger.error(data)
+	# f (data['statusCode'] != 200):
+	logger.debug(type(data))
+	logger.debug(data)
 
 	data_as_json = json.loads(data.decode('utf-8'))
 	data_pretty_printed = json.dumps(data_as_json, indent=2, sort_keys=True)
 	logger.debug(data_pretty_printed)
 
+	call_auth0_to_get_role_data_timer_stop = perf_counter()
+	timer_results("call_auth0_to_get_role_data_timer", call_auth0_to_get_role_data_timer_start,
+	              call_auth0_to_get_role_data_timer_stop)
+
 	return data_pretty_printed
 
 
-def get_auth0_role_data(auth0_certificate, client_domain_param, user_name):
-	logger.debug("calling call_auth0_to_get_role_data with auth0_cert  :{} :: {}".format(client_domain_param, user_name))
-	return call_auth0_to_get_role_data(auth0_certificate, client_domain_param, user_name)
-
-
 def process_this_df(this_df, upload_filename, client_domain_param):
+	process_this_df_timer_start = perf_counter()
 	auth0_certificate = call_auth0_to_get_certificate(client_domain_param)
 
 	if 'access_token' not in auth0_certificate:
-		logger.error('client : {} - auth0_cert :: {}\n'.format(client_domain_param,auth0_certificate))
+		logger.error('client : {} - auth0_cert :: {}\n'.format(client_domain_param, auth0_certificate))
 		return
 	logger.debug('client : {} - auth0_cert :: {}'.format(client_domain_param, auth0_certificate))
 	logger.info('client : {} - auth0_cert :: {}'.format(client_domain_param, auth0_certificate))
 
-	#with open(upload_filename, 'w') as file_out:
+	# with open(upload_filename, 'w') as file_out:
 	#	for index, row in this_df.iterrows():
 	#		new_role = get_auth0_role_data(auth0_certificate,client_domain_param,row['user_id'])
 	#		logging.info("domain {} - writing {} :{},{},{}".format(client_domain_param, upload_filename, row['user_id'], row['email'], new_role))
@@ -125,10 +139,30 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 
 	with open(upload_filename, 'w') as file_out:
 		writer = csv.writer(file_out, delimiter="!")
+
+		user_counter = 0
+		number_of_sleeps = 0
+		throttle_counter = (int)(parser.get('Config_Data', 'throttle_counter', fallback="10"))
+		throttle_sleep = (int)(parser.get('Config_Data', 'throttle_sleep', fallback="30"))
+
 		for index, row in this_df.iterrows():
-			new_role = get_auth0_role_data(auth0_certificate,client_domain_param,row['user_id'])
-			logging.info("domain {} - writing {} :{},{},{}".format(client_domain_param, upload_filename, row['user_id'], row['email'], new_role))
+			user_counter += 1
+			if user_counter > throttle_counter:
+				number_of_sleeps += 1
+				logger.debug('Processed {} users - Sleeping for {} seconds\t\tThis is #{}\n'.format(throttle_counter, throttle_sleep, number_of_sleeps))
+				sleep(throttle_sleep)
+				user_counter = 0
+
+			new_role = call_auth0_to_get_role_data(auth0_certificate, client_domain_param, row['user_id'])
+			logging.info("domain {} - writing {} :{},{},{}".format(
+				client_domain_param, upload_filename, row['user_id'], row['email'], new_role))
 			writer.writerow([row['user_id'], row['email'], new_role])
+
+		logger.debug('\tSlept every {} users\t\tfor {} seconds\t\t{} times\n'.format(
+			throttle_counter, throttle_sleep, number_of_sleeps))
+
+		process_this_df_timer_stop = perf_counter()
+		timer_results("process_this_df_timer", process_this_df_timer_start, process_this_df_timer_stop)
 
 
 def walk_level(some_dir, level=1):
@@ -143,6 +177,8 @@ def walk_level(some_dir, level=1):
 
 
 def generate_upload_files_from_auth0_exports(json_or_csv="csv"):
+	generate_upload_files_from_auth0_exports_timer_start = perf_counter()
+
 	# Getting the work directory (cwd)
 	source_dir = parser.get('user-export-file', 'source')
 
@@ -174,7 +210,7 @@ def generate_upload_files_from_auth0_exports(json_or_csv="csv"):
 				if (src_extension == '.csv'):
 					this_df = pd.read_csv(full_path)
 
-				#logger.debug(this_df.info)
+				# logger.debug(this_df.info)
 				logger.debug(this_df.style)
 
 				# we now have a dataframe for this file
@@ -182,8 +218,15 @@ def generate_upload_files_from_auth0_exports(json_or_csv="csv"):
 				#  write the user_id,email, roles to a new file : $file_root + 'processed' + .json
 				process_this_df(this_df, upload_filename, file_root)
 
+	generate_upload_files_from_auth0_exports_timer_stop = perf_counter()
+	timer_results("generate_upload_files_from_auth0_exports_timer"
+	              , generate_upload_files_from_auth0_exports_timer_start
+	              , generate_upload_files_from_auth0_exports_timer_stop)
+
 
 def connect_to_db(postgres_hostname, postgres_port, postgres_host, postgres_db_name, postgres_user, postgres_pswd):
+	connect_to_db_timer_start = perf_counter()
+
 	logger.debug("establishing the db connection to: {}".format(postgres_hostname))
 	# establishing the connection
 	conn = psycopg2.connect(
@@ -196,13 +239,22 @@ def connect_to_db(postgres_hostname, postgres_port, postgres_host, postgres_db_n
 	logger.debug("connected to a db")
 	# TODO
 	#  check for success ro failure
+
+	connect_to_db_timer_stop = perf_counter()
+	timer_results("connect_to_db_timer", connect_to_db_timer_start, connect_to_db_timer_stop)
 	return conn
 
 
 def run_a_db_query(db_conn, my_stmt):
+	run_a_db_query_timer_start = perf_counter()
+
 	cur = db_conn.cursor()
 	cur.execute(my_stmt)
 	items = cur.fetchall()
+
+	run_a_db_query_timer_stop = perf_counter()
+	timer_results("run_a_db_query_timer", run_a_db_query_timer_start, run_a_db_query_timer_stop)
+
 	return items
 
 
@@ -217,6 +269,8 @@ def load_env_db_info(db_settings, environment='DEV_DB'):
 
 
 def process_upload_files_incomplete_for_now():
+	process_upload_files_incomplete_for_now_timer_start = perf_counter()
+
 	# TODO
 	#  see notes below
 	upload_source_dir = parser.get('user-export-file', 'output')
@@ -303,7 +357,8 @@ def process_upload_files_incomplete_for_now():
 				# cur.execute(my_stmt)
 
 				# once that loads, run something like this to update from the new temp table:
-				# UPDATE original_table SET original_table.dob = temp_table.dob FROM temp_table  Where original_table.id = temp_table.id;
+				# UPDATE original_table SET original_table.dob = temp_table.dob FROM temp_table
+				#  Where original_table.id = temp_table.id;
 
 				my_stmt = "select * from gjs_test;"
 				# cur.execute(my_stmt)
@@ -313,12 +368,32 @@ def process_upload_files_incomplete_for_now():
 				my_stmt = "drop table gjs_test;"
 				# cur.execute(my_stmt)
 
+	process_upload_files_incomplete_for_now_timer_stop = perf_counter()
+	timer_results("process_upload_files_incomplete_for_now_timer", process_upload_files_incomplete_for_now_timer_start,
+	              process_upload_files_incomplete_for_now_timer_stop)
+
+
+def timer_results(timer_name, timer_start, timer_stop):
+	#timer_dict[timer_name] = timer_start - timer_stop
+	timer_dict[timer_name] = "{} seconds".format((timer_start - timer_stop)/1000)
+	#logger.debug("{} = {} seconds".format(timer_name,(timer_start - timer_stop)/1000))
+
+	# does not seem to include sleep - it shoulc
+	# https://www.reddit.com/r/learnpython/comments/bjjafq/for_performance_timing_what_time_do_i_use/
+
+
+
+def display_timer_results():
+	#logger.debug("\ntimer_dict : {}\n".format(timer_dict))
+	# Prints the nicely formatted dictionary
+	pprint.pprint(timer_dict)
+
 
 if __name__ == '__main__':
 	parser = configparser.ConfigParser()
 	logger = logging.getLogger("RealplayExportProcess")
 
-	#log_dir = Path('{}'.format(parser.get('user-export-file', 'output')))
+	# log_dir = Path('{}'.format(parser.get('user-export-file', 'output')))
 	log_dir = Path("logs")
 	log_dir.mkdir(parents=True, exist_ok=True)
 
@@ -327,10 +402,26 @@ if __name__ == '__main__':
 
 	# test_log_messages()
 
+	timer_dict = {}
+	whole_process_timer_start = perf_counter()
+	generate_upload_files_timer_start = perf_counter()
+
 	### either 'json' or 'csv'
 	##generate_upload_files_from_auth0_exports('json')
 	generate_upload_files_from_auth0_exports('csv')
 
-	#process_upload_files_incomplete_for_now()
+	generate_upload_files_timer_stop = perf_counter()
+
+	# process_upload_files_incomplete_for_now_timer_start = perf_counter()
+	# process_upload_files_incomplete_for_now()
+	# process_upload_files_incomplete_for_now_timer_stop = perf_counter()
+
+	whole_process_timer_stop = perf_counter()
+
+	timer_results("generate_upload_files_timer", generate_upload_files_timer_start, generate_upload_files_timer_stop)
+	# timer_results("process_upload_files_incomplete_for_now_timer", process_upload_files_incomplete_for_now_timer_start, process_upload_files_incomplete_for_now_timer_stop)
+	timer_results("whole_process_timer", whole_process_timer_start, whole_process_timer_stop)
+
+	display_timer_results()
 
 	logger.debug('END process')
