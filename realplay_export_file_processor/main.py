@@ -162,6 +162,12 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 				user_counter = 0
 
 			new_role = call_auth0_to_get_role_data(auth0_certificate, client_domain_param, row['user_id'])
+
+			parsed_roles = json.loads(new_role)
+			for i in range(len(parsed_roles)):
+				logger.debug("--{}--\n".format(parsed_roles[i]))
+
+
 			logging.info("domain {} - writing {} :{},{},{}".format(
 				client_domain_param, upload_filename, row['user_id'], row['email'], new_role))
 			writer.writerow([row['user_id'], row['email'], new_role])
@@ -301,8 +307,11 @@ def process_upload_files_incomplete_for_now():
 
 	for environment in parser.get('Postgres_DBs', 'db_list').split(','):
 		logger.debug('processing env : {}'.format(environment))
-                # TODO
-                #  add LOCAL env def
+
+		if environment.lower() == 'local':
+			logger.debug('found LOCAL env : {}'.format(environment))
+			load_env_db_info(db_settings, 'LOCAL_DB')
+
 		if environment.lower() == 'dev':
 			logger.debug('found DEV env : {}'.format(environment))
 			load_env_db_info(db_settings, 'DEV_DB')
@@ -339,17 +348,15 @@ def process_upload_files_incomplete_for_now():
 	items = cur.fetchall()
 	logger.debug(items)
 
-	# my_stmt = "ALTER USER {} WITH SUPERUSER;".format(postgres_user)
-	my_stmt = "SELECT usename AS role_name, CASE WHEN usesuper AND usecreatedb THEN CAST('superuser, create database' AS pg_catalog.text) WHEN usesuper THEN CAST('superuser' AS pg_catalog.text) WHEN usecreatedb THEN CAST('create database' AS pg_catalog.text) ELSE CAST('' AS pg_catalog.text) END role_attributes FROM pg_catalog.pg_user ORDER BY role_name desc;"
-	logger.debug(my_stmt)
-	cur.execute(my_stmt)
-	items = cur.fetchall()
-	logger.debug(items)
+	##  test the conn by showing defined users and privs
+	## my_stmt = "ALTER USER {} WITH SUPERUSER;".format(postgres_user)
+	#my_stmt = "SELECT usename AS role_name, CASE WHEN usesuper AND usecreatedb THEN CAST('superuser, create database' AS pg_catalog.text) WHEN usesuper THEN CAST('superuser' AS pg_catalog.text) WHEN usecreatedb THEN CAST('create database' AS pg_catalog.text) ELSE CAST('' AS pg_catalog.text) END role_attributes FROM pg_catalog.pg_user ORDER BY role_name desc;"
+	#logger.debug(my_stmt)
+	#cur.execute(my_stmt)
+	#items = cur.fetchall()
+	#logger.debug(items)
 
 	#  https://www.oodlestechnologies.com/blogs/Postgres-Sql-Update-Record-in-Bulk-from-CSV-file/
-
-        # TODO
-        #  work on this using a LOCAL db - then all you need are the right privs on the other envs
 
 	# TODO
 	#  need privs to create temp table
@@ -359,18 +366,68 @@ def process_upload_files_incomplete_for_now():
 	# r=root, d=directories, f = files
 	for r, d, f in walk_level(upload_source_dir, 0):
 		for file in f:
-
 			if file.endswith('.csv'):
 				full_path = os.path.join(r, file)
 
-				logger.debug('upload file:\n\t{}\n\tto {}'.format(full_path, postgres_db_name))
-				my_stmt = "create temporary table gjs_test (user_id character varying(255) , email character varying(255) , roles character varying(255) );"
-				# cur.execute(my_stmt)
+				try:
+					temp_table_name = 'gjs_test'
+					# --- new query
+					#logger.debug('upload file:\n\t{}\n\tto {}'.format(full_path, postgres_db_name))
+					my_stmt = "create temporary table {} (user_id character varying(255) , email character varying(255) , roles character varying(255) );".format(temp_table_name)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
 
-				# this should work IF you get a superuser if
-				my_stmt = "COPY gjs_test FROM '{}' WITH (FORMAT csv);".format(full_path)
-				logger.debug("\t\t running this stmt\n{}".format(my_stmt))
-				# cur.execute(my_stmt)
+					# --- new query
+					#  desc table (basically)
+					my_stmt = "SELECT table_name, column_name, data_type FROM information_schema.columns WHERE table_name = '{}';".format(temp_table_name)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+					row = cur.fetchone()
+
+					while row is not None:
+						logger.debug(row)
+						row = cur.fetchone()
+
+					# --- new query
+					#  upload csv file to temp table
+					###my_stmt = "COPY gjs_test FROM '{}' WITH (FORMAT csv);".format(full_path)
+					#my_stmt = "COPY gjs_test FROM '{}' DELIMITER '!' ;".format(full_path)
+					#logger.debug(my_stmt)
+					#cur.execute(my_stmt)
+					#row = cur.fetchone()
+
+					with open(full_path,'r') as f:
+						next(f)
+						cur.copy_from(f, temp_table_name, sep='!')
+					db_conn.commit()
+
+					#while row is not None:
+				#		logger.debug(row)
+			#			row = cur.fetchone()
+
+					# --- new query
+					my_stmt = "select * from {};".format(temp_table_name)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+					row = cur.fetchone()
+
+					while row is not None:
+						logger.debug(row)
+						row = cur.fetchone()
+
+					cur.close()
+				except (Exception, psycopg2.DatabaseError) as error:
+					logger.error(error)
+				finally:
+					if db_conn is not None:
+						db_conn.close()
+
+				#stopped here
+
+				## this should work IF you get a superuser if
+				#my_stmt = "COPY gjs_test FROM '{}' WITH (FORMAT csv);".format(full_path)
+				#logger.debug("\t\t running this stmt\n{}".format(my_stmt))
+				## cur.execute(my_stmt)
 
 				# once that loads, run something like this to update from the new temp table:
 				# UPDATE original_table SET original_table.dob = temp_table.dob FROM temp_table
@@ -392,7 +449,7 @@ def process_upload_files_incomplete_for_now():
 def timer_results(client_domain_param, timer_name, timer_start, timer_stop):
 	key_name = ("{}_{}".format(client_domain_param, timer_name))
 	#timer_dict[key_name] = timer_start - timer_stop
-	timer_dict[key_name] = "{} seconds".format((timer_start - timer_stop)/1000)
+	timer_dict[key_name] = "{} seconds".format((timer_stop - timer_start)/1000)
 
 	# does not seem to include sleep - it should
 	# https://www.reddit.com/r/learnpython/comments/bjjafq/for_performance_timing_what_time_do_i_use/
@@ -419,24 +476,23 @@ if __name__ == '__main__':
 
 	timer_dict = {}
 	whole_process_timer_start = perf_counter()
-	generate_upload_files_timer_start = perf_counter()
 
+	generate_upload_files_timer_start = perf_counter()
 	### either 'json' or 'csv'
 	##generate_upload_files_from_auth0_exports('json')
-	generate_upload_files_from_auth0_exports('csv')
-
+	#generate_upload_files_from_auth0_exports('csv')
 	generate_upload_files_timer_stop = perf_counter()
 
-	# process_upload_files_incomplete_for_now_timer_start = perf_counter()
-	# process_upload_files_incomplete_for_now()
-	# process_upload_files_incomplete_for_now_timer_stop = perf_counter()
+	process_upload_files_incomplete_for_now_timer_start = perf_counter()
+	process_upload_files_incomplete_for_now()
+	process_upload_files_incomplete_for_now_timer_stop = perf_counter()
 
 	whole_process_timer_stop = perf_counter()
 
-	timer_results("main", "generate_upload_files_timer", generate_upload_files_timer_start, generate_upload_files_timer_stop)
-	# timer_results("main", "process_upload_files_incomplete_for_now_timer", process_upload_files_incomplete_for_now_timer_start, process_upload_files_incomplete_for_now_timer_stop)
+	timer_results("generate", "generate_upload_files_timer", generate_upload_files_timer_start, generate_upload_files_timer_stop)
+	timer_results("upload", "process_upload_files_incomplete_for_now_timer", process_upload_files_incomplete_for_now_timer_start, process_upload_files_incomplete_for_now_timer_stop)
 	timer_results("main", "whole_process_timer", whole_process_timer_start, whole_process_timer_stop)
 
-	display_timer_results()
+	#display_timer_results()
 
 	logger.debug('END process')
