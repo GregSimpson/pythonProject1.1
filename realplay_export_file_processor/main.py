@@ -153,16 +153,18 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 	with open(upload_filename, 'w') as file_out:
 		writer = csv.writer(file_out, delimiter="!")
 
+		total_counter = 0
 		user_counter = 0
 		number_of_sleeps = 0
 		throttle_counter = (int)(parser.get('Config_Data', 'throttle_counter', fallback="10"))
 		throttle_sleep = (int)(parser.get('Config_Data', 'throttle_sleep', fallback="30"))
 
 		for index, row in this_df.iterrows():
+			total_counter += 1
 			user_counter += 1
 			if user_counter > throttle_counter:
 				number_of_sleeps += 1
-				logger.debug('Processed {} users - Sleeping for {} seconds\t\tThis is #{}\n'.format(throttle_counter, throttle_sleep, number_of_sleeps))
+				logger.debug('Processed {} users; {} total - Sleeping for {} seconds\t\tThis is #{}\n'.format(throttle_counter, total_counter, throttle_sleep, number_of_sleeps))
 				sleep(throttle_sleep)
 				user_counter = 0
 
@@ -495,17 +497,16 @@ def process_upload_files():
 					#  set realplay_user.auth0_roles = temp_table_name.auth0_roles
 					#   where realplay_user.userid =  temp_table_name.userid
 					#my_stmt = "update table {} set auth0_roles = {}.auth0_roles where userid = {}.userid".format(realplay_user_table,temp_table_name,temp_table_name)
-
-
 					#my_stmt = "update {} set auth0_roles = a.auth0_roles, email = a.email from {} a where a.userid = {}.userid".format(test_realplay_user_table, temp_table_name, test_realplay_user_table)
 
 					my_stmt = "update {} set \
-						auth0_roles = a.auth0_roles \
-						, email = a.email \
-						from {} a \
-						where a.userid = {}.userid \
-						and auth0_roles <> a.auth0_roles \
-						 ".format(test_realplay_user_table, temp_table_name, test_realplay_user_table)
+						auth0_roles = {}.auth0_roles \
+						, email = {}.email \
+						from {} \
+						where {}.userid = {}.userid \
+						and {}.auth0_roles <> {}.auth0_roles \
+						 ".format(test_realplay_user_table,temp_table_name,temp_table_name,temp_table_name,test_realplay_user_table,temp_table_name,test_realplay_user_table,temp_table_name)
+
 
 					logger.debug(my_stmt)
 					cur.execute(my_stmt)
@@ -521,20 +522,22 @@ def process_upload_files():
 					#	#logger.debug(row)
 					#	row = cur.fetchone()
 
-					## --- new query
-					##  show the test_realplay_user_table
-					#my_stmt = "SELECT DISTINCT auth0_roles FROM {};".format(test_realplay_user_table)
-					#logger.debug(my_stmt)
-					#cur.execute(my_stmt)
-					#row = cur.fetchone()
 
-					#while row is not None:
-					#	logger.debug(row)
-					#	row = cur.fetchone()
 
 					# --- new query
 					#  show the test_realplay_user_table
-					my_stmt = "SELECT userid, email, auth0_roles FROM {} order by  auth0_roles asc ;".format(test_realplay_user_table)
+					my_stmt = "SELECT userid, email, auth0_roles FROM {} where email = 'greg.simpson@ttec.com' order by  auth0_roles asc ;".format(test_realplay_user_table)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+					row = cur.fetchone()
+
+					while row is not None:
+						logger.debug(row)
+						row = cur.fetchone()
+
+					# --- new query
+					#  show the test_realplay_user_table
+					my_stmt = "SELECT DISTINCT auth0_roles FROM {};".format(test_realplay_user_table)
 					logger.debug(my_stmt)
 					cur.execute(my_stmt)
 					row = cur.fetchone()
@@ -606,12 +609,12 @@ if __name__ == '__main__':
 	generate_upload_files_timer_start = perf_counter()
 	### either 'json' or 'csv'
 	##generate_upload_files_from_auth0_exports('json')
-	#generate_upload_files_from_auth0_exports('csv')
+	generate_upload_files_from_auth0_exports('csv')
 	generate_upload_files_timer_stop = perf_counter()
 
-	#process_upload_files_timer_start = perf_counter()
-	process_upload_files()
-	#process_upload_files_timer_stop = perf_counter()
+	##process_upload_files_timer_start = perf_counter()
+	#process_upload_files()
+	##process_upload_files_timer_stop = perf_counter()
 
 	whole_process_timer_stop = perf_counter()
 
@@ -619,6 +622,6 @@ if __name__ == '__main__':
 	#timer_results("upload", "process_upload_files_timer", process_upload_files_timer_start, process_upload_files_timer_stop)
 	timer_results("main", "whole_process_timer", whole_process_timer_start, whole_process_timer_stop)
 
-	#display_timer_results()
+	display_timer_results()
 
 	logger.debug('END process')
