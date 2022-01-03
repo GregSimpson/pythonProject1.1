@@ -1,9 +1,13 @@
+##  install requirements from requirements.txt
+# pip install -r requirements.txt
+
 import configparser
 import csv
 import pprint
 from datetime import datetime
 from time import sleep, perf_counter
 
+# pip install flask
 from flask import Flask
 import http
 import json
@@ -15,6 +19,7 @@ from pathlib import Path
 # open a terminal 'at the bottom of intellij'
 # pip install psycopg2-binary
 import psycopg2
+# pip install pyyaml
 import yaml
 
 
@@ -288,8 +293,8 @@ def load_env_db_info(db_settings, environment='DEV_DB'):
 	db_settings['postgres_pswd'] = parser.get(environment, 'pswd', fallback=" ")
 
 
-def process_upload_files_incomplete_for_now():
-	process_upload_files_incomplete_for_now_timer_start = perf_counter()
+def process_upload_files():
+	process_upload_files_timer_method_start = perf_counter()
 
 	# TODO
 	#  see notes below
@@ -384,16 +389,16 @@ def process_upload_files_incomplete_for_now():
 					logger.debug(my_stmt)
 					cur.execute(my_stmt)
 
-					# --- new query
-					#  desc table (basically)
-					my_stmt = "SELECT table_name, column_name, data_type FROM information_schema.columns WHERE table_name = '{}';".format(temp_table_name)
-					logger.debug(my_stmt)
-					cur.execute(my_stmt)
-					row = cur.fetchone()
+					## --- new query
+					##  desc table (basically)
+					#my_stmt = "SELECT table_name, column_name, data_type FROM information_schema.columns WHERE table_name = '{}';".format(temp_table_name)
+					#logger.debug(my_stmt)
+					#cur.execute(my_stmt)
+					#row = cur.fetchone()
 
-					while row is not None:
-						logger.debug(row)
-						row = cur.fetchone()
+					#while row is not None:
+					#	logger.debug(row)
+					#	row = cur.fetchone()
 
 					# --- new query
 					#  upload csv file to temp table
@@ -401,19 +406,29 @@ def process_upload_files_incomplete_for_now():
 						next(f)
 						cur.copy_from(f, temp_table_name, sep='!')
 					db_conn.commit()
+					f.close()
 
-					# --- new query
-					# show temp table contents
-					my_stmt = "select * from {};".format(temp_table_name)
-					my_stmt = "select count(*) from {};".format(temp_table_name)
-					logger.debug(my_stmt)
-					cur.execute(my_stmt)
-					row = cur.fetchone()
+					## --- new query
+					## show temp table contents
+					#my_stmt = "select * from {};".format(temp_table_name)
+					#logger.debug(my_stmt)
+					#cur.execute(my_stmt)
+					#row = cur.fetchone()
 
-					while row is not None:
-						logger.debug(row)
-						row = cur.fetchone()
+					#while row is not None:
+					#	logger.debug(row)
+					#	row = cur.fetchone()
 
+					## --- new query
+					## show count of temp table contents
+					#y_stmt = "select * from {};".format(temp_table_name)
+					#logger.debug(my_stmt)
+					#cur.execute(my_stmt)
+					#row = cur.fetchone()
+
+					#while row is not None:
+					#	logger.debug(row)
+					#	row = cur.fetchone()
 
 					realplay_user_table = "realplay_user"
 					test_realplay_user_table = "test_realplay_user"
@@ -421,16 +436,16 @@ def process_upload_files_incomplete_for_now():
 	                ###########################
 					#   TEMPORARY STUFF - BEGIN
 
-					# --- new query
-					# show realplay_user table contents
-					my_stmt = "select * from {};".format(realplay_user_table)
-					logger.debug(my_stmt)
-					cur.execute(my_stmt)
-					row = cur.fetchone()
+					## --- new query
+					## show realplay_user table contents
+					#my_stmt = "select * from {};".format(realplay_user_table)
+					#logger.debug(my_stmt)
+					#cur.execute(my_stmt)
+					#row = cur.fetchone()
 
-					while row is not None:
-						logger.debug(row)
-						row = cur.fetchone()
+					#while row is not None:
+					#	logger.debug(row)
+					#	row = cur.fetchone()
 
 					# --- new query
 					# create copy of realplay_user table
@@ -438,81 +453,87 @@ def process_upload_files_incomplete_for_now():
 					logger.debug(my_stmt)
 					cur.execute(my_stmt)
 
-					# --- new query
-					#  desc table (basically)
-					my_stmt = "SELECT table_name, column_name, data_type FROM information_schema.columns WHERE table_name = '{}';".format(test_realplay_user_table)
-					logger.debug(my_stmt)
-					cur.execute(my_stmt)
-					row = cur.fetchone()
+					## --- new query
+					##  desc table (basically)
+					#my_stmt = "SELECT table_name, column_name, data_type FROM information_schema.columns WHERE table_name = '{}';".format(test_realplay_user_table)
+					#logger.debug(my_stmt)
+					#cur.execute(my_stmt)
+					#row = cur.fetchone()
 
-					while row is not None:
-						logger.debug(row)
-						row = cur.fetchone()
+					#while row is not None:
+					#	logger.debug(row)
+					#	row = cur.fetchone()
 
-					# --- new query
-					#  desc table (basically)
-					my_stmt = "SELECT table_name, column_name, data_type FROM information_schema.columns WHERE table_name = '{}';".format(
-						realplay_user_table)
-					logger.debug(my_stmt)
-					cur.execute(my_stmt)
-					row = cur.fetchone()
 
-					while row is not None:
-						logger.debug(row)
-						row = cur.fetchone()
+					## --- new query
+					##  show the test_realplay_user_table
+					#my_stmt = "SELECT * FROM {};".format(test_realplay_user_table)
+					#logger.debug(my_stmt)
+					#cur.execute(my_stmt)
+					#row = cur.fetchone()
 
-					# --- new query
-					#  show the test_realplay_user_table
-					my_stmt = "SELECT * FROM {};".format(test_realplay_user_table)
-					logger.debug(my_stmt)
-					cur.execute(my_stmt)
-					row = cur.fetchone()
+					#while row is not None:
+					#	#logger.debug(row)
+					#	row = cur.fetchone()
 
-					while row is not None:
-						logger.debug(row)
-						row = cur.fetchone()
+					## --- new query
+					##  show the test_realplay_user_table
+					#my_stmt = "SELECT DISTINCT auth0_roles FROM {};".format(test_realplay_user_table)
+					#logger.debug(my_stmt)
+					#cur.execute(my_stmt)
+					#row = cur.fetchone()
 
-					# --- new query
-					#  show the test_realplay_user_table
-					my_stmt = "SELECT auth0_roles FROM {};".format(test_realplay_user_table)
-					logger.debug(my_stmt)
-					cur.execute(my_stmt)
-					row = cur.fetchone()
-
-					while row is not None:
-						logger.debug(row)
-						row = cur.fetchone()
+					#while row is not None:
+					#	logger.debug(row)
+					#	row = cur.fetchone()
 
 					#   TEMPORARY STUFF - END
 					###########################
-
-
 
 					# --- new query
 					# update realplay_user table from temp_table_name
 					#  set realplay_user.auth0_roles = temp_table_name.auth0_roles
 					#   where realplay_user.userid =  temp_table_name.userid
 					#my_stmt = "update table {} set auth0_roles = {}.auth0_roles where userid = {}.userid".format(realplay_user_table,temp_table_name,temp_table_name)
-					my_stmt = "update {} set auth0_roles = a.auth0_roles from {} a where a.userid = {}.userid".format(
-						test_realplay_user_table, temp_table_name, test_realplay_user_table)
+
+
+					#my_stmt = "update {} set auth0_roles = a.auth0_roles, email = a.email from {} a where a.userid = {}.userid".format(test_realplay_user_table, temp_table_name, test_realplay_user_table)
+
+					my_stmt = "update {} set \
+						auth0_roles = a.auth0_roles \
+						, email = a.email \
+						from {} a \
+						where a.userid = {}.userid \
+						and auth0_roles <> a.auth0_roles \
+						 ".format(test_realplay_user_table, temp_table_name, test_realplay_user_table)
+
 					logger.debug(my_stmt)
 					cur.execute(my_stmt)
 
-					# --- new query
-					#  show final table values
-					my_stmt = "SELECT * FROM {};".format(test_realplay_user_table)
-					logger.debug(my_stmt)
-					cur.execute(my_stmt)
-					row = cur.fetchone()
+					## --- new query
+					##  show final table values
+					#my_stmt = "SELECT * FROM {};".format(test_realplay_user_table)
+					#logger.debug(my_stmt)
+					#cur.execute(my_stmt)
+					#row = cur.fetchone()
 
-					while row is not None:
-						logger.debug(row)
-						row = cur.fetchone()
+					#while row is not None:
+					#	#logger.debug(row)
+					#	row = cur.fetchone()
+
+					## --- new query
+					##  show the test_realplay_user_table
+					#my_stmt = "SELECT DISTINCT auth0_roles FROM {};".format(test_realplay_user_table)
+					#logger.debug(my_stmt)
+					#cur.execute(my_stmt)
+					#row = cur.fetchone()
+
+					#while row is not None:
+					#	logger.debug(row)
+					#	row = cur.fetchone()
 
 					# --- new query
 					#  show the test_realplay_user_table
-					#my_stmt = "SELECT userid, email, auth0_roles FROM {} where auth0_roles <> \"\" ;".format(test_realplay_user_table)
-					my_stmt = "SELECT count(*) FROM {} where auth0_roles is not null;".format(test_realplay_user_table)
 					my_stmt = "SELECT userid, email, auth0_roles FROM {} order by  auth0_roles asc ;".format(test_realplay_user_table)
 					logger.debug(my_stmt)
 					cur.execute(my_stmt)
@@ -534,8 +555,9 @@ def process_upload_files_incomplete_for_now():
 						logger.debug(row)
 						row = cur.fetchone()
 
+
 					# cleanup
-					# my_stmt = "drop table {}};"
+					# my_stmt = "drop table {};"
 					# cur.execute(my_stmt)
 
 					cur.close()
@@ -545,11 +567,9 @@ def process_upload_files_incomplete_for_now():
 					if db_conn is not None:
 						db_conn.close()
 
-
-
-	process_upload_files_incomplete_for_now_timer_stop = perf_counter()
-	timer_results("", "process_upload_files_incomplete_for_now_timer", process_upload_files_incomplete_for_now_timer_start,
-	              process_upload_files_incomplete_for_now_timer_stop)
+	process_upload_files_timer_method_stop = perf_counter()
+	timer_results("", "process_upload_files_timer_method_", process_upload_files_timer_method_start,
+	              process_upload_files_timer_method_stop)
 
 
 def timer_results(client_domain_param, timer_name, timer_start, timer_stop):
@@ -589,14 +609,14 @@ if __name__ == '__main__':
 	#generate_upload_files_from_auth0_exports('csv')
 	generate_upload_files_timer_stop = perf_counter()
 
-	process_upload_files_incomplete_for_now_timer_start = perf_counter()
-	process_upload_files_incomplete_for_now()
-	process_upload_files_incomplete_for_now_timer_stop = perf_counter()
+	#process_upload_files_timer_start = perf_counter()
+	process_upload_files()
+	#process_upload_files_timer_stop = perf_counter()
 
 	whole_process_timer_stop = perf_counter()
 
 	timer_results("generate", "generate_upload_files_timer", generate_upload_files_timer_start, generate_upload_files_timer_stop)
-	timer_results("upload", "process_upload_files_incomplete_for_now_timer", process_upload_files_incomplete_for_now_timer_start, process_upload_files_incomplete_for_now_timer_stop)
+	#timer_results("upload", "process_upload_files_timer", process_upload_files_timer_start, process_upload_files_timer_stop)
 	timer_results("main", "whole_process_timer", whole_process_timer_start, whole_process_timer_stop)
 
 	#display_timer_results()
