@@ -109,19 +109,36 @@ def call_auth0_to_get_role_data(auth0_certificate, client_domain_param, user_nam
 	logger.debug("conn_str : {}".format(conn_str))
 	logger.debug("conn_api : {}".format(conn_api))
 
-	conn.request("GET", conn_api, headers=headers)
-	res = conn.getresponse()
-	# TODO 
-	#  check result list for 'error' and handle that
-	# maybe - if (data['statusCode'] != 200):
+	try:
+		conn.request("GET", conn_api, headers=headers)
+		res = conn.getresponse()
+		# TODO
+		#  check result list for 'error' and handle that
+		# maybe - if (data['statusCode'] != 200):
 
-	data = res.read()
-	logger.debug(type(data))
-	logger.debug(data)
+		data = res.read()
+		logger.debug(type(data))
+		logger.debug(data)
 
-	data_as_json = json.loads(data.decode('utf-8'))
-	data_pretty_printed = json.dumps(data_as_json, indent=2, sort_keys=True)
-	logger.debug(data_pretty_printed)
+		data_as_json = json.loads(data.decode('utf-8'))
+		data_pretty_printed = json.dumps(data_as_json, indent=2, sort_keys=True)
+
+		if 'error' in data_as_json:
+			raise Exception(data)
+
+		#logger.debug(data_pretty_printed)
+	except Exception as error:
+		logging.error(data)
+		#logger.error(error)
+		#logger.error(str(error))
+		#logger.error(Exception)
+		#raise (Exception(error))
+		#data_pretty_printed = json.dumps(data_as_json, indent=2, sort_keys=True)
+		#logger.debug(data_pretty_printed)
+		return '{}'
+	#finally:
+	#	if db_conn is not None:
+	#		db_conn.close()
 
 	call_auth0_to_get_role_data_timer_stop = perf_counter()
 	timer_results(client_domain_param, "call_auth0_to_get_role_data_timer", call_auth0_to_get_role_data_timer_start,
@@ -160,33 +177,44 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 		throttle_sleep = (int)(parser.get('Config_Data', 'throttle_sleep', fallback="30"))
 
 		for index, row in this_df.iterrows():
-			total_counter += 1
-			user_counter += 1
-			if user_counter > throttle_counter:
+
+			if user_counter >= throttle_counter:
 				number_of_sleeps += 1
-				logger.debug('Processed {} users; {} total - Sleeping for {} seconds\t\tThis is #{}\n'.format(throttle_counter, total_counter, throttle_sleep, number_of_sleeps))
+				logger.debug('Processed {} users; {} total \n\tSleeping for {} seconds\t\tThis is #{}\n'.format(throttle_counter, total_counter, throttle_sleep, number_of_sleeps))
 				sleep(throttle_sleep)
 				user_counter = 0
+			total_counter += 1
+			user_counter += 1
 
-			parsed_roles = json.loads(call_auth0_to_get_role_data(auth0_certificate, client_domain_param, row['user_id']))
-			role_str = ""
-			for i in range(len(parsed_roles)):
-				role_str = "{}{}".format(role_str,parsed_roles[i]['name'])
-				if i < len(parsed_roles)-1:
-					role_str = "{},".format(role_str)
-				##logger.debug("--{}--\n".format(parsed_roles[i]))
-				#logger.debug("--{}--\n".format(parsed_roles[i]['name']))
+			try:
+				parsed_roles = json.loads(call_auth0_to_get_role_data(auth0_certificate, client_domain_param, row['user_id']))
+				logger.debug( "parsed_roles = {}".format(parsed_roles))
+				if parsed_roles == {}:
+					logger.error(" there was a problem getting the auth certificate")
+					break
 
-			#logging.info("domain {} - writing {} :{},{},{}".format(
-			#	client_domain_param, upload_filename, row['user_id'], row['email'], new_role))
-			# writer.writerow([row['user_id'], row['email'], new_role])
+				role_str = ""
+				for i in range(len(parsed_roles)):
+					role_str = "{}{}".format(role_str,parsed_roles[i]['name'])
+					if i < len(parsed_roles)-1:
+						role_str = "{},".format(role_str)
+					##logger.debug("--{}--\n".format(parsed_roles[i]))
+					#logger.debug("--{}--\n".format(parsed_roles[i]['name']))
 
-			logging.info("domain {} - writing {} :{},{},{}".format(
-				client_domain_param, upload_filename, row['user_id'], row['email'], role_str))
-			writer.writerow([row['user_id'], row['email'], role_str])
+				#logging.info("domain {} - writing {} :{},{},{}".format(
+				#	client_domain_param, upload_filename, row['user_id'], row['email'], new_role))
+				# writer.writerow([row['user_id'], row['email'], new_role])
 
-		logger.debug('\tSlept every {} users\t\tfor {} seconds\t\t{} times\n'.format(
-			throttle_counter, throttle_sleep, number_of_sleeps))
+				logging.info("domain {} - writing {} :{},{},{}".format(
+					client_domain_param, upload_filename, row['user_id'], row['email'], role_str))
+				writer.writerow([row['user_id'], row['email'], role_str])
+			except Exception as error:
+				logger.error(error)
+				break
+
+		#logger.debug('\tSlept every {} users\t\tfor {} seconds\t\t{} times\n'.format(
+		#	throttle_counter, throttle_sleep, number_of_sleeps))
+		logger.debug('\nProcessed {} users\tslept every {} \tseconds for {} seconds\t {} times\n'.format( total_counter, throttle_counter, throttle_sleep, number_of_sleeps))
 
 		process_this_df_timer_stop = perf_counter()
 		timer_results(client_domain_param, "process_this_df_timer", process_this_df_timer_start, process_this_df_timer_stop)
@@ -296,6 +324,170 @@ def load_env_db_info(db_settings, environment='DEV_DB'):
 
 
 def process_upload_files():
+	process_upload_files_timer_method_start = perf_counter()
+
+	# TODO
+	#  see notes below
+	upload_source_dir = parser.get('user-export-file', 'output')
+	logger.debug(upload_source_dir)
+
+	postgres_envs = parser.get('Postgres_DBs', 'db_list').split(',')
+	logger.debug('postgres_d : {}'.format(postgres_envs))
+
+	# TODO
+	#  this might be removable TEST FIRST
+	db_settings = {
+		'postgres_hostname': " "
+		, 'postgres_port': " "
+		, 'postgres_host': " "
+		, 'postgres_db_name': " "
+		, 'postgres_user': " "
+		, 'postgres_pswd': " "
+	}
+	# db_settings['postgres_ip'] = " "
+
+	for environment in parser.get('Postgres_DBs', 'db_list').split(','):
+		logger.debug('processing env : {}'.format(environment))
+
+		if environment.lower() == 'local':
+			logger.debug('found LOCAL env : {}'.format(environment))
+			load_env_db_info(db_settings, 'LOCAL_DB')
+
+		if environment.lower() == 'dev':
+			logger.debug('found DEV env : {}'.format(environment))
+			load_env_db_info(db_settings, 'DEV_DB')
+
+		elif (environment.lower() == 'qa'):
+			logger.debug('found QA env : {}'.format(environment))
+			load_env_db_info('QA_DB')
+
+		elif (environment.lower() == 'prod'):
+			logger.debug('found PROD env : {}'.format(environment))
+			load_env_db_info('PROD_DB')
+
+		if (db_settings['postgres_user'] == " "):
+			logger.error('postgres database info not found - exiting')
+			# exit(5)  # just made up a number
+			break
+
+
+        # TODO
+        #  check that the connect worked
+	db_conn = connect_to_db(
+		db_settings['postgres_hostname'],
+		# db_settings['postgres_ip'],
+		db_settings['postgres_port'],
+		db_settings['postgres_host'],
+		db_settings['postgres_db_name'],
+		db_settings['postgres_user'],
+		db_settings['postgres_pswd']
+	)
+
+	cur = db_conn.cursor()
+	my_stmt = "select current_database();"
+	cur.execute(my_stmt)
+	items = cur.fetchall()
+	logger.debug(items)
+
+
+	# TODO
+	#  need privs to create temp table
+	#  upload files to the temp table
+	#  update realplay_user ROLES column from temp table
+	#  where temp_table.userid = realplay_user.userid
+	# r=root, d=directories, f = files
+	for r, d, f in walk_level(upload_source_dir, 0):
+		for file in f:
+			if file.endswith('.csv'):
+				full_path = os.path.join(r, file)
+
+				try:
+					temp_table_name = 'role_upload_table'
+					logger.debug('upload file:\n\t{} to db::{}  table::{}'.format(full_path, db_settings['postgres_db_name'], temp_table_name))
+
+					# --- new query
+					my_stmt = "create temporary table {} (userid character varying(255) , email character varying(255) , auth0_roles character varying(255) );".format(temp_table_name)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+
+
+					# --- new query
+					#  upload csv file to temp table
+					with open(full_path,'r') as f:
+						next(f)
+						cur.copy_from(f, temp_table_name, sep='!')
+					db_conn.commit()
+					f.close()
+
+					realplay_user_table = "realplay_user"
+					test_realplay_user_table = "test_realplay_user"
+
+					# --- new query
+					# create copy of realplay_user table
+					my_stmt = "create table {} as select * from {};".format(test_realplay_user_table, realplay_user_table)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+
+					my_stmt = "update {} set \
+						auth0_roles = {}.auth0_roles \
+						, email = {}.email \
+						from {} \
+						where {}.userid = {}.userid \
+						and {}.auth0_roles <> {}.auth0_roles \
+						 ".format(test_realplay_user_table,temp_table_name,temp_table_name,temp_table_name,test_realplay_user_table,temp_table_name,test_realplay_user_table,temp_table_name)
+
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+
+
+					# --- new query
+					#  show the test_realplay_user_table
+					my_stmt = "SELECT userid, email, auth0_roles FROM {} where email = 'greg.simpson@ttec.com' order by  auth0_roles asc ;".format(test_realplay_user_table)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+					row = cur.fetchone()
+
+					while row is not None:
+						logger.debug(row)
+						row = cur.fetchone()
+
+					# --- new query
+					#  show the test_realplay_user_table
+					my_stmt = "SELECT DISTINCT auth0_roles FROM {};".format(test_realplay_user_table)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+					row = cur.fetchone()
+
+					while row is not None:
+						logger.debug(row)
+						row = cur.fetchone()
+
+					# --- new query
+					#  show final table values
+					my_stmt = "SELECT count(*) from {} a , {} b where a.userid = b.userid".format(
+						test_realplay_user_table, temp_table_name)
+					logger.debug(my_stmt)
+					cur.execute(my_stmt)
+					row = cur.fetchone()
+
+					while row is not None:
+						logger.debug(row)
+						row = cur.fetchone()
+
+
+					cur.close()
+				except (Exception, psycopg2.DatabaseError) as error:
+					logger.error(error)
+				finally:
+					if db_conn is not None:
+						db_conn.close()
+
+	process_upload_files_timer_method_stop = perf_counter()
+	timer_results("", "process_upload_files_timer_method_", process_upload_files_timer_method_start,
+	              process_upload_files_timer_method_stop)
+
+
+def process_upload_files_orig():
 	process_upload_files_timer_method_start = perf_counter()
 
 	# TODO
@@ -578,7 +770,7 @@ def process_upload_files():
 def timer_results(client_domain_param, timer_name, timer_start, timer_stop):
 	key_name = ("{}_{}".format(client_domain_param, timer_name))
 	#timer_dict[key_name] = timer_start - timer_stop
-	timer_dict[key_name] = "{} seconds".format((timer_stop - timer_start)/1000)
+	timer_dict[key_name] = "\n\t{} seconds".format((timer_stop - timer_start)/1000)
 
 	# does not seem to include sleep - it should
 	# https://www.reddit.com/r/learnpython/comments/bjjafq/for_performance_timing_what_time_do_i_use/
