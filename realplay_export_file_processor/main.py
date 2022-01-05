@@ -72,11 +72,12 @@ def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 		client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(
 		client_domain_param, 'client_domain') + parser.get('Auth0Info', 'url_get_token')
 
-	conn = http.client.HTTPSConnection(conn_str)
-
 	logger.debug("headers --\n{}\n--".format(headers))
 	logger.debug("conn_str : {}".format(conn_str))
 	logger.debug("conn_api : {}".format(conn_api))
+	logger.debug("payload  : {}".format(payload))
+
+	conn = http.client.HTTPSConnection(conn_str)
 
 	conn.request("POST", conn_api, payload, headers)
 	res = conn.getresponse()
@@ -175,12 +176,13 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 		number_of_sleeps = 0
 		throttle_counter = (int)(parser.get('Config_Data', 'throttle_counter', fallback="10"))
 		throttle_sleep = (int)(parser.get('Config_Data', 'throttle_sleep', fallback="30"))
+		file_line_count = this_df.shape[0]
 
 		for index, row in this_df.iterrows():
 
 			if user_counter >= throttle_counter:
 				number_of_sleeps += 1
-				logger.debug('Processed {} users; {} total \n\tSleeping for {} seconds\t\tThis is #{}\n'.format(throttle_counter, total_counter, throttle_sleep, number_of_sleeps))
+				logger.debug('Processed {} users; {} total out of {} \n\tSleeping for {} seconds\t\tThis is #{}\n'.format(throttle_counter, total_counter, file_line_count, throttle_sleep, number_of_sleeps))
 				sleep(throttle_sleep)
 				user_counter = 0
 			total_counter += 1
@@ -214,7 +216,7 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 
 		#logger.debug('\tSlept every {} users\t\tfor {} seconds\t\t{} times\n'.format(
 		#	throttle_counter, throttle_sleep, number_of_sleeps))
-		logger.debug('\nProcessed {} users\tslept every {} \tseconds for {} seconds\t {} times\n'.format( total_counter, throttle_counter, throttle_sleep, number_of_sleeps))
+		logger.debug('\n\nProcessed {} users\tslept every {} \tseconds for {} seconds\t {} times\n'.format( total_counter, throttle_counter, throttle_sleep, number_of_sleeps))
 
 		process_this_df_timer_stop = perf_counter()
 		timer_results(client_domain_param, "process_this_df_timer", process_this_df_timer_start, process_this_df_timer_stop)
@@ -770,7 +772,8 @@ def process_upload_files_orig():
 def timer_results(client_domain_param, timer_name, timer_start, timer_stop):
 	key_name = ("{}_{}".format(client_domain_param, timer_name))
 	#timer_dict[key_name] = timer_start - timer_stop
-	timer_dict[key_name] = "\n\t{} seconds".format((timer_stop - timer_start)/1000)
+	#timer_dict[key_name] = "{} seconds".format((timer_stop - timer_start)/1000)
+	timer_dict[key_name] = "{}".format((timer_stop - timer_start) / 1000)
 
 	# does not seem to include sleep - it should
 	# https://www.reddit.com/r/learnpython/comments/bjjafq/for_performance_timing_what_time_do_i_use/
@@ -779,6 +782,9 @@ def timer_results(client_domain_param, timer_name, timer_start, timer_stop):
 def display_timer_results():
 	#logger.debug("\ntimer_dict : {}\n".format(timer_dict))
 	# Prints the nicely formatted dictionary
+	logger.info(" Time is in seconds ")
+	logger.info(pprint.pprint(timer_dict))
+	logger.info("\n\n ")
 	pprint.pprint(timer_dict)
 
 
