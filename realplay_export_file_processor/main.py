@@ -66,13 +66,15 @@ def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 	# management API access token
 	headers = {'content-type': "application/json"}
 	conn_str = "{}.auth0.com".format(client_domain_param)
-	conn_str =  parser.get( client_domain )
+	conn_str = parser.get(client_domain_param, 'client_domain')
+
 	# gjs
 	conn_api = "/oauth/token"
-	payload = "{\"client_id\":\"" + parser.get(
-		client_domain_param,'client_id') + "\",\"client_secret\":\"" + parser.get(
-		client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(
-		client_domain_param, 'client_domain') + parser.get('Auth0Info', 'url_get_token')
+	payload = "{\"client_id\":\"" + parser.get(client_domain_param,'client_id') + \
+	          "\",\"client_secret\":\"" + parser.get(client_domain_param, 'client_secret') + \
+	          "\",\"audience\":\"" + protocol + "://" + \
+	          parser.get(client_domain_param, 'client_domain') + \
+	          parser.get('Auth0Info', 'url_get_token')
 
 	logger.info("headers --\n{}\n--".format(headers))
 	logger.info("conn_str : {}".format(conn_str))
@@ -280,6 +282,7 @@ def generate_upload_files_from_auth0_exports(json_or_csv="csv"):
 				logger.info('\tfull_path          : {}'.format(full_path))
 				logger.info('\tsource_dir         : {}'.format(source_dir))
 				logger.info('\tfile_root          : {}'.format(file_root))
+				# gjs
 				logger.info('\tupload_filename    : {}'.format(upload_filename))
 				logger.info('\toutput_dir         : {}'.format(output_dir))
 

@@ -92,7 +92,6 @@ celerybeat-schedule
 # Environments
 .env
 looker.ini
-.venv
 env/
 venv/
 ENV/
@@ -134,3 +133,4 @@ realplay_admin/uploads/
 # Package Files 
 *.jar
 
+/venv/
