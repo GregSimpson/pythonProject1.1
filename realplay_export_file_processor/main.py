@@ -66,11 +66,18 @@ def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 	# management API access token
 	headers = {'content-type': "application/json"}
 	conn_str = "{}.auth0.com".format(client_domain_param)
+	conn_str =  parser.get( client_domain )
+	# gjs
 	conn_api = "/oauth/token"
 	payload = "{\"client_id\":\"" + parser.get(
 		client_domain_param,'client_id') + "\",\"client_secret\":\"" + parser.get(
 		client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(
 		client_domain_param, 'client_domain') + parser.get('Auth0Info', 'url_get_token')
+
+	logger.info("headers --\n{}\n--".format(headers))
+	logger.info("conn_str : {}".format(conn_str))
+	logger.info("conn_api : {}".format(conn_api))
+	logger.info("payload  : {}".format(payload))
 
 	logger.debug("headers --\n{}\n--".format(headers))
 	logger.debug("conn_str : {}".format(conn_str))
@@ -88,6 +95,7 @@ def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 	data = res.read()
 	data = data.decode("utf-8")
 	data = json.loads(data)
+	conn.close()
 
 	call_auth0_to_get_certificate_timer_stop = perf_counter()
 	timer_results(client_domain_param, "call_auth0_to_get_certificate_timer", call_auth0_to_get_certificate_timer_start,
@@ -182,7 +190,10 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 
 			if user_counter >= throttle_counter:
 				number_of_sleeps += 1
-				logger.debug('Processed {} users; {} total out of {} \n\tSleeping for {} seconds\t\tThis is #{}\n'.format(throttle_counter, total_counter, file_line_count, throttle_sleep, number_of_sleeps))
+				log_this_msg = 'Processed {} users; {} total out of {} \n\tSleeping for {} seconds\t\tThis is #{}\n'.format(throttle_counter, total_counter, file_line_count, throttle_sleep, number_of_sleeps)
+				logger.debug(log_this_msg)
+				logger.info(log_this_msg)
+
 				sleep(throttle_sleep)
 				user_counter = 0
 			total_counter += 1
@@ -216,7 +227,10 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 
 		#logger.debug('\tSlept every {} users\t\tfor {} seconds\t\t{} times\n'.format(
 		#	throttle_counter, throttle_sleep, number_of_sleeps))
-		logger.debug('\n\nProcessed {} users\tslept every {} \tseconds for {} seconds\t {} times\n'.format( total_counter, throttle_counter, throttle_sleep, number_of_sleeps))
+		#logger.debug('\n\nProcessed {} users\tslept every {} \tseconds for {} seconds\t {} times\n'.format( total_counter, throttle_counter, throttle_sleep, number_of_sleeps))
+		log_this_msg = '\n\nProcessed {} users\tslept every {} \tseconds for {} seconds\t {} times\n'.format(total_counter,throttle_counter,throttle_sleep,number_of_sleeps)
+		logger.debug(log_this_msg)
+		logger.info(log_this_msg)
 
 		process_this_df_timer_stop = perf_counter()
 		timer_results(client_domain_param, "process_this_df_timer", process_this_df_timer_start, process_this_df_timer_stop)
@@ -261,6 +275,13 @@ def generate_upload_files_from_auth0_exports(json_or_csv="csv"):
 				logger.debug('\tfile_root          : {}'.format(file_root))
 				logger.debug('\tupload_filename    : {}'.format(upload_filename))
 				logger.debug('\toutput_dir         : {}'.format(output_dir))
+
+				logger.info('\tNEW INPUT FILE     : {}'.format(full_path))
+				logger.info('\tfull_path          : {}'.format(full_path))
+				logger.info('\tsource_dir         : {}'.format(source_dir))
+				logger.info('\tfile_root          : {}'.format(file_root))
+				logger.info('\tupload_filename    : {}'.format(upload_filename))
+				logger.info('\toutput_dir         : {}'.format(output_dir))
 
 				if (src_extension == '.json'):
 					this_df = pd.read_json(full_path, lines=True)
