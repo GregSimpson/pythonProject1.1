@@ -60,42 +60,21 @@ def create_app():
 
 def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 	call_auth0_to_get_certificate_timer_start = perf_counter()
-	# gjs
 	logger.debug("client_domain_param: {} :: protocol: {}".format(client_domain_param, protocol))
 
 	# management API access token
 	headers = {'content-type': "application/json"}
-	# gjs - gives 'bad audience' if the '.us' is there
-	#conn_str = "{}.auth0.com".format(client_domain_param)
 	conn_str = parser.get(client_domain_param, 'client_domain')
 	logger.debug(conn_str)
 
 	conn_api = "/oauth/token"
-
-	#  experiment begin
 	payload = "{\"client_id\":\"" + \
-			parser.get(client_domain_param, 'client_id') + \
-			"\",\"client_secret\":\"" + \
-			parser.get(client_domain_param, 'client_secret') + \
-			"\",\"audience\":\"" + protocol + "://" + \
-	 	    parser.get(client_domain_param, 'client_domain') + \
-	 	    parser.get('Auth0Info', 'url_get_token')
-
-	# payload = "{\"client_id\":\"" + parser.get(
-	#	client_domain_param, 'client_id') + "\",\"client_secret\":\"" + parser.get(
-	#	client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(
-	#	client_domain_param, 'client_domain') + parser.get('Auth0Info', 'url_get_token')
-
-	#audience_str = "{}.auth0.com".format(client_domain_param)
-	#payload = "{\"client_id\":\"" + parser.get(
-	#	client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(
-	#	client_domain_param, 'client_domain') + parser.get('Auth0Info', 'url_get_token')
-		#client_domain_param, 'client_id') + "\",\"client_secret\":\"" + parser.get(
-		#client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + "ttec-realplay-snowinc.us.auth0.com" + parser.get('Auth0Info', 'url_get_token')
-
-
-	#  experiment end
-
+	          parser.get(client_domain_param, 'client_id') + \
+	          "\",\"client_secret\":\"" + \
+	          parser.get(client_domain_param, 'client_secret') + \
+	          "\",\"audience\":\"" + protocol + "://" + \
+	          parser.get(client_domain_param, 'client_domain') + \
+	          parser.get('Auth0Info', 'url_get_token')
 
 	logger.info("\tconn_str : {}".format(conn_str))
 	logger.info("\tconn_api : {}".format(conn_api))
@@ -104,22 +83,15 @@ def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 
 	conn = http.client.HTTPSConnection(conn_str)
 
-	# conn.request("POST", conn_api, payload, headers)
-	# res = conn.getresponse()
-	# data = res.read()
-	# data = data.decode("utf-8")
-	# data = json.loads(data)
-	# conn.close()
-	###########
 	try:
-		logger.debug("\n\n\t\tBEFORE call to get certificate\n")
+		logger.debug("Calling auth0 to get certificate\n")
 
 		conn.request("POST", conn_api, payload, headers)
 		res = conn.getresponse()
 		data = res.read()
 
-		logger.debug(data)
-		logger.debug("\n\n\t\tAFTER call to get certificate\n\n")
+		#logger.debug(data)
+		#logger.debug("\n\n\t\tAFTER call to get certificate\n\n")
 
 		data_as_json = json.loads(data.decode('utf-8'))
 		data_pretty_printed = json.dumps(data_as_json, indent=2, sort_keys=True)
@@ -130,16 +102,12 @@ def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 		#  check result list for 'error'
 		if 'error' in data_as_json:
 			raise Exception(data)
-			#exit(1) # gjs testing
 
 		logger.debug("\n\n\t\tGood call to get certificate\n\n")
-		#exit(2)  # gjs testing
 
 	except Exception as error:
 		logging.error(data)
-		#exit(3)  # gjs testing
 		return '{}'
-	##########
 
 	call_auth0_to_get_certificate_timer_stop = perf_counter()
 	timer_results(client_domain_param, "call_auth0_to_get_certificate_timer", call_auth0_to_get_certificate_timer_start,
@@ -148,69 +116,12 @@ def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 	return data_as_json
 
 
-def WORKS_call_auth0_to_get_certificate(client_domain_param, protocol="https"):
-	call_auth0_to_get_certificate_timer_start = perf_counter()
-
-	logger.debug("client_domain_param: {} :: protocol: {}".format(client_domain_param, protocol))
-
-	# management API access token
-	headers = {'content-type': "application/json"}
-	conn_str = "{}.auth0.com".format(client_domain_param)
-	conn_api = "/oauth/token"
-
-	#  experiment
-	#payload = "{\"client_id\":\"" + parser.get(
-	#	client_domain_param, 'client_id') + "\",\"client_secret\":\"" + parser.get(
-	#	client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(
-	#	client_domain_param, 'client_domain') + parser.get('Auth0Info', 'url_get_token')
-
-	audience_str = "{}.auth0.com".format(client_domain_param)
-	payload = "{\"client_id\":\"" + parser.get(
-		client_domain_param, 'client_id') + "\",\"client_secret\":\"" + parser.get(
-		client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(
-		client_domain_param, 'client_domain') + \
-	          audience_str #parser.get('Auth0Info', 'url_get_token')
-
-
-
-	# experiment end
-
-	conn = http.client.HTTPSConnection(conn_str)
-
-	logger.debug("headers --\n{}\n--".format(headers))
-	logger.debug("conn_str : {}".format(conn_str))
-	logger.debug("conn_api : {}".format(conn_api))
-
-	conn.request("POST", conn_api, payload, headers)
-	res = conn.getresponse()
-	# TODO
-	#  check result list for 'error' and handle that
-	# maybe - if (data['statusCode'] != 200):
-
-	data = res.read()
-	data = data.decode("utf-8")
-	data = json.loads(data)
-
-	call_auth0_to_get_certificate_timer_stop = perf_counter()
-	timer_results(client_domain_param, "call_auth0_to_get_certificate_timer", call_auth0_to_get_certificate_timer_start,
-	              call_auth0_to_get_certificate_timer_stop)
-
-	return data
-
-
 # https://auth0.com/docs/api/management/v2#!/Jobs/post_users_exports
 def call_auth0_to_get_role_data(auth0_certificate, client_domain_param, user_name):
 	call_auth0_to_get_role_data_timer_start = perf_counter()
-	#logger.debug(" seeking {} :: {}".format(client_domain_param, user_name))
 	logger.debug(" seeking {} :: {}".format(parser.get(client_domain_param, 'client_domain'), user_name))
 
-	## conn_str = "{}.auth0.com".format(client_domain_param)
-	#conn_str = parser.get(client_domain_param, 'client_domain')
-	#logger.debug(conn_str)
-
 	headers = {'authorization': 'Bearer {}'.format(auth0_certificate['access_token'])}
-	# gjs - gives 'bad audience' if the '.us' is there
-	#conn_str = "{}.auth0.com".format(client_domain_param)
 	conn_str = parser.get(client_domain_param, 'client_domain')
 	conn_api = "/api/v2/users/{}/roles".format(user_name)
 	conn = http.client.HTTPSConnection(conn_str)
@@ -218,9 +129,6 @@ def call_auth0_to_get_role_data(auth0_certificate, client_domain_param, user_nam
 	logger.debug("headers --\n{}\n--".format(headers))
 	logger.debug("conn_str : {}".format(conn_str))
 	logger.debug("conn_api : {}".format(conn_api))
-
-	# gjs I think this is it
-	#exit(9)
 
 	try:
 		conn.request("GET", conn_api, headers=headers)
@@ -251,12 +159,10 @@ def call_auth0_to_get_role_data(auth0_certificate, client_domain_param, user_nam
 def process_this_df(this_df, upload_filename, client_domain_param):
 	process_this_df_timer_start = perf_counter()
 	auth0_certificate = call_auth0_to_get_certificate(client_domain_param)
-# gjs 1
-	if 'access_token' not in auth0_certificate:
-		logger.error('client : {} - auth0_cert :: {}\n'.format(client_domain_param, auth0_certificate))
-		return
-	logger.debug('client : {} - auth0_cert :: {}'.format(client_domain_param, auth0_certificate))
+
 	logger.info('client : {} - auth0_cert :: {}'.format(client_domain_param, auth0_certificate))
+	if 'access_token' not in auth0_certificate:
+		return
 
 	# TODO
 	#  check result of 'open'
@@ -291,7 +197,7 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 				parsed_roles = json.loads(
 					call_auth0_to_get_role_data(auth0_certificate, client_domain_param, row['user_id']))
 				logger.debug("parsed_roles = {}".format(parsed_roles))
-				exit(5) # gjs testing
+				#  exit(5)  # gjs testing
 				if parsed_roles == {}:
 					logger.error(" there was a problem getting the auth certificate")
 					break
@@ -309,12 +215,11 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 				writer.writerow([row['user_id'], row['email'], role_str])
 			except Exception as error:
 				logger.error(error)
-				exit(6)  # gjs testing
 				break
 
-		log_this_msg = '\n\nProcessed {} users\tslept every {} \tseconds for {} seconds\t {} times\n'.format(
-			total_counter, throttle_counter, throttle_sleep, number_of_sleeps)
-		logger.debug(log_this_msg)
+		log_this_msg = '\n\nProcessed {} users\ttotal out of {} - slept every {} \tseconds for {} seconds\t {} times\n'.format(
+			total_counter, file_line_count, throttle_counter, throttle_sleep, number_of_sleeps)
+		#logger.debug(log_this_msg)
 		logger.info(log_this_msg)
 
 		process_this_df_timer_stop = perf_counter()
@@ -598,20 +503,16 @@ def process_upload_files():
 	              process_upload_files_timer_method_stop)
 
 
+# TODO needs work - not all that important
 def timer_results(client_domain_param, timer_name, timer_start, timer_stop):
 	key_name = ("{}_{}".format(client_domain_param, timer_name))
-	# timer_dict[key_name] = timer_start - timer_stop
-	# timer_dict[key_name] = "{} seconds".format((timer_stop - timer_start)/1000)
 	timer_dict[key_name] = "{}".format((timer_stop - timer_start) / 1000)
-
 
 # does not seem to include sleep - it should
 # https://www.reddit.com/r/learnpython/comments/bjjafq/for_performance_timing_what_time_do_i_use/
 
 
 def display_timer_results():
-	# logger.debug("\ntimer_dict : {}\n".format(timer_dict))
-	# Prints the nicely formatted dictionary
 	logger.info(" Time is in seconds ")
 	logger.info(pprint.pprint(timer_dict))
 	logger.info("\n\n ")
@@ -622,7 +523,7 @@ if __name__ == '__main__':
 	parser = configparser.ConfigParser()
 	logger = logging.getLogger("RealplayExportProcess")
 
-	# tried dynamically - did not spend time to make it work
+	# tried to create logs dir dynamically - did not spend time to make it work
 	# log_dir = Path('{}'.format(parser.get('user-export-file', 'output')))
 	log_dir = Path("logs")
 	log_dir.mkdir(parents=True, exist_ok=True)
