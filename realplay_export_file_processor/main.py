@@ -126,15 +126,14 @@ def call_auth0_to_get_role_data(auth0_certificate, client_domain_param, user_nam
 	conn_api = "/api/v2/users/{}/roles".format(user_name)
 	conn = http.client.HTTPSConnection(conn_str)
 
-	logger.debug("headers --\n{}\n--".format(headers))
-	logger.debug("conn_str : {}".format(conn_str))
-	logger.debug("conn_api : {}".format(conn_api))
+	logger.info("\tconn_str : {}".format(conn_str))
+	logger.info("\tconn_api : {}".format(conn_api))
+	logger.info("\theaders  : {}".format(headers))
 
 	try:
 		conn.request("GET", conn_api, headers=headers)
 		res = conn.getresponse()
 		data = res.read()
-		logger.debug(type(data))
 		logger.debug(data)
 
 		data_as_json = json.loads(data.decode('utf-8'))
@@ -185,7 +184,6 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 				number_of_sleeps += 1
 				log_this_msg = 'Processed {} users; {} total out of {} \n\tSleeping for {} seconds\t\tThis is #{}\n'.format(
 					throttle_counter, total_counter, file_line_count, throttle_sleep, number_of_sleeps)
-				logger.debug(log_this_msg)
 				logger.info(log_this_msg)
 
 				sleep(throttle_sleep)
@@ -199,7 +197,7 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 				logger.debug("parsed_roles = {}".format(parsed_roles))
 				#  exit(5)  # gjs testing
 				if parsed_roles == {}:
-					logger.error(" there was a problem getting the auth certificate")
+					logger.error(" there was a problem with the auth certificate")
 					break
 
 				role_str = ""
@@ -207,8 +205,6 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 					role_str = "{}{}".format(role_str, parsed_roles[i]['name'])
 					if i < len(parsed_roles) - 1:
 						role_str = "{},".format(role_str)
-				##logger.debug("--{}--\n".format(parsed_roles[i]))
-				# logger.debug("--{}--\n".format(parsed_roles[i]['name']))
 
 				logging.info("domain {} - writing {} :{},{},{}".format(
 					client_domain_param, upload_filename, row['user_id'], row['email'], role_str))
@@ -219,7 +215,6 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 
 		log_this_msg = '\n\nProcessed {} users\ttotal out of {} - slept every {} \tseconds for {} seconds\t {} times\n'.format(
 			total_counter, file_line_count, throttle_counter, throttle_sleep, number_of_sleeps)
-		#logger.debug(log_this_msg)
 		logger.info(log_this_msg)
 
 		process_this_df_timer_stop = perf_counter()
@@ -261,7 +256,7 @@ def generate_upload_files_from_auth0_exports(json_or_csv="csv"):
 				upload_filename = (
 					"{}/{}{}{}".format(output_dir, parser.get('user-export-file', 'output_prefix'), file_root, '.csv'))
 
-				logger.info('\tNEW INPUT FILE     : {}'.format(full_path))
+				logger.info('\tNEW INPUT FILE     : {}\n\n'.format(full_path))
 				logger.info('\tfull_path          : {}'.format(full_path))
 				logger.info('\tsource_dir         : {}'.format(source_dir))
 				logger.info('\tfile_root          : {}'.format(file_root))
@@ -273,7 +268,6 @@ def generate_upload_files_from_auth0_exports(json_or_csv="csv"):
 				if (src_extension == '.csv'):
 					this_df = pd.read_csv(full_path)
 
-				# logger.debug(this_df.info)
 				logger.debug(this_df.style)
 
 				# we now have a dataframe for this file
@@ -299,7 +293,7 @@ def connect_to_db(postgres_hostname, postgres_port, postgres_host, postgres_db_n
 		, host=postgres_host
 		, port=postgres_port
 	)
-	logger.debug("connected to a db")
+	logger.debug("connected to the db")
 	# TODO
 	#  check for success or failure
 
@@ -323,7 +317,6 @@ def run_a_db_query(db_conn, my_stmt):
 
 def load_env_db_info(db_settings, environment='DEV_DB'):
 	db_settings['postgres_hostname'] = parser.get(environment, 'hostname', fallback=" ")
-	# db_settings['postgres_ip'] = parser.get(environment, 'private ip', fallback=" ")
 	db_settings['postgres_port'] = parser.get(environment, 'port', fallback=" ")
 	db_settings['postgres_host'] = parser.get(environment, 'host', fallback=" ")
 	db_settings['postgres_db_name'] = parser.get(environment, 'db_name', fallback=" ")
@@ -352,7 +345,6 @@ def process_upload_files():
 		, 'postgres_user': " "
 		, 'postgres_pswd': " "
 	}
-	# db_settings['postgres_ip'] = " "
 
 	for environment in parser.get('Postgres_DBs', 'db_list').split(','):
 		logger.debug('processing env : {}'.format(environment))
@@ -382,7 +374,6 @@ def process_upload_files():
 	#  check that the connect worked
 	db_conn = connect_to_db(
 		db_settings['postgres_hostname'],
-		# db_settings['postgres_ip'],
 		db_settings['postgres_port'],
 		db_settings['postgres_host'],
 		db_settings['postgres_db_name'],
@@ -543,7 +534,7 @@ if __name__ == '__main__':
 	generate_upload_files_from_auth0_exports('csv')
 
 	## STEP 3 upload the file and update realplay_user where the userids match
-	logger.debug("\n\n\nSTEP 3 upload the file and update realplay_user where the userids match")
+	logger.info("\n\n\nSTEP 3 upload the file and update realplay_user where the userids match")
 	process_upload_files()
 
 	whole_process_timer_stop = perf_counter()
