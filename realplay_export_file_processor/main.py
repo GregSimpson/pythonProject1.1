@@ -400,7 +400,7 @@ def process_upload_files():
 		for file in f:
 			if file.endswith('.csv'):
 				full_path = os.path.join(r, file)
-				logger.debug("\n\nPROCESSING file {}\n\n".format(full_path))
+				logger.info("\n\nPROCESSING file {}\n\n".format(full_path))
 
 				try:
 
@@ -529,7 +529,7 @@ if __name__ == '__main__':
 	log_dir.mkdir(parents=True, exist_ok=True)
 
 	create_app()
-	logger.debug('BEGIN process')
+	logger.info('BEGIN process')
 
 	# test_log_messages()
 
@@ -537,18 +537,18 @@ if __name__ == '__main__':
 	whole_process_timer_start = perf_counter()
 
 	# STEP 1 add role info to the file to be uploaded
-	logger.info("\n\n\nSTEP 1 add role info to the file to be uploaded")
+	# logger.info("\n\n\nSTEP 1 add role info to the file to be uploaded")
 	### can be either 'json' or 'csv'
 	##generate_upload_files_from_auth0_exports('json')
-	generate_upload_files_from_auth0_exports('csv')
+	#generate_upload_files_from_auth0_exports('csv')
 
 	## STEP 2 upload the file and update realplay_user where the userids match
-	# logger.debug("\n\n\nSTEP 2 upload the file and update realplay_user where the userids match")
-	# process_upload_files()
+	logger.debug("\n\n\nSTEP 2 upload the file and update realplay_user where the userids match")
+	process_upload_files()
 
 	whole_process_timer_stop = perf_counter()
 
 	timer_results("main", "whole_process_timer", whole_process_timer_start, whole_process_timer_stop)
 	display_timer_results()
 
-	logger.debug('END process')
+	logger.info('END process')
