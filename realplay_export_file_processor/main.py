@@ -58,32 +58,49 @@ def create_app():
 	return app
 
 
-def ORIG_call_auth0_to_get_certificate(client_domain_param, protocol="https"):
+def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 	call_auth0_to_get_certificate_timer_start = perf_counter()
 	# gjs
 	logger.debug("client_domain_param: {} :: protocol: {}".format(client_domain_param, protocol))
 
 	# management API access token
 	headers = {'content-type': "application/json"}
-	conn_str = "{}.auth0.com".format(client_domain_param)
-	#conn_str = parser.get(client_domain_param, 'client_domain')
+	# gjs - gives 'bad audience' if the '.us' is there
+	#conn_str = "{}.auth0.com".format(client_domain_param)
+	conn_str = parser.get(client_domain_param, 'client_domain')
+	logger.debug(conn_str)
 
 	conn_api = "/oauth/token"
-	payload = "{\"client_id\":\"" + parser.get(client_domain_param, 'client_id') + \
-	          "\",\"client_secret\":\"" + parser.get(client_domain_param, 'client_secret') + \
-	          "\",\"audience\":\"" + protocol + "://" + \
-	          parser.get(client_domain_param, 'client_domain') + \
-	          parser.get('Auth0Info', 'url_get_token')
+
+	#  experiment begin
+	payload = "{\"client_id\":\"" + \
+			parser.get(client_domain_param, 'client_id') + \
+			"\",\"client_secret\":\"" + \
+			parser.get(client_domain_param, 'client_secret') + \
+			"\",\"audience\":\"" + protocol + "://" + \
+	 	    parser.get(client_domain_param, 'client_domain') + \
+	 	    parser.get('Auth0Info', 'url_get_token')
+
+	# payload = "{\"client_id\":\"" + parser.get(
+	#	client_domain_param, 'client_id') + "\",\"client_secret\":\"" + parser.get(
+	#	client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(
+	#	client_domain_param, 'client_domain') + parser.get('Auth0Info', 'url_get_token')
+
+	#audience_str = "{}.auth0.com".format(client_domain_param)
+	#payload = "{\"client_id\":\"" + parser.get(
+	#	client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(
+	#	client_domain_param, 'client_domain') + parser.get('Auth0Info', 'url_get_token')
+		#client_domain_param, 'client_id') + "\",\"client_secret\":\"" + parser.get(
+		#client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + "ttec-realplay-snowinc.us.auth0.com" + parser.get('Auth0Info', 'url_get_token')
+
+
+	#  experiment end
+
 
 	logger.info("\tconn_str : {}".format(conn_str))
 	logger.info("\tconn_api : {}".format(conn_api))
 	logger.info("\theaders  : {}".format(headers))
 	logger.info("\tpayload  : {}\n\n".format(payload))
-
-	logger.debug("\tconn_str : {}".format(conn_str))
-	logger.debug("\tconn_api : {}".format(conn_api))
-	logger.debug("\theaders  : {}".format(headers))
-	logger.debug("\tpayload  : {}\n\n".format(payload))
 
 	conn = http.client.HTTPSConnection(conn_str)
 
@@ -95,13 +112,12 @@ def ORIG_call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 	# conn.close()
 	###########
 	try:
-		logger.debug("\n\n\t\tBEFORE call to get certificate")
+		logger.debug("\n\n\t\tBEFORE call to get certificate\n")
 
-		conn.request("POST", conn_api, headers=headers)
+		conn.request("POST", conn_api, payload, headers)
 		res = conn.getresponse()
 		data = res.read()
 
-		logger.debug(type(data))
 		logger.debug(data)
 		logger.debug("\n\n\t\tAFTER call to get certificate\n\n")
 
@@ -114,11 +130,14 @@ def ORIG_call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 		#  check result list for 'error'
 		if 'error' in data_as_json:
 			raise Exception(data)
+			#exit(1) # gjs testing
 
-		logger.debug("\nGood call to get certificate")
+		logger.debug("\n\n\t\tGood call to get certificate\n\n")
+		#exit(2)  # gjs testing
 
 	except Exception as error:
 		logging.error(data)
+		#exit(3)  # gjs testing
 		return '{}'
 	##########
 
@@ -126,10 +145,10 @@ def ORIG_call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 	timer_results(client_domain_param, "call_auth0_to_get_certificate_timer", call_auth0_to_get_certificate_timer_start,
 	              call_auth0_to_get_certificate_timer_stop)
 
-	return data
+	return data_as_json
 
 
-def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
+def WORKS_call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 	call_auth0_to_get_certificate_timer_start = perf_counter()
 
 	logger.debug("client_domain_param: {} :: protocol: {}".format(client_domain_param, protocol))
@@ -138,10 +157,23 @@ def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 	headers = {'content-type': "application/json"}
 	conn_str = "{}.auth0.com".format(client_domain_param)
 	conn_api = "/oauth/token"
+
+	#  experiment
+	#payload = "{\"client_id\":\"" + parser.get(
+	#	client_domain_param, 'client_id') + "\",\"client_secret\":\"" + parser.get(
+	#	client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(
+	#	client_domain_param, 'client_domain') + parser.get('Auth0Info', 'url_get_token')
+
+	audience_str = "{}.auth0.com".format(client_domain_param)
 	payload = "{\"client_id\":\"" + parser.get(
 		client_domain_param, 'client_id') + "\",\"client_secret\":\"" + parser.get(
 		client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(
-		client_domain_param, 'client_domain') + parser.get('Auth0Info', 'url_get_token')
+		client_domain_param, 'client_domain') + \
+	          audience_str #parser.get('Auth0Info', 'url_get_token')
+
+
+
+	# experiment end
 
 	conn = http.client.HTTPSConnection(conn_str)
 
@@ -169,16 +201,26 @@ def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 # https://auth0.com/docs/api/management/v2#!/Jobs/post_users_exports
 def call_auth0_to_get_role_data(auth0_certificate, client_domain_param, user_name):
 	call_auth0_to_get_role_data_timer_start = perf_counter()
-	logger.debug(" seeking {} :: {}".format(client_domain_param, user_name))
+	#logger.debug(" seeking {} :: {}".format(client_domain_param, user_name))
+	logger.debug(" seeking {} :: {}".format(parser.get(client_domain_param, 'client_domain'), user_name))
+
+	## conn_str = "{}.auth0.com".format(client_domain_param)
+	#conn_str = parser.get(client_domain_param, 'client_domain')
+	#logger.debug(conn_str)
 
 	headers = {'authorization': 'Bearer {}'.format(auth0_certificate['access_token'])}
-	conn_str = "{}.auth0.com".format(client_domain_param)
+	# gjs - gives 'bad audience' if the '.us' is there
+	#conn_str = "{}.auth0.com".format(client_domain_param)
+	conn_str = parser.get(client_domain_param, 'client_domain')
 	conn_api = "/api/v2/users/{}/roles".format(user_name)
 	conn = http.client.HTTPSConnection(conn_str)
 
 	logger.debug("headers --\n{}\n--".format(headers))
 	logger.debug("conn_str : {}".format(conn_str))
 	logger.debug("conn_api : {}".format(conn_api))
+
+	# gjs I think this is it
+	#exit(9)
 
 	try:
 		conn.request("GET", conn_api, headers=headers)
@@ -209,7 +251,7 @@ def call_auth0_to_get_role_data(auth0_certificate, client_domain_param, user_nam
 def process_this_df(this_df, upload_filename, client_domain_param):
 	process_this_df_timer_start = perf_counter()
 	auth0_certificate = call_auth0_to_get_certificate(client_domain_param)
-
+# gjs 1
 	if 'access_token' not in auth0_certificate:
 		logger.error('client : {} - auth0_cert :: {}\n'.format(client_domain_param, auth0_certificate))
 		return
@@ -249,6 +291,7 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 				parsed_roles = json.loads(
 					call_auth0_to_get_role_data(auth0_certificate, client_domain_param, row['user_id']))
 				logger.debug("parsed_roles = {}".format(parsed_roles))
+				exit(5) # gjs testing
 				if parsed_roles == {}:
 					logger.error(" there was a problem getting the auth certificate")
 					break
@@ -266,6 +309,7 @@ def process_this_df(this_df, upload_filename, client_domain_param):
 				writer.writerow([row['user_id'], row['email'], role_str])
 			except Exception as error:
 				logger.error(error)
+				exit(6)  # gjs testing
 				break
 
 		log_this_msg = '\n\nProcessed {} users\tslept every {} \tseconds for {} seconds\t {} times\n'.format(
@@ -311,12 +355,6 @@ def generate_upload_files_from_auth0_exports(json_or_csv="csv"):
 				# upload_filename = ("{}/{}{}{}".format(output_dir, 'output_', file_root, '.csv'))
 				upload_filename = (
 					"{}/{}{}{}".format(output_dir, parser.get('user-export-file', 'output_prefix'), file_root, '.csv'))
-
-				logger.debug('\tfull_path          : {}'.format(full_path))
-				logger.debug('\tsource_dir         : {}'.format(source_dir))
-				logger.debug('\tfile_root          : {}'.format(file_root))
-				logger.debug('\tupload_filename    : {}'.format(upload_filename))
-				logger.debug('\toutput_dir         : {}'.format(output_dir))
 
 				logger.info('\tNEW INPUT FILE     : {}'.format(full_path))
 				logger.info('\tfull_path          : {}'.format(full_path))
