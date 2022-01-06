@@ -58,17 +58,16 @@ def create_app():
 	return app
 
 
-def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
+def ORIG_call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 	call_auth0_to_get_certificate_timer_start = perf_counter()
-
+	# gjs
 	logger.debug("client_domain_param: {} :: protocol: {}".format(client_domain_param, protocol))
 
 	# management API access token
 	headers = {'content-type': "application/json"}
-	# conn_str = "{}.auth0.com".format(client_domain_param)
-	conn_str = parser.get(client_domain_param, 'client_domain')
+	conn_str = "{}.auth0.com".format(client_domain_param)
+	#conn_str = parser.get(client_domain_param, 'client_domain')
 
-	# gjs
 	conn_api = "/oauth/token"
 	payload = "{\"client_id\":\"" + parser.get(client_domain_param, 'client_id') + \
 	          "\",\"client_secret\":\"" + parser.get(client_domain_param, 'client_secret') + \
@@ -76,28 +75,89 @@ def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
 	          parser.get(client_domain_param, 'client_domain') + \
 	          parser.get('Auth0Info', 'url_get_token')
 
-	logger.info("headers --\n{}\n--".format(headers))
-	logger.info("conn_str : {}".format(conn_str))
-	logger.info("conn_api : {}".format(conn_api))
-	logger.info("payload  : {}".format(payload))
+	logger.info("\tconn_str : {}".format(conn_str))
+	logger.info("\tconn_api : {}".format(conn_api))
+	logger.info("\theaders  : {}".format(headers))
+	logger.info("\tpayload  : {}\n\n".format(payload))
+
+	logger.debug("\tconn_str : {}".format(conn_str))
+	logger.debug("\tconn_api : {}".format(conn_api))
+	logger.debug("\theaders  : {}".format(headers))
+	logger.debug("\tpayload  : {}\n\n".format(payload))
+
+	conn = http.client.HTTPSConnection(conn_str)
+
+	# conn.request("POST", conn_api, payload, headers)
+	# res = conn.getresponse()
+	# data = res.read()
+	# data = data.decode("utf-8")
+	# data = json.loads(data)
+	# conn.close()
+	###########
+	try:
+		logger.debug("\n\n\t\tBEFORE call to get certificate")
+
+		conn.request("POST", conn_api, headers=headers)
+		res = conn.getresponse()
+		data = res.read()
+
+		logger.debug(type(data))
+		logger.debug(data)
+		logger.debug("\n\n\t\tAFTER call to get certificate\n\n")
+
+		data_as_json = json.loads(data.decode('utf-8'))
+		data_pretty_printed = json.dumps(data_as_json, indent=2, sort_keys=True)
+
+		logger.debug(data_pretty_printed)
+		conn.close()
+
+		#  check result list for 'error'
+		if 'error' in data_as_json:
+			raise Exception(data)
+
+		logger.debug("\nGood call to get certificate")
+
+	except Exception as error:
+		logging.error(data)
+		return '{}'
+	##########
+
+	call_auth0_to_get_certificate_timer_stop = perf_counter()
+	timer_results(client_domain_param, "call_auth0_to_get_certificate_timer", call_auth0_to_get_certificate_timer_start,
+	              call_auth0_to_get_certificate_timer_stop)
+
+	return data
+
+
+def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
+	call_auth0_to_get_certificate_timer_start = perf_counter()
+
+	logger.debug("client_domain_param: {} :: protocol: {}".format(client_domain_param, protocol))
+
+	# management API access token
+	headers = {'content-type': "application/json"}
+	conn_str = "{}.auth0.com".format(client_domain_param)
+	conn_api = "/oauth/token"
+	payload = "{\"client_id\":\"" + parser.get(
+		client_domain_param, 'client_id') + "\",\"client_secret\":\"" + parser.get(
+		client_domain_param, 'client_secret') + "\",\"audience\":\"" + protocol + "://" + parser.get(
+		client_domain_param, 'client_domain') + parser.get('Auth0Info', 'url_get_token')
+
+	conn = http.client.HTTPSConnection(conn_str)
 
 	logger.debug("headers --\n{}\n--".format(headers))
 	logger.debug("conn_str : {}".format(conn_str))
 	logger.debug("conn_api : {}".format(conn_api))
-	logger.debug("payload  : {}".format(payload))
-
-	conn = http.client.HTTPSConnection(conn_str)
 
 	conn.request("POST", conn_api, payload, headers)
 	res = conn.getresponse()
-	# TODO 
+	# TODO
 	#  check result list for 'error' and handle that
 	# maybe - if (data['statusCode'] != 200):
 
 	data = res.read()
 	data = data.decode("utf-8")
 	data = json.loads(data)
-	conn.close()
 
 	call_auth0_to_get_certificate_timer_stop = perf_counter()
 	timer_results(client_domain_param, "call_auth0_to_get_certificate_timer", call_auth0_to_get_certificate_timer_start,
@@ -506,6 +566,7 @@ def timer_results(client_domain_param, timer_name, timer_start, timer_stop):
 	# timer_dict[key_name] = "{} seconds".format((timer_stop - timer_start)/1000)
 	timer_dict[key_name] = "{}".format((timer_stop - timer_start) / 1000)
 
+
 # does not seem to include sleep - it should
 # https://www.reddit.com/r/learnpython/comments/bjjafq/for_performance_timing_what_time_do_i_use/
 
@@ -537,12 +598,14 @@ if __name__ == '__main__':
 	whole_process_timer_start = perf_counter()
 
 	# STEP 1 add role info to the file to be uploaded
+	logger.info("\n\n\nSTEP 1 add role info to the file to be uploaded")
 	### can be either 'json' or 'csv'
 	##generate_upload_files_from_auth0_exports('json')
 	generate_upload_files_from_auth0_exports('csv')
 
-	# STEP 2 upload the file and update realplay_user where the userids match
-	process_upload_files()
+	## STEP 2 upload the file and update realplay_user where the userids match
+	# logger.debug("\n\n\nSTEP 2 upload the file and update realplay_user where the userids match")
+	# process_upload_files()
 
 	whole_process_timer_stop = perf_counter()
 
