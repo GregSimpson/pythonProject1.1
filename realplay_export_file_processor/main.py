@@ -536,14 +536,14 @@ if __name__ == '__main__':
 	timer_dict = {}
 	whole_process_timer_start = perf_counter()
 
-	# STEP 1 add role info to the file to be uploaded
-	# logger.info("\n\n\nSTEP 1 add role info to the file to be uploaded")
+	# STEP 2 add role info to the file to be uploaded
+	logger.info("\n\n\nSTEP 2 add role info to the file to be uploaded")
 	### can be either 'json' or 'csv'
 	##generate_upload_files_from_auth0_exports('json')
-	#generate_upload_files_from_auth0_exports('csv')
+	generate_upload_files_from_auth0_exports('csv')
 
-	## STEP 2 upload the file and update realplay_user where the userids match
-	logger.debug("\n\n\nSTEP 2 upload the file and update realplay_user where the userids match")
+	## STEP 3 upload the file and update realplay_user where the userids match
+	logger.debug("\n\n\nSTEP 3 upload the file and update realplay_user where the userids match")
 	process_upload_files()
 
 	whole_process_timer_stop = perf_counter()
