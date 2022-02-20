@@ -8,7 +8,7 @@ from datetime import datetime
 from time import sleep, perf_counter
 
 # pip install flask
-from flask import Flask
+###from flask import Flask
 import http
 import json
 import logging.config
@@ -51,11 +51,11 @@ def load_settings():
 
 
 def create_app():
-	app = Flask(__name__)
+	###app = Flask(__name__)
 	setup_logging()
 	load_settings()
 
-	return app
+	return # app
 
 
 def call_auth0_to_get_certificate(client_domain_param, protocol="https"):
