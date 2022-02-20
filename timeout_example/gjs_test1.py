@@ -2,27 +2,20 @@ import time
 from timeout_gjs import timeout
 
 def outer_method():
-	"""
-	Function that should timeout after 5 seconds. It simply prints a number and waits 1 second.
-	:return:
-	"""
 	try:
-		i = 0
+		i = 1
 		while i < 10 :
-			i += 1
-			print(i)
-			#time.sleep(1)
+			print("#{}\tcalling sometimes_hangs".format(i))
 			sometimes_hangs()
+			i += 1
 
 	except Exception as error:
 		print("\t\touter method Exception  {}".format(error))
 	except TimeoutError as error:
 		print("\t\touter method TimeoutError  {}".format(error))
-		#logging.error(data)
-		#return '{}'
 
 
-@timeout(5)
+@timeout(6)
 def sometimes_hangs():
 	# import random
 	import random
