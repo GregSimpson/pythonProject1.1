@@ -1,0 +1,7 @@
+
+just testing a PR from the auth0 dir
+it should set ME as a default approver
+
+testing after moving CODEOWNER file
+
+

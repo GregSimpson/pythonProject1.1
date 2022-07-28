@@ -1,0 +1,43 @@
+# https://geekflare.com/python-yaml-intro/
+
+Let’s see another way to represent arrays in YAML (looks like markdown lists).
+
+programming_languages:
+  - Python
+  - JavaScript
+  - C
+  - HTML
+  - CSS
+libraries:
+  - React
+  - TailwindCSS
+
+
+programming_languages:
+- Python:
+author: Guido van Rossum
+- JavaScript:
+author: Brendan Eich
+- C:
+author: Dennis Ritchie
+libraries:
+- React:
+popularity: High
+- TailwindCSS:
+popularity: High
+
+
+dictionary:
+  i am key: i am value
+
+nested dictionary:
+  nested key:
+    i am nested key: i am nested value
+
+
+i am a set: !!set
+  ? 1
+  ? 2
+  ? 2
+  ? 3
+
