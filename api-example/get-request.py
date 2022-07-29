@@ -7,11 +7,8 @@ import requests
 URL = "https://maps.googleapis.com/maps/api/geocode/json"
 
 # https://console.cloud.google.com/apis/credentials?referrer=search&project=woven-solution-357815&supportedpurview=project
-# Api Key : AIzaSyDx8H-vS7FsjMibjMu9CtDjeBjrT7aJXIw
-API_KEY = "AIzaSyDx8H-vS7FsjMibjMu9CtDjeBjrT7aJXIw"
-#key=API_KEY
 
-
+API_KEY = "<pswd here">"
 # gjs-service-1@woven-solution-357815.iam.gserviceaccount.com
 
 
