@@ -166,7 +166,7 @@ def call_ujet_manually():
               "\"} " + protocol + "://" + \
               parser.get('UjetInfo', 'sub_domain') + \
               "." + parser.get('UjetInfo', 'domain') + \
-              parser.get('UjetInfo', 'api_root') + \
+              "/" + parser.get('UjetInfo', 'api_root') + \
               "/" + parser.get('UjetInfo', 'api_target')
     #logger.debug("\tpayload  : {}\n\n".format("payload details hidden"))
     logger.debug("\tpayload  : \n{}\n\n".format(payload))
