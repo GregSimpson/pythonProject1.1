@@ -12,6 +12,9 @@ __pycache__/
 # Settings.ini
 *.ini
 
+# Intellij
+.idea
+
 # Prevent local developers from uploading TTS audio files. 
 None/
 
