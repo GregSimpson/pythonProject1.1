@@ -16,7 +16,7 @@ f2 = r"https://launchlibrary.net/1.3/launch/2019-11-01"
 
 # UJET test apis
 USERNAME = "GregSimpson"
-PASSWORD = "<api pswd here>"
+PASSWORD = "<api key pswd>"
 PARAMS = {'Username': USERNAME, 'Password' : PASSWORD}
 HEADERS = {'Accept': 'application/vnd.json', 'User-Agent': "tap-ujet greg.simpson@ttec.com", 'Content-Type': 'application/json'}
 METHOD = 'GET'
@@ -24,15 +24,24 @@ METHOD = 'GET'
 # GET APIs
 # Manager APIs
 UJET_BASE = "https://ttecphoenix-5x4khsz.uc1.ccaiplatform.com/manager/api/v1/"
-UJET_API = "agents"
-UJET_API = "agent_activity_logs"
-UJET_API = "agents/current_status"
-UJET_API = "calls"
-UJET_API = "chats"
-UJET_API = "user_statuses"
-UJET_API = "teams"
 
+# Agents
+UJET_API = "agents"
+# Agents Activity Logs
+UJET_API = "agent_activity_logs"
+# Agents Current Status
+UJET_API = "agents/current_status"
+# Calls
+UJET_API = "calls"
+# Chats
+UJET_API = "chats"
+# User Statuses
+UJET_API = "user_statuses"
+# Teams
+UJET_API = "teams"
+# Single Team
 UJET_API = "teams/1"
+# Team Tree
 UJET_API = "teams/tree"
 
 # APPS APIs
@@ -75,7 +84,6 @@ UJET_API = "calls?lang=en"
 # CRM Contact Data
 #UJET_API = "crm_contact_cdata?lang=en"
 
-#URL = UJET_BASE + UJET_API = "https://ttecphoenix-5x4khsz.uc1.ccaiplatform.com/apps/api/v1/calls?lang=en"
 URL = UJET_BASE + UJET_API
 
 HEADERS = { \
