@@ -9,7 +9,7 @@ __pycache__/
 # Audio files
 *.wav
 
-# .ini files
+# Settings.ini
 *.ini
 
 # Prevent local developers from uploading TTS audio files. 
@@ -91,14 +91,12 @@ celerybeat-schedule
 
 # Environments
 .env
-looker.ini
+.venv
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
-!. venv
-.venv
 
 # Spyder project settings
 .spyderproject
@@ -124,6 +122,7 @@ yarn-error.log*
 /.vscode
 *.swp
 realplay_admin/uploads/
+*.log.*
 
 # Eclipse & Java
 /target/**
@@ -134,5 +133,3 @@ realplay_admin/uploads/
 
 # Package Files 
 *.jar
-
-/venv/
