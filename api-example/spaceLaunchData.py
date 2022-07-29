@@ -15,7 +15,7 @@ print(requests.get(f2).text)
 # UJET test
 UJET_API = "https://ttecphoenix-5x4khsz.uc1.ccaiplatform.com/manager/api/v1/agents"
 USERNAME = "GregSimpson"
-PASSWORD = "yzsJpktWH2bfnGPz94DtHH6_3UYaO88TDKrLFFe5VR0"
+PASSWORD = "<password here>"
 
 PARAMS = {'Username': USERNAME, 'Password' : PASSWORD}
 r = requests.get(url=UJET_API, params=PARAMS)
