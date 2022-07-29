@@ -110,7 +110,8 @@ class UjetClient(object):
             self.__domain = 'ujet'
         else:
             self.__domain = domain
-        self.base_url = "https://{}.{}.co/manager/api/{}".format(
+        #self.base_url = "https://{}.{}.co/manager/api/{}".format(
+        self.base_url = "https://{}.{}/manager/api/{}".format(
             self.__subdomain,
             self.__domain,
             API_VERSION)
