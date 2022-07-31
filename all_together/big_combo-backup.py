@@ -51,34 +51,26 @@ def test_log_messages():
     logger.critical('\ttest msg')
 
 
-def gjs_log_process_data(data, threadName):
-    #print("%s processing %s\n" % (threadName, data))
-    logger.debug("{} processing   {}\n".format(threadName, data))
-
-    logger.debug("type data {}\t {}\n".format(type(data), next(iter(data))))
-    logger.debug("type data {}\t {}\n".format(type(data), data[next(iter(data))] ))
-    logger.debug("type data {}\t {}\n".format(type(data), next(iter(  data[next(iter(data))] ))))
-
-    logger.debug("\nGJS\n{} ::::".format(threadName))
-    pretty( next(iter(  data[next(iter(data))] )) )
-    logger.debug("\n::::\n\n")
-    #ogger.debug("type data {}\t {}\n".format(type(data), next(iter(  data[next(iter(data))][0] ))))
-    #logger.debug("type data[1] {}".format(type(data[])))
-
-
 def process_data(threadName, q):
-    #TODO add exception hamdling to exit thread
     while not exitFlag:
         queueLock.acquire()
         if not workQueue.empty():
             data = q.get()
             queueLock.release()
-            gjs_log_process_data(data, threadName)
+            #print("%s processing %s\n" % (threadName, data))
+            logger.debug("{} processing   {}\n".format(threadName, data))
 
-            # AFTER the ujet api call - save the results - for debugging
             #shared_dict[data] = threadName
             #shared_dict[data[1]] = data
+            logger.debug("type data {}\t {}\n".format(type(data), next(iter(data))))
+            logger.debug("type data {}\t {}\n".format(type(data), data[next(iter(data))] ))
+            logger.debug("type data {}\t {}\n".format(type(data), next(iter(  data[next(iter(data))] ))))
 
+            logger.debug("\nGJS\n{} ::::".format(threadName))
+            pretty( next(iter(  data[next(iter(data))] )) )
+            logger.debug("\n::::\n\n")
+            #ogger.debug("type data {}\t {}\n".format(type(data), next(iter(  data[next(iter(data))][0] ))))
+            #logger.debug("type data[1] {}".format(type(data[])))
         else:
             queueLock.release()
         time.sleep(1)
@@ -111,17 +103,10 @@ def pretty(d, indent=0):
 # TODO add logging - done
 # TODO read from yaml - done
 # TODO shared dict - done
-# use env for number threads - done
-# pass info to the thread when you build it - done
-
-## !!!! GJS left to do "
-# TODO generate the dicts to pass to each thread
-# TODO make the api calls
-# TODO load shared-dict from api results
-
-# TODO connect to GOOGLE queues
-# TODO post to GOOGLE queues
-
+# use env for number threads
+# use env to id targets
+# pass the info to the thread when you build it - done
+# TODO load shared-dict from threads
 
 def generate_thread_list(env_settings):
     num_threads = env_settings['SYSTEM_ENV_VARS']['NUM_OF_THREADS']
@@ -160,17 +145,6 @@ if __name__ == '__main__':
     # names here are defined by the QUEUE_NAMES in yaml (yet to be defined)
     #  each API writes to a queue - some apis use the same queue
     nameList = ["One", "Two", "Three", "Four", "Five", "six", "seven"]
-    #TODO - generate this from yaml info
-    #  it will look something like this (I think)
-    #dict test
-    gjs_nameList =    { 'agents':
-        [
-            {'URL': 'url-data1', 'USERNAME': 'user1', 'PASSWORD': 'pass1', 'API_NAME': 'api-agents1', 'GOOGLE_QUEUE_NAME': 'google-q1'  }
-        ]
-    }
-    logger.debug("gjs_test_dict_of_dicts :\n\t{}".format(gjs_nameList))
-
-
 
     queueLock = threading.Lock()
     # workQueue = Queue.queue(10) # works - bigger than list size
@@ -187,11 +161,37 @@ if __name__ == '__main__':
         threads.append(thread)
         threadID += 1
 
+    #dict test
+    '''
+    gjs_test_dict = { 'dict1': {'key_A': 'value_A'},
+                      'dict2': {'key_B': 'value_B'}}
+
+    gjs_test_dict = { 'API_TARGET_DICTS' : {
+                        'AGENT_DICT' : {
+                            'API_NAME':  'agents',
+                            'GOOGLE_QUEUE_NAME'  : 'google_agents_queue'
+                        } } }
+    pretty(gjs_test_dict)
+
+    gjs_test_list_of_dicts =    [
+                            {7058: 'sravan', 7059: 'jyothika', 7072: 'harsha', 7075: 'deepika'},
+                            {6066: 'sravan', 6067: 'jyothika', 6068: 'harsha', 6069: 'deepika'}
+                                ]
+    logger.debug("gjs_test_list_of_dicts :\n\t{}".format(gjs_test_list_of_dicts))
+    '''
+
+    gjs_test_dict_of_dict =    { 'agents':
+        [
+            {'URL': 'url-data1', 'USERNAME': 'user1', 'PASSWORD': 'pass1', 'API_NAME': 'api-agents1', 'GOOGLE_QUEUE_NAME': 'google-q1'  }
+        ]
+    }
+    logger.debug("gjs_test_dict_of_dicts :\n\t{}".format(gjs_test_dict_of_dict))
+
     # Fill the queue
     queueLock.acquire()
     for word in nameList:
         #workQueue.put(word)
-        workQueue.put(gjs_nameList)
+        workQueue.put(gjs_test_dict_of_dict)
     queueLock.release()
 
     # Wait for queue to empty
@@ -205,8 +205,8 @@ if __name__ == '__main__':
     for t in threads:
         t.join()
 
-    logger.debug("shared_dict :\n{}".format(str(shared_dict)))
-    #pretty(shared_dict)
+    logger.debug("shared_dict :\n")
+    pretty(shared_dict)
 
 
     logger.debug("\nExiting Main Thread")
