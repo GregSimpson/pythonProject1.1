@@ -1,0 +1,13 @@
+[postgresql]
+host=ovpc1-pgsql03.clrygru5fh3l.us-west-2.rds.amazonaws.com
+database=realplay_dce1
+user=realplayuser
+password=< pswd >
+
+
+[DEV_DB]
+port=5432
+host=ovpc1-pgsql03.clrygru5fh3l.us-west-2.rds.amazonaws.com
+database=realplay_dce1
+user=realplayuser
+password=< pswd >

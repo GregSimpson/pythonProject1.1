@@ -1,0 +1,131 @@
+# https://geekflare.com/python-yaml-intro/
+
+# code
+# import yaml
+#yaml_file = open('conf/settings.ini', 'r')
+#    yaml_content = yaml.safe_load(yaml_file)
+#
+#    logger.info("Key: Value")
+#    for key, value in yaml_content.items():
+#        logger.info(f"{type(key)} :: {type(value)}")
+#        logger.info(f"{key}: {value}")
+
+
+<class 'str'> :: <class 'int'>
+# integer: 123
+# <class 'str'> :: <class 'float'>
+# float: 123.123
+# INFO - <class 'str'> :: <class 'float'>
+# exponential_float: 1340.0
+# <class 'str'> :: <class 'float'>
+# not_a_number: nan
+# <class 'str'> :: <class 'float'>
+# infinity: inf
+# <class 'str'> :: <class 'float'>
+# negative_infinity: -inf
+integer: 123
+float: 123.123
+exponential_float: 1.34e+3
+not_a_number: .NAN
+infinity: .inf
+negative_infinity: -.inf
+
+# <class 'str'> :: <class 'str'>
+string: Hi, there I am a string
+string with escape character: Hi, I am a newline \n character. And I am not working :(
+string with working escape character: "Hi, I am a newline \n character. And I am working :)"
+
+# <class 'str'> :: <class 'str'>
+multiple lines string with fold character: >
+                                           This is a
+                                           multiple line
+                                           string with fold
+                                           character. Remember to use
+                                           indentation. Newlines won't be
+                                           interpreted.
+# <class 'str'> :: <class 'str'>
+multiple lines string with block character: |
+                                            This is a
+                                            multiple line
+                                            string with fold
+                                            character. Remember to use
+                                            indentation. Newlines will be
+                                            interpreted.
+<class 'str'> :: <class 'bool'>
+random_key_1: True
+random_key_2: On
+random_key_3: Yes
+random_key_4: False
+random_key_5: Off
+random_key_6: No
+
+# <class 'str'> :: <class 'NoneType'>
+null_case_1: null
+null_case_2: ~
+
+# <class 'str'> :: <class 'list'>
+# programming_languages: ['Python', 'JavaScript', 'C', 'HTML', 'CSS']
+# <class 'str'> :: <class 'list'>
+# INFO - libraries: ['React', 'TailwindCSS']
+programming_languages: [Python, JavaScript, C, HTML, CSS]
+libraries: [React, TailwindCSS]
+
+# <class 'str'> :: <class 'list'>
+# programming_languages_2: ['Python', 'JavaScript', 'C', 'HTML', 'CSS']
+# libraries_2: ['React', 'TailwindCSS']
+programming_languages_2:
+    - Python
+    - JavaScript
+    - C
+    - HTML
+    - CSS
+libraries_2:
+    - React
+    - TailwindCSS
+
+# <class 'str'> :: <class 'dict'>
+# dictionary: {'i am key': 'i am value', 'nested dictionary': {'nested key': None, 'i am nested key': 'i am nested value'}}
+dictionary:
+    i am key: i am value
+
+    nested dictionary:
+        nested key:
+        i am nested key: i am nested value
+
+# <class 'str'> :: <class 'set'>
+# i am a set: {1, 2, 3}
+i am a set: !!set
+            ? 1
+            ? 2
+            ? 2
+            ? 3
+
+
+# <class 'str'> :: <class 'NoneType'>
+# yaml is great: None
+# I am a comment
+yaml is great: # I am a comment too
+
+
+# duplicate_data is the name of the anchor
+data: &duplicate_data This content is to duplicate
+
+# dopying the data
+duplicate_data: *duplicate_data
+
+
+# <class 'str'> :: <class 'list'>
+# programming_languages_3: [{'Python': {'author': 'Guido van Rossum'}}, {'JavaScript': {'author': 'Brendan Eich'}}, {'C': {'author': 'Dennis Ritchie'}}]
+# libraries_3: [{'React': {'popularity': 'High'}}, {'TailwindCSS': {'popularity': 'High'}}]
+programming_languages_3:
+    - Python:
+        author: Guido van Rossum
+    - JavaScript:
+        author: Brendan Eich
+    - C:
+        author: Dennis Ritchie
+libraries_3:
+    - React:
+        popularity: High
+    - TailwindCSS:
+        popularity: High

@@ -1,0 +1,99 @@
+
+[Auth0Info]
+url_get_token:/api/v2/","scope":"read:roles","grant_type":"client_credentials"}
+
+[Config_Data]
+db_schema_version: v2
+log_dir: logs
+realplay_user_table: realplay_user
+throttle_counter: 12
+throttle_sleep: 28
+
+[ttec-realplay-blueshield]
+# RealPlay BOT - BlueShield
+client_domain:ttec-realplay-blueshield.auth0.com
+client_id:< client id >
+client_secret:< client secret >
+
+[ttec-realplay-bofa]
+# RealPlay BOT - Bank of America
+client_domain:ttec-realplay-bofa.auth0.com
+client_id:< client id >
+client_secret:< client secret >
+
+[ttec-realplay-doordash]
+# RealPlay BOT - Door Dash
+client_domain:ttec-realplay-doordash.auth0.com
+client_id:< client id >
+client_secret:< client secret >
+
+[ttec-realplay-ford]
+# RealPlay BOT - Ford
+client_domain:ttec-realplay-ford.auth0.com
+client_id:< client id >
+client_secret:< client secret >
+
+[ttec-realplay-google]
+# RealPlay BOT - Google
+client_domain:ttec-realplay-google.us.auth0.com
+client_id:< client id >
+client_secret:< client secret >
+
+[ttec-ped-developers]
+# API Explorer Application
+client_domain:ttec-ped-developers.auth0.com
+client_id:< client id >
+client_secret: < client secret >
+
+[ttec-realplay-kaiser]
+# RealPlay BOT - Kaiser
+client_domain:ttec-realplay-kaiser.auth0.com
+client_id:< client id >
+client_secret:< client secret >
+
+[ttec-realplay-parasol]
+# RealPlay BOT - Parasol
+client_domain:ttec-realplay-parasol.auth0.com
+client_id:< client id >
+client_secret:< client secret >
+
+[ttec-realplay-progressive]
+# RealPlay BOT - Progressive
+client_domain:ttec-realplay-progressive.us.auth0.com
+client_id:< client id >
+client_secret:< client secret >
+
+[ttec-realplay-schedulenow]
+# RealPlay BOT - ScheduleNOW
+client_domain:ttec-realplay-schedulenow.us.auth0.com
+client_id:< client id >
+client_secret:< client secret >
+
+[ttec-realplay-snowinc]
+# RealPlay BOT - Snowinc
+client_domain:ttec-realplay-snowinc.us.auth0.com
+client_id:< client id >
+client_secret:< client secret >
+
+[ttec-realplay-telstra]
+# RealPlay BOT - Telstra
+client_domain:ttec-realplay-telstra.auth0.com
+client_id:< client id >
+client_secret:< client secret >
+
+[ttec-realplay-tmobile]
+# RealPlay BOT - T-Mobile
+client_domain:ttec-realplay-tmobile.us.auth0.com
+client_id:< client id >
+client_secret:< client secret >
+
+[user-export-file]
+source:/home/gsimpson/gjs/realplay_user_exports
+output:/home/gsimpson/gjs/git_stuff/RealPlay/database/postgres/Migrations/sql
+output_single_file:V1.26.0_2__RP-1138_one_big_insert_file_auth0_roles.sql
+
+
+output_orig:/home/gsimpson/gjs/realplay_user_exports/upload_files
+output_prefix:postgres_upload_
+output_single_file_orig:realplay_insert_stmts.sql
+

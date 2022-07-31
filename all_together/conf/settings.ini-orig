@@ -1,0 +1,70 @@
+
+[UjetInfo]
+UserName: GregSimpson
+Password: yzsJpktWH2bfnGPz94DtHH6_3UYaO88TDKrLFFe5VR0
+
+# https://ttecphoenix-5x4khsz.uc1.ccaiplatform.com/
+protocol: https
+sub_domain: ttecphoenix-5x4khsz
+domain: uc1.ccaiplatform.com
+
+# manager/api/v1/agents
+api_root: manager/api/v1
+api_target: agents
+
+[UjetApiCOMMONs]
+# UJET test apis
+USERNAME = "GregSimpson"
+PASSWORD = "yzsJpktWH2bfnGPz94DtHH6_3UYaO88TDKrLFFe5VR0"
+HEADERS = {'Accept': 'application/vnd.json', 'User-Agent': "tap-ujet greg.simpson@ttec.com", 'Content-Type': 'application/json'}
+
+[UjetApiGETs-manager]
+METHOD = 'GET'
+
+[UjetApiGETs-apps]
+METHOD = 'GET'
+
+[UjetApiPOSTs-apps]
+METHOD = 'POST'
+
+
+
+[Config_Data]
+db_schema_version: v2
+log_dir: logs
+realplay_user_table: realplay_user
+throttle_counter: 12
+throttle_sleep: 28
+
+[Experiments]
+fruits:- Apple
+    ,Orange
+    ,Strawberry
+    ,Mango
+key1:
+    - value1
+    - value2
+    - value3
+    - value4
+    - value5
+instructions:
+    - name: server1
+    subject: pepito
+    - name: server2
+    subject: juanito
+Employees:
+    custid: 200
+    user: Ash
+    - Smith
+    - Cox
+treeroot:
+    branch1: branch1 text
+    branch2: branch2 text
+author: Franc
+database:
+    driver: com.mysql.jdbc.Driver
+    port: 3306
+    dbname: mydb
+    username: root
+    password:
+

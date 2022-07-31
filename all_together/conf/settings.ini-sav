@@ -1,0 +1,90 @@
+
+# <class 'str'> :: <class 'dict'>
+SYSTEM_ENV_VARS :
+    # <class 'str'> :: <class 'str'>
+    NUM_OF_SEMAPHORES : 5
+    NUM_OF_THREADS : 3  # must be less than NUM_OF_SEMAPHORES
+    RANDOM_SLEEP_RANGE : 6
+
+# <class 'str'> :: <class 'dict'>
+GOOGLE_ENV_VARS :
+    # <class 'str'> :: <class 'dict'>
+    unknown-for-now :
+        # <class 'str'> :: <class 'str'>
+        thing1 : a
+        thing2 : b
+        thing3: !!set
+            # <class 'str'> :: <class 'set'>
+            ? set1
+            ? set2
+            ? set2
+
+# <class 'str'> :: <class 'dict'>
+UJET_ENV_VARS :
+    # <class 'str'> :: <class 'dict'>
+    UjetCreds :
+        # <class 'str'> :: <class 'str'>
+        USERNAME: GregSimpson
+        PASSWORD: < *** >
+
+    # <class 'str'> :: <class 'dict'>
+    UjetBaseURL :
+        # <class 'str'> :: <class 'str'>
+        PROTOCOL: https
+        SUB_DOMAIN: ttecphoenix-5x4khsz
+        DOMAIN: uc1.ccaiplatform.com
+
+    # <class 'str'> :: <class 'dict'>
+    UjetApiHEADERS :
+        # <class 'str'> :: <class 'str'>
+        ACCEPT: application/vnd.json
+        USER-AGENT: tap-ujet greg.simpson@ttec.com
+        CONTENT-TYPE: application/json'}
+
+    # <class 'str'> :: <class 'dict'>
+    UjetManagerApiGets :
+        # <class 'str'> :: <class 'str'>
+        METHOD : GET
+        API_ROOT: manager/api/v1
+        API_TARGETS: !!set
+            # <class 'str'> :: <class 'set'>
+            ? agents
+            ? agent_activity_logs
+            ? agents/current_status
+            ? calls
+            ? calls
+            ? chats
+            ? teams
+            ? teams/:id
+            ? teams/tree
+            ? user_statuses
+
+    # <class 'str'> :: <class 'dict'>
+    UjetManagerApiPosts :
+        # <class 'str'> :: <class 'str'>
+        METHOD : POST
+        API_ROOT: manager/api/v1
+        API_TARGETS: !!set
+            # <class 'str'> :: <class 'set'>
+            ? null
+
+    # <class 'str'> :: <class 'dict'>
+    UjetAppsApiGets :
+        # <class 'str'> :: <class 'str'>
+        METHOD : GET
+        API_ROOT: apps/api/v1
+        API_TARGETS: !!set
+            # <class 'str'> :: <class 'set'>
+            ? wait_times?lang=en
+
+    # <class 'str'> :: <class 'dict'>
+    UjetAppsApiPosts :
+        # <class 'str'> :: <class 'str'>
+        METHOD : POST
+        API_ROOT: apps/api/v1
+        API_TARGETS: !!set
+            # <class 'str'> :: <class 'set'>
+            ? calls?lang=en
+            ? calls?lang=en
+            ? calls
+            ? crm_contact_cdata?lang=en
