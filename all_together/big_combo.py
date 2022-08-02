@@ -284,8 +284,8 @@ def handle_complex_thing( handle_this , tabs=1):
     #pretty(google_dict)
     #pretty(ujet_dict)
 
-    UJET_API_URL_STR = env_settings['UJET_ENV_VARS']['UjetBaseURL']['PROTOCOL'] + '://'
-    UJET_API_URL_STR = UJET_API_URL_STR + '/' + env_settings['UJET_ENV_VARS']['UjetBaseURL']['SUB_DOMAIN']
+    UJET_API_URL_STR = env_settings['UJET_ENV_VARS']['UjetBaseURL']['PROTOCOL']
+    UJET_API_URL_STR = UJET_API_URL_STR + '://' + env_settings['UJET_ENV_VARS']['UjetBaseURL']['SUB_DOMAIN']
     UJET_API_URL_STR = UJET_API_URL_STR + '/' + env_settings['UJET_ENV_VARS']['UjetBaseURL']['DOMAIN']
     UJET_API_URL_STR = UJET_API_URL_STR + '/' + env_settings['UJET_ENV_VARS']['UjetManagerApiGets']['API_ROOT']
 
