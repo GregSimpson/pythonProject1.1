@@ -16,7 +16,7 @@ f2 = r"https://launchlibrary.net/1.3/launch/2019-11-01"
 
 # UJET test apis
 USERNAME = "GregSimpson"
-PASSWORD = "<api key pswd>"
+PASSWORD = "yzsJpktWH2bfnGPz94DtHH6_3UYaO88TDKrLFFe5VR0"
 PARAMS = {'Username': USERNAME, 'Password' : PASSWORD}
 HEADERS = {'Accept': 'application/vnd.json', 'User-Agent': "tap-ujet greg.simpson@ttec.com", 'Content-Type': 'application/json'}
 METHOD = 'GET'
@@ -28,21 +28,21 @@ UJET_BASE = "https://ttecphoenix-5x4khsz.uc1.ccaiplatform.com/manager/api/v1/"
 # Agents
 UJET_API = "agents"
 # Agents Activity Logs
-UJET_API = "agent_activity_logs"
+#UJET_API = "agent_activity_logs"
 # Agents Current Status
-UJET_API = "agents/current_status"
+#UJET_API = "agents/current_status"
 # Calls
-UJET_API = "calls"
+#UJET_API = "calls"
 # Chats
-UJET_API = "chats"
+#UJET_API = "chats"
 # User Statuses
-UJET_API = "user_statuses"
+#UJET_API = "user_statuses"
 # Teams
-UJET_API = "teams"
+#UJET_API = "teams"
 # Single Team
-UJET_API = "teams/1"
+#UJET_API = "teams/1"
 # Team Tree
-UJET_API = "teams/tree"
+#UJET_API = "teams/tree"
 
 # APPS APIs
 UJET_BASE = "https://ttecphoenix-5x4khsz.uc1.ccaiplatform.com/apps/api/v1/"
@@ -71,7 +71,7 @@ g = requests.get(
     headers=HEADERS)
 print(g.json())
 
-
+'''
 # PUT APIs
 UJET_BASE = "https://ttecphoenix-5x4khsz.uc1.ccaiplatform.com/apps/api/v1/"
 
@@ -106,6 +106,6 @@ g = requests.put(
     headers=HEADERS
 )
 print(g)
-
+'''
 #r = requests.get(url=UJET_API, params=PARAMS, headers=HEADERS)
 #print(r.json())
