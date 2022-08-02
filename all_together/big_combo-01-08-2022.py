@@ -16,40 +16,6 @@ import yaml
 import ruamel.yaml
 from config_db import config_db_from_env
 
-#-----------------
-
-import configparser
-import http
-import http.client
-import io
-import json
-import logging.config
-import os
-import random
-from datetime import datetime
-from datetime import timedelta
-from pathlib import Path
-import time
-from time import sleep
-
-
-
-#import pandas as pd
-# https://www.postgresql.org/docs/current/errcodes-appendix.html#ERRCODES-TABLE
-#import psycopg2
-import yaml
-#from psycopg2 import extras
-# sudo apt-get install python3.10-distutils
-# python3.10 -m pip install opencv-python
-
-from timeout import timeout, TimeoutError
-
-#from sqlalchemy import create_engine
-#from sqlalchemy import text
-from config_db import config_db_from_env
-
-#--------------
-
 exitFlag = 0
 
 class myThread (threading.Thread):
@@ -66,8 +32,7 @@ class myThread (threading.Thread):
 
 def load_settings_from_ini():
     print("IN load_settings_from_ini ")
-    #yaml_file = open('conf/settings.ini', 'r')
-    yaml_file = open('dict_def.yaml', 'r')
+    yaml_file = open('conf/settings.ini', 'r')
     yaml_content = yaml.safe_load(yaml_file)
 
     logger.debug("Key: Value")
