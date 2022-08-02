@@ -1,99 +1,130 @@
-
-[Auth0Info]
-url_get_token:/api/v2/","scope":"read:roles","grant_type":"client_credentials"}
-
-[Config_Data]
-db_schema_version: v2
-log_dir: logs
-realplay_user_table: realplay_user
-throttle_counter: 12
-throttle_sleep: 28
-
-[ttec-realplay-blueshield]
-# RealPlay BOT - BlueShield
-client_domain:ttec-realplay-blueshield.auth0.com
-client_id:< client id >
-client_secret:< client secret >
-
-[ttec-realplay-bofa]
-# RealPlay BOT - Bank of America
-client_domain:ttec-realplay-bofa.auth0.com
-client_id:< client id >
-client_secret:< client secret >
-
-[ttec-realplay-doordash]
-# RealPlay BOT - Door Dash
-client_domain:ttec-realplay-doordash.auth0.com
-client_id:< client id >
-client_secret:< client secret >
-
-[ttec-realplay-ford]
-# RealPlay BOT - Ford
-client_domain:ttec-realplay-ford.auth0.com
-client_id:< client id >
-client_secret:< client secret >
-
-[ttec-realplay-google]
-# RealPlay BOT - Google
-client_domain:ttec-realplay-google.us.auth0.com
-client_id:< client id >
-client_secret:< client secret >
-
-[ttec-ped-developers]
-# API Explorer Application
-client_domain:ttec-ped-developers.auth0.com
-client_id:< client id >
-client_secret: < client secret >
-
-[ttec-realplay-kaiser]
-# RealPlay BOT - Kaiser
-client_domain:ttec-realplay-kaiser.auth0.com
-client_id:< client id >
-client_secret:< client secret >
-
-[ttec-realplay-parasol]
-# RealPlay BOT - Parasol
-client_domain:ttec-realplay-parasol.auth0.com
-client_id:< client id >
-client_secret:< client secret >
-
-[ttec-realplay-progressive]
-# RealPlay BOT - Progressive
-client_domain:ttec-realplay-progressive.us.auth0.com
-client_id:< client id >
-client_secret:< client secret >
-
-[ttec-realplay-schedulenow]
-# RealPlay BOT - ScheduleNOW
-client_domain:ttec-realplay-schedulenow.us.auth0.com
-client_id:< client id >
-client_secret:< client secret >
-
-[ttec-realplay-snowinc]
-# RealPlay BOT - Snowinc
-client_domain:ttec-realplay-snowinc.us.auth0.com
-client_id:< client id >
-client_secret:< client secret >
-
-[ttec-realplay-telstra]
-# RealPlay BOT - Telstra
-client_domain:ttec-realplay-telstra.auth0.com
-client_id:< client id >
-client_secret:< client secret >
-
-[ttec-realplay-tmobile]
-# RealPlay BOT - T-Mobile
-client_domain:ttec-realplay-tmobile.us.auth0.com
-client_id:< client id >
-client_secret:< client secret >
-
-[user-export-file]
-source:/home/gsimpson/gjs/realplay_user_exports
-output:/home/gsimpson/gjs/git_stuff/RealPlay/database/postgres/Migrations/sql
-output_single_file:V1.26.0_2__RP-1138_one_big_insert_file_auth0_roles.sql
+# An example YAML file
 
 
-output_orig:/home/gsimpson/gjs/realplay_user_exports/upload_files
-output_prefix:postgres_upload_
-output_single_file_orig:realplay_insert_stmts.sql
+# <class 'str'> :: <class 'dict'>
+SYSTEM_ENV_VARS:
+    # <class 'str'> :: <class 'str'>
+    KEEP_RUNNING: 0   # 1 = infinity; 0 = runonce then stop
+    NUM_OF_SEMAPHORES: 5
+    NUM_OF_THREADS: 3  # must be less than NUM_OF_SEMAPHORES
+    RANDOM_SLEEP_RANGE: 6
+
+# <class 'str'> :: <class 'dict'>
+GOOGLE_ENV_VARS:
+    # <class 'str'> :: <class 'dict'>
+    GoogleCreds :
+        # <class 'str'> :: <class 'str'>
+        USERNAME: < ujet user >
+        PASSWORD: < ujet pswd >
+    # <class 'str'> :: <class 'dict'>
+    GoogleBaseURL :
+        # <class 'str'> :: <class 'str'>
+        PROTOCOL: https
+        SUB_DOMAIN: ttec-something
+        DOMAIN: Google.com
+
+# <class 'str'> :: <class 'dict'>
+UJET_ENV_VARS :
+    # <class 'str'> :: <class 'dict'>
+    UjetCreds :
+        # <class 'str'> :: <class 'str'>
+        USERNAME: GregSimpson
+        PASSWORD: yzsJpktWH2bfnGPz94DtHH6_3UYaO88TDKrLFFe5VR0
+
+    # <class 'str'> :: <class 'dict'>
+    UjetBaseURL :
+        # <class 'str'> :: <class 'str'>
+        PROTOCOL: https
+        SUB_DOMAIN: ttecphoenix-5x4khsz
+        DOMAIN: uc1.ccaiplatform.com
+
+    # old vars
+    GjsOldVars :
+        ACCEPT: application/vnd.json
+        USER-AGENT: tap-ujet greg.simpson@ttec.com
+        CONTENT-TYPE: application/json'
+
+# <class 'str'> :: <class 'dict'>
+    UjetApiHEADERS :
+        # <class 'str'> :: <class 'str'>
+        Content-Length: 0
+        User-Agent: tap-ujet greg.simpson@ttec.com
+        Accept: '*/*'
+        Accept-Encoding: gzip, deflate, br
+        Connection: keep-alive
+
+
+# <class 'str'> :: <class 'dict'>
+    UjetManagerApiGets :
+        # <class 'str'> :: <class 'str'>
+        METHOD : GET
+        API_ROOT: manager/api/v1
+        API_TARGET_DICTS:
+            AGENT_DICT:
+                API_NAME:  agents
+                GOOGLE_QUEUE_NAME: google_agents_queue
+            AGENT_ACTIVITY_LOGS_DICT:
+                API_NAME:  agent_activity_logs
+                GOOGLE_QUEUE_NAME: google_agent_activity_logs_queue
+            AGENT_CURRENT_STATUS_DICT:
+                API_NAME:  agents/current_status
+                GOOGLE_QUEUE_NAME: google_agents_current_status_queue
+            CALLS_DICT:
+                API_NAME:  calls
+                GOOGLE_QUEUE_NAME: google_calls_queue
+            CHATS_DICT:
+                API_NAME:  chats
+                GOOGLE_QUEUE_NAME: google_chats_queue
+            TEAMS_DICT:
+                API_NAME:  teams
+                GOOGLE_QUEUE_NAME: google_teams_queue
+            TEAMS_ID_DICT:
+                API_NAME:  teams/:id
+                GOOGLE_QUEUE_NAME: google_teams_id_queue
+            TEAMS_TREE_DICT:
+                API_NAME:  teams/tree
+                GOOGLE_QUEUE_NAME: google_teams_tree_queue
+            USER_STATUSES_DICT:
+                API_NAME:  user_statuses
+                GOOGLE_QUEUE_NAME: google_user_statuses_queue
+
+
+
+    # <class 'str'> :: <class 'dict'>
+    UjetManagerApiPosts:
+        # <class 'str'> :: <class 'str'>
+        METHOD: POST
+        API_ROOT: manager/api/v1
+        API_TARGET_DICTS:
+            AGENT_DICT:
+
+    # <class 'str'> :: <class 'dict'>
+    UjetAppsApiGets:
+        # <class 'str'> :: <class 'str'>
+        METHOD: GET
+        API_ROOT: apps/api/v1
+        API_TARGET_DICTS:
+            WAIT_TIMES_DICT:
+                API_NAME: wait_times?lang=en
+                GOOGLE_QUEUE_NAME: google_wait_times_queue
+
+
+    # <class 'str'> :: <class 'dict'>
+    UjetAppsApiPosts:
+        # <class 'str'> :: <class 'str'>
+        METHOD: POST
+        API_ROOT: apps/api/v1
+        API_TARGET_DICTS:
+            CALLS_DICT:
+                API_NAME: calls
+                GOOGLE_QUEUE_NAME: google_calls_queue
+            CALLS_LANG_EN_DICT:
+                API_NAME: calls?lang=en # ENGLISH
+                GOOGLE_QUEUE_NAME: google_calls_queue
+            CALLS_LANG_ES_DICT:
+                API_NAME: calls?lang=es  # SPANISH
+                GOOGLE_QUEUE_NAME: google_calls_queue
+            CRM_CONTACT_CDATA_DICT:
+                API_NAME: crm_contact_cdata?lang=en
+                GOOGLE_QUEUE_NAME: google_crm_contact_cdata_queue
 
